@@ -266,7 +266,12 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 .mini-prog i{display:block;height:100%;width:0;background:var(--sun)}
 body.has-mini .wrap{padding-bottom:calc(160px + env(safe-area-inset-bottom))}
 details.how{margin-top:10px;color:var(--ink-2);font-size:14.5px}
-details.how summary{cursor:pointer;color:var(--ink);font-weight:500;min-height:36px;display:flex;align-items:center}
+details.how summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;height:38px;padding:0 14px;border-radius:19px;background:var(--raise-2);color:var(--ink);font-weight:600;font-size:14px;-webkit-tap-highlight-color:transparent;transition:background .15s}
+details.how summary::-webkit-details-marker{display:none}
+details.how summary::after{content:'';width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s;opacity:.8}
+details.how[open] summary::after{transform:translateY(1px) rotate(-135deg)}
+details.how summary:active{background:var(--line)}
+details.how[open] summary{margin-bottom:6px}
 details.how ol{margin:6px 0 0;padding-left:20px}
 details.how li{margin:4px 0}
 .admin-card{margin-top:10px;padding:14px;border-radius:16px;background:var(--bg);border:1px solid var(--line)}
@@ -369,7 +374,7 @@ select.field{appearance:none;-webkit-appearance:none;background-image:linear-gra
 <dialog class="sheet" id="sheet" aria-labelledby="sheetTitle"><div class="sheet-in" id="sheetBody"></div></dialog>
 <div class="toast" id="toast" role="status" popover="manual"></div>
 
-<script src="core.js?v=5"></script>
+<script src="core.js?v=6"></script>
 <script>
 (() => {
 'use strict';
@@ -378,7 +383,7 @@ const V = new URL(document.querySelector('script[src^="core.js"]').src).search;
 
 /* ---------- Settings you fill in ---------- */
 const API = 'https://script.google.com/macros/s/AKfycbz9uy9MyUgzq_JN06K-v7HhbcDQkoMGxmmwmTZ-jrHL0o82IvXYfIdBojqM4FYluxVF/exec';            // Apps Script web app URL, filled in after deploying
-const EXPECT_BUILD = 4;    // the Apps Script release this page needs (4: Google Drive songs)
+const EXPECT_BUILD = 6;    // the Apps Script release this page needs (6: the developer can edit the music)
 
 /* ---------- Constants ---------- */
 const NTFY = 'https://ntfy.sh';
@@ -516,7 +521,13 @@ function toast(msg, busy) {
   clearTimeout(toastTimer);
   if (!busy) toastTimer = setTimeout(() => { t.classList.remove('show'); setTimeout(() => { try { if (!t.classList.contains('show')) t.hidePopover(); } catch {} }, 250); }, Math.max(2600, msg.length * 55));
 }
-const busyToast = (msg) => toast(msg, true);
+const busyToast = (msg) => { toast(msg, true); toastTimer = setTimeout(endBusy, 60000); };   // never left on screen for good
+function endBusy() {   // clear a "working…" message that nothing replaced
+  const t = $('#toast');
+  if (!t.querySelector('.spinner')) return;
+  clearTimeout(toastTimer); t.classList.remove('show');
+  setTimeout(() => { try { if (!t.classList.contains('show')) t.hidePopover(); } catch {} }, 250);
+}
 async function withBusy(btn, fn) {
   if (btn && btn.disabled) return;
   if (btn) { btn.disabled = true; btn.classList.add('busy'); btn.setAttribute('aria-busy', 'true'); }
@@ -1220,7 +1231,7 @@ function driftHtml() {
       </div>
     </article>
     ${(S.set.hints || 0) < 4 ? '<p class="hint">Swipe the card for another, or back for the last one.</p>' : ''}
-    <p class="foot">Catalogue: Global Spirits Inventory v2026.10 by E. Pace, The Remade Agency, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Pictures belong to the sites they come from. No prices yet: the Shop button searches Google Shopping.</p>`;
+`;
 }
 function afterDrift() {
   const w = S.cur && S.byId.get(S.cur);
@@ -1365,7 +1376,7 @@ function openSheet(html) {
 }
 function closeSheet() { if (sheet.open) sheet.close(); }
 sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSheet(); });
-sheet.addEventListener('close', () => { sheet.style.transform = ''; const f = sheet.querySelector('iframe'); if (f) f.remove(); });
+sheet.addEventListener('close', () => { sheet.style.transform = ''; const f = sheet.querySelector('iframe'); if (f) { f.src = 'about:blank'; f.remove(); } });   // blank first, so its player and notification end
 
 function openConnect() {
   const topic = D().club && D().club.topic;
@@ -1495,10 +1506,12 @@ function mediaHtml() {
   else html += instagramHtml();
   return html;
 }
+const canEditMusic = () => amAdmin() || amDev();
+const addSongBtn = () => `<button class="btn small" type="button" data-act="music-add">${ICON.plus}Add a song</button>`;
 const nobodyYet = (what) => amAdmin() ? `Add ${what} in Settings, under Media.` : `${adminName() || 'The administrator'} can add ${what} in Settings.`;
 function waitingHtml(msg) { return `<div style="text-align:center"><img class="loading-mark" src="mark.webp" alt=""><p class="facts">${esc(msg)}</p></div>`; }
 function musicHtml(tracks) {
-  if (!tracks.length) return `<section class="hero" style="text-align:center"><img class="loading-mark" src="mark.webp" alt="" style="animation:none"><h1 class="empty-title">No club music yet</h1><p class="empty-body">${esc(nobodyYet('the club’s songs'))}</p></section>`;
+  if (!tracks.length) return `<section class="hero" style="text-align:center"><img class="loading-mark" src="mark.webp" alt="" style="animation:none"><h1 class="empty-title">No club music yet</h1><p class="empty-body">${canEditMusic() ? 'Add the club’s first song.' : esc(nobodyYet('the club’s songs'))}</p>${canEditMusic() ? `<div class="actions" style="justify-content:center">${addSongBtn()}</div>` : ''}</section>`;
   const cur = tracks.find((t) => t.id === S.play.id) || tracks[0];
   const a = $('#audio'), on = !!S.play.id && cur.id === S.play.id, loading = on && S.play.loading === cur.id, playing = on && !a.paused && !loading;
   const dur = S.play.dur[cur.id];
@@ -1509,14 +1522,23 @@ function musicHtml(tracks) {
         <button class="round big${playing ? '' : ' accent'}" type="button" data-act="playpause" id="npPlay" aria-label="${loading ? 'Loading the song' : playing ? 'Pause' : 'Play'}" title="${playing ? 'Pause' : 'Play'}" data-track="${esc(cur.id)}"${loading ? ' aria-busy="true"' : ''}>${loading ? '<span class="spinner" style="width:22px;height:22px;color:var(--on-sun)"></span>' : playing ? ICON.pause : ICON.playFill}</button>
         <button class="round" type="button" data-act="next-track" aria-label="Next song" title="Next">${ICON.next}</button></div></div>
     <ul class="rows" id="trackList">${tracks.map((t, i) => trackRow(t, i)).join('')}</ul>
+    ${canEditMusic() ? `<div class="actions">${addSongBtn()}</div>` : ''}
     <p class="foot">Songs keep playing while you look around the app, and from the lock screen.</p>`;
+}
+function openAddSong() {
+  openSheet(`${head('Add a song')}<form id="musicForm"><label class="lbl" for="mUrl">Link to the song</label>
+    <input class="field" id="mUrl" inputmode="url" placeholder="Suno, Google Drive, Dropbox or an MP3 link" required autocomplete="off">
+    <div class="field-row" style="margin-top:8px"><input class="field" id="mTitle" maxlength="100" placeholder="Title (optional for Suno)" aria-label="Title"><input class="field" id="mArtist" maxlength="60" placeholder="Artist (optional)" aria-label="Artist"></div>
+    <p class="small">Google Drive files come through Dram and are kept on each phone after the first play. MP3s are quickest.</p>
+    <div class="actions"><button class="btn primary" type="submit">${ICON.plus}Add song</button></div></form>
+    <p class="result" id="mResult" aria-live="polite"></p>`);
 }
 function trackRow(t, i) {
   const on = t.id === S.play.id && !S.play.bad[t.id], playing = on && !$('#audio').paused && S.play.loading !== t.id;
   const sub = S.play.bad[t.id] ? 'Couldn’t play this link' : S.play.loading === t.id ? 'Loading…' : [t.artist, S.play.dur[t.id] ? fmtTime(S.play.dur[t.id]) : ''].filter(Boolean).join(', ');
   return `<li class="track${on ? ' on' : ''}" data-tid="${esc(t.id)}"><button class="row-main" type="button" data-track="${esc(t.id)}" aria-label="${on && playing ? 'Pause' : 'Play'} ${esc(t.title)}">
     <span class="tnum num">${on ? `<span class="eq${playing ? '' : ' still'}" aria-hidden="true"><i></i><i></i><i></i></span>` : i + 1}</span>
-    <span class="row-text"><span class="row-title">${esc(t.title)}</span><span class="row-sub">${esc(sub || clubName())}</span></span></button></li>`;
+    <span class="row-text"><span class="row-title">${esc(t.title)}</span><span class="row-sub">${esc(sub || clubName())}</span></span></button>${canEditMusic() ? `<button class="icon-btn" type="button" data-mremove="${esc(t.id)}" aria-label="Remove ${esc(t.title)}" title="Remove">${ICON.x}</button>` : ''}</li>`;
 }
 function youtubeHtml() {
   const y = S.media && S.media.youtube;
@@ -1597,7 +1619,7 @@ async function playTrack(id) {
     audio.play().catch(() => {}); return;
   }
   S.play.id = id; delete S.play.bad[id]; S.play.alt = 0;
-  setSession(t);
+  if (!isDrive(t)) setSession(t);   // a Drive song gets its lock-screen entry once it's here to play
   if (isDrive(t)) {
     // phones only allow sound that starts from a tap: start a moment of silence now, the song once it arrives
     S.play.loading = id; setSrc(SILENT); audio.play().catch(() => {});
@@ -1613,10 +1635,11 @@ async function playTrack(id) {
       else { failTrack(t, friendly(err)); return; }
     }
     clearTimeout(slow);
-    if (S.play.id !== id) return;   // they picked another song meanwhile
+    if (S.play.id !== id) { if (!S.play.loading) endBusy(); return; }   // they picked another song meanwhile
     S.play.loading = null;
-    if (r && r.preview) { stopPlayer(); openDrivePlayer(t, r); return; }
+    if (r && r.preview) { endBusy(); stopPlayer(); openDrivePlayer(t, r); return; }
     if (r) { S.play.srcs = [r.url]; setSrc(r.url); }
+    setSession(t);
     toast(`Playing “${t.title}”`);
   } else {
     S.play.srcs = C.audioSources(t.url); setSrc(S.play.srcs[0]);   // a Suno song tries its open MP4 first
@@ -1647,7 +1670,13 @@ function onAudioError() {
   failTrack(t);
 }
 function pausePlayer() { if (!audio.paused) audio.pause(); }
-function stopPlayer() { if (!audio) return; audio.pause(); audio.removeAttribute('src'); try { audio.load(); } catch {} S.play.id = null; syncPlayer(); }
+function stopPlayer() { if (!audio) return; audio.pause(); audio.removeAttribute('src'); try { audio.load(); } catch {} S.play.id = null; endSession(); syncPlayer(); }
+// Take Dram off the lock screen and out of the notifications when nothing is playing
+function endSession() {
+  if (!('mediaSession' in navigator)) return;
+  try { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; } catch {}
+  for (const a of ['play', 'pause', 'previoustrack', 'nexttrack', 'seekto']) { try { navigator.mediaSession.setActionHandler(a, null); } catch {} }
+}
 function stepTrack(dir) {
   const ts = D().tracks || [];
   if (!ts.length) return;
@@ -1840,6 +1869,12 @@ document.addEventListener('click', async (e) => {
   if (d.post) { openPost(d.post); return; }
   if (d.track && !d.act) { if (S.play.loading === d.track) return; if (d.track === S.play.id && !audio.paused) audio.pause(); else playTrack(d.track); return; }
   if (d.tmove) { await withBusy(t, async () => { try { await call('moveTrack', { id: d.tmove, by: +d.by }); openSettings('mediaHead'); } catch (err) { $('#trackResult').textContent = friendly(err); } }); return; }
+  if (d.mremove) {
+    const tr = trackById(d.mremove);
+    if (t.dataset.armed !== '1') { t.dataset.armed = '1'; t.style.color = 'var(--sun-ink)'; toast(`Tap the × again to take “${tr ? tr.title : 'that song'}” off the list`); return; }
+    await withBusy(t, async () => { try { await call('removeTrack', { id: d.mremove }); renderMain(); renderMini(); toast('Song removed'); } catch (err) { toast(friendly(err)); } });
+    return;
+  }
   if (d.tremove) {
     if (t.dataset.armed !== '1') { t.dataset.armed = '1'; $('#trackResult').textContent = 'Tap the × again to take that song off the list.'; return; }
     await withBusy(t, async () => { try { await call('removeTrack', { id: d.tremove }); openSettings('mediaHead'); toast('Song removed'); } catch (err) { $('#trackResult').textContent = friendly(err); } });
@@ -1892,6 +1927,7 @@ document.addEventListener('click', async (e) => {
 
   switch (d.act) {
     case 'close': closeSheet(); break;
+    case 'music-add': openAddSong(); break;
     case 'playpause': if (S.play.loading && S.play.loading === (d.track || S.play.id)) break; if (S.play.id && S.play.id === d.track && !audio.paused) audio.pause(); else playTrack(d.track || S.play.id); break;
     case 'prev': stepTrack(-1); break;
     case 'next-track': if (!S.play.id) { const ts = D().tracks || []; if (ts[0]) playTrack(ts[Math.min(1, ts.length - 1)].id); } else stepTrack(1); break;
@@ -2064,6 +2100,19 @@ document.addEventListener('submit', async (e) => {
       const keep = S.admin; S.admin = code;
       try { const j = await call('adminUnlock'); if (!j.isAdmin) throw new Error('That admin PIN isn’t right.'); put('admin', code); renderAll(); openSettings('adminHead'); toast('You look after the club now'); }
       catch (err) { S.admin = keep; $('#adminResult').textContent = friendly(err); }
+    });
+    return;
+  }
+  if (f.id === 'musicForm') {
+    const url = $('#mUrl').value.trim();
+    if (!url) return;
+    await withBusy(f.querySelector('button[type=submit]'), async () => {
+      $('#mResult').textContent = 'Checking the link…';
+      try {
+        const j = await call('addTrack', { url, title: $('#mTitle').value.trim(), artist: $('#mArtist').value.trim() });
+        const note = j.trackNote || 'Song added.';
+        closeSheet(); renderMain(); renderMini(); toast(note);
+      } catch (err) { $('#mResult').textContent = friendly(err); }
     });
     return;
   }
