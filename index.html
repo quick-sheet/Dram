@@ -369,7 +369,7 @@ select.field{appearance:none;-webkit-appearance:none;background-image:linear-gra
 <dialog class="sheet" id="sheet" aria-labelledby="sheetTitle"><div class="sheet-in" id="sheetBody"></div></dialog>
 <div class="toast" id="toast" role="status" popover="manual"></div>
 
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script>
 (() => {
 'use strict';
@@ -1619,7 +1619,7 @@ async function playTrack(id) {
     if (r) { S.play.srcs = [r.url]; setSrc(r.url); }
     toast(`Playing “${t.title}”`);
   } else {
-    S.play.srcs = [t.url]; setSrc(t.url);
+    S.play.srcs = C.audioSources(t.url); setSrc(S.play.srcs[0]);   // a Suno song tries its open MP4 first
   }
   audio.play().catch((err) => { if (err && err.name === 'NotAllowedError') toast('Tap play again to start the song'); });   // a link that fails fires the error event
   syncPlayer();
@@ -1630,11 +1630,20 @@ function openDrivePlayer(t, r) {
     <div class="video" style="aspect-ratio:auto;height:120px;background:var(--raise-2)"><iframe src="https://drive.google.com/file/d/${encodeURIComponent(r.preview)}/preview" title="${esc(t.title)}" allow="autoplay"></iframe></div>
     <p class="small" style="margin-top:10px">At ${mb} MB this one is too big to come through Dram, so it plays in Google Drive’s own player and stops when you close this.${amAdmin() ? ' An MP3 of it plays with the full controls.' : ''}</p>`);
 }
-// A link that won't play: try the file's other links (Google Drive has several), then say so
+// Suno won't hand over this song's file, so play it in Suno's own player
+function openSunoPlayer(t, id) {
+  stopPlayer();
+  openSheet(`${head(esc(t.title))}<p>${esc(t.artist || clubName())}</p>
+    <div class="video" style="aspect-ratio:auto;height:240px;background:var(--raise-2)"><iframe src="https://suno.com/embed/${encodeURIComponent(id)}" title="${esc(t.title)}" allow="autoplay; encrypted-media"></iframe></div>
+    <p class="small" style="margin-top:10px">Suno keeps this song in its own player, so it plays here and stops when you close this.</p>`);
+}
+// A link that won't play: try the file's other links (Google Drive and Suno have several), then say so
 function onAudioError() {
   const t = S.play.id && trackById(S.play.id);
   if (!t || !audio.getAttribute('src') || S.play.loading || audio.getAttribute('src') === SILENT) return;
   if (S.play.srcs && S.play.alt < S.play.srcs.length - 1) { S.play.alt++; audio.src = S.play.srcs[S.play.alt]; audio.play().catch(() => {}); return; }
+  const sid = C.sunoId && C.sunoId(t.url);
+  if (sid) { openSunoPlayer(t, sid); return; }
   failTrack(t);
 }
 function pausePlayer() { if (!audio.paused) audio.pause(); }

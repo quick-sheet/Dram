@@ -370,7 +370,15 @@
     const m = /(?:drive|docs)\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=)([\w-]{20,})/.exec(s) || /drive\.usercontent\.google\.com\/(?:download|u\/\d+\/uc)\?(?:[^#]*&)?id=([\w-]{20,})/.exec(s);
     return m ? m[1] : '';
   }
+  // Suno song id from a song page or one of its file links
+  function sunoId(u) {
+    const m = /(?:suno\.(?:com|ai)\/(?:song|embed)\/|cdn\d*\.suno\.ai\/)([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i.exec(String(u || ''));
+    return m ? m[1].toLowerCase() : '';
+  }
+  // Since August 2026 Suno's MP3s need a signed link, but each song's MP4 (its audio with a still picture) stays open
   function audioSources(u) {
+    const s = sunoId(u);
+    if (s) return [`https://cdn1.suno.ai/${s}.mp4`, `https://cdn1.suno.ai/${s}.mp3`];
     const id = driveId(u);
     if (!id) return [String(u || '')];
     return [`https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t`,
@@ -381,7 +389,7 @@
 
   const api = { parseCSV, toRecords, normalise, catalogue, story, facts, priceText, search, shuffle, typeCounts, typeLabel,
     shopQuery, shoppingUrl, outLink, imageMatch, bestMatch, imageQuery, snap, sub, summarise, rankDrams, cabinet, fill, clampScore,
-    words, fnv, httpsUrl, ageYears, shortDistillery, styleWords, driveId, audioSources };
+    words, fnv, httpsUrl, ageYears, shortDistillery, styleWords, driveId, sunoId, audioSources };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.Core = api;
 })(typeof self !== 'undefined' ? self : this);
