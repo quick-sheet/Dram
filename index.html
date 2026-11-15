@@ -374,7 +374,7 @@ select.field{appearance:none;-webkit-appearance:none;background-image:linear-gra
 <dialog class="sheet" id="sheet" aria-labelledby="sheetTitle"><div class="sheet-in" id="sheetBody"></div></dialog>
 <div class="toast" id="toast" role="status" popover="manual"></div>
 
-<script src="core.js?v=6"></script>
+<script src="core.js?v=7"></script>
 <script>
 (() => {
 'use strict';
@@ -383,7 +383,7 @@ const V = new URL(document.querySelector('script[src^="core.js"]').src).search;
 
 /* ---------- Settings you fill in ---------- */
 const API = 'https://script.google.com/macros/s/AKfycbz9uy9MyUgzq_JN06K-v7HhbcDQkoMGxmmwmTZ-jrHL0o82IvXYfIdBojqM4FYluxVF/exec';            // Apps Script web app URL, filled in after deploying
-const EXPECT_BUILD = 6;    // the Apps Script release this page needs (6: the developer can edit the music)
+const EXPECT_BUILD = 7;    // the Apps Script release this page needs (7: the last heart off a pick takes it off)
 
 /* ---------- Constants ---------- */
 const NTFY = 'https://ntfy.sh';
@@ -862,6 +862,7 @@ function renderMain() {
   const el = $('#main');
   if (!S.pin || !S.data) { el.innerHTML = gateHtml(); return; }
   if (!S.me) { el.innerHTML = whoHtml(); return; }
+  $('#clubLine').textContent = sectionLine();   // the header's count follows the list
   try {
     el.innerHTML = S.tab === 'drift' ? driftHtml() : S.tab === 'cabinet' ? cabinetHtml() : S.tab === 'finds' ? findsHtml() : S.tab === 'media' ? mediaHtml() : meetHtml();
   } catch (err) {
@@ -1857,7 +1858,12 @@ document.addEventListener('click', async (e) => {
     const mine = !!x && x.votes.includes(S.me);
     t.setAttribute('aria-pressed', String(!mine));
     try {
-      if (mine) { await call('votePick', { id: x.id }); toast('Vote taken back'); }
+      if (mine) {
+        await call('votePick', { id: x.id });
+        const gone = !(D().picks || []).some((y) => y.id === x.id);   // nobody else wanted it, so it's off the list
+        if (gone && sheet.open && sheet.querySelector(`[data-unpick="${x.id}"]`)) closeSheet();
+        toast(gone ? 'Taken off the list' : 'Vote taken back');
+      }
       else if (x) { await call('votePick', { id: x.id }); toast('Your vote is in'); }
       else { await call('pick', { findId: d.pickfind }); toast('Added to Worth a look'); }
     } catch (err) { toast(friendly(err)); }
