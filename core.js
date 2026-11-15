@@ -364,11 +364,24 @@
     if (d <= 0) return 0.92;
     return Math.max(0.1, Math.min(0.92, 0.92 - (d / 28) * 0.82));
   }
+  // Google Drive: the same file can be asked for in several ways; players try them in turn
+  function driveId(u) {
+    const s = String(u || '');
+    const m = /(?:drive|docs)\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=)([\w-]{20,})/.exec(s) || /drive\.usercontent\.google\.com\/(?:download|u\/\d+\/uc)\?(?:[^#]*&)?id=([\w-]{20,})/.exec(s);
+    return m ? m[1] : '';
+  }
+  function audioSources(u) {
+    const id = driveId(u);
+    if (!id) return [String(u || '')];
+    return [`https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t`,
+      `https://drive.google.com/uc?export=open&id=${id}`,
+      `https://docs.google.com/uc?export=download&id=${id}&confirm=t`];
+  }
   const clampScore = (x) => { const v = Math.round(parseFloat(x) * 2) / 2; return isFinite(v) ? Math.max(0, Math.min(10, v)) : null; };
 
   const api = { parseCSV, toRecords, normalise, catalogue, story, facts, priceText, search, shuffle, typeCounts, typeLabel,
     shopQuery, shoppingUrl, outLink, imageMatch, bestMatch, imageQuery, snap, sub, summarise, rankDrams, cabinet, fill, clampScore,
-    words, fnv, httpsUrl, ageYears, shortDistillery, styleWords };
+    words, fnv, httpsUrl, ageYears, shortDistillery, styleWords, driveId, audioSources };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.Core = api;
 })(typeof self !== 'undefined' ? self : this);

@@ -8,7 +8,7 @@ Live at **https://quick-sheet.github.io/Dram/**. Behind a club PIN, for The Whis
 
 - **Meet**: the next meet, with its date, host, place, line-up, slides and song links, and who's in. The glass fills as the day gets closer.
 - **Tasting**: everyone scores each dram out of 10, with flavour tags and a note. Scores stay hidden until someone taps Reveal; then the whole club sees the results. A blind tasting shows Dram A, B and C until then.
-- **Drift**: swipe through 6,059 whiskies from the catalogue. Each card has Shop (Google Shopping), Read (the source page) and a heart for the club's wish list.
+- **Explore**: swipe through 6,059 whiskies from the catalogue. Each card has Shop (Google Shopping), Read (the source page) and a heart for the club's wish list.
 - **Cabinet**: every dram tasted, best first, and the wish list with votes.
 - **Finds**: limited and special releases spotted in Google News, checked every Friday. Look now works once for the club, then Fridays only. Hearting a find adds it to **Worth a look**, the club's voted shortlist.
 - **Media**: the club's music (with lock-screen controls), its YouTube channel or playlist, and its Instagram posts.
@@ -76,7 +76,7 @@ Or, without clearing anything: add the founder as a member, let them unlock admi
 - **Prices**: the catalogue has none yet, so the Shop button searches Google Shopping.
 - **YouTube**: Dram lists the channel's videos through the YouTube service in Apps Script. If the channel belongs to the Google account running the script, private and unlisted videos are listed too; otherwise only public ones, or everything in an unlisted playlist. Private videos only play for the Google accounts they're shared with, so set club videos to Unlisted to play them inside Dram.
 - **Instagram**: the account must be a professional account (Creator is free), which makes it public. The administrator pastes an access token from a Meta developer app; Apps Script keeps it and renews it weekly.
-- **Music**: Suno song links, Google Drive files shared with "Anyone with the link", Dropbox links and direct MP3 links all play.
+- **Music**: Suno song links, Google Drive files shared with "Anyone with the link", Dropbox links and direct MP3 links all play. Dram checks each link when it's added. Drive won't stream files over 100 MB and can be unreliable with big WAVs, so MP3s are best (about a tenth of the size, and quicker on mobile data).
 - **Android**: if every launch plays a sound and shows "Tap to copy the URL for this app", that's Chrome's **Full screen site controls** notification. Long-press it and turn that category off.
 
 Catalogue: Global Spirits Inventory v2026.10 by E. Pace, The Remade Agency, CC BY 4.0. Logo: The Whisky Club.
