@@ -369,7 +369,7 @@ select.field{appearance:none;-webkit-appearance:none;background-image:linear-gra
 <dialog class="sheet" id="sheet" aria-labelledby="sheetTitle"><div class="sheet-in" id="sheetBody"></div></dialog>
 <div class="toast" id="toast" role="status" popover="manual"></div>
 
-<script src="core.js?v=3"></script>
+<script src="core.js?v=4"></script>
 <script>
 (() => {
 'use strict';
@@ -378,7 +378,7 @@ const V = new URL(document.querySelector('script[src^="core.js"]').src).search;
 
 /* ---------- Settings you fill in ---------- */
 const API = 'https://script.google.com/macros/s/AKfycbz9uy9MyUgzq_JN06K-v7HhbcDQkoMGxmmwmTZ-jrHL0o82IvXYfIdBojqM4FYluxVF/exec';            // Apps Script web app URL, filled in after deploying
-const EXPECT_BUILD = 2;    // the Apps Script release this page needs
+const EXPECT_BUILD = 4;    // the Apps Script release this page needs (4: Google Drive songs)
 
 /* ---------- Constants ---------- */
 const NTFY = 'https://ntfy.sh';
@@ -1444,7 +1444,7 @@ function openSettings(focus) {
       <input class="field" id="trackUrl" inputmode="url" placeholder="Suno, Google Drive, Dropbox or an MP3 link" required>
       <div class="field-row" style="margin-top:8px"><input class="field" id="trackTitle" maxlength="100" placeholder="Title (optional for Suno)" aria-label="Title"><input class="field" id="trackArtist" maxlength="60" placeholder="Artist (optional)" aria-label="Artist"></div>
       <div class="actions"><button class="btn small" type="submit">${ICON.plus}Add track</button></div></form>
-    <p class="small">Google Drive files must be shared with “Anyone with the link”. MP3s start fastest; big WAV files may not stream from Drive.</p>
+    <p class="small">Google Drive files must be shared with “Anyone with the link”. They come through the club’s Apps Script and are kept on each phone after the first play. MP3s are quickest; files over 20 MB play in Drive’s own player.</p>
     <p class="result" id="trackResult"></p>`;
   openSheet(`${head('Settings')}
     <h3>You</h3>${amDev() ? `<p>You’re in the developer view. Nobody sees you, not even the administrator: not in the member list, and not your replies, scores, votes, wishes or test meets. Messages your actions would send go to your own developer topic, not the club.</p>`
@@ -1500,20 +1500,20 @@ function waitingHtml(msg) { return `<div style="text-align:center"><img class="l
 function musicHtml(tracks) {
   if (!tracks.length) return `<section class="hero" style="text-align:center"><img class="loading-mark" src="mark.webp" alt="" style="animation:none"><h1 class="empty-title">No club music yet</h1><p class="empty-body">${esc(nobodyYet('the club’s songs'))}</p></section>`;
   const cur = tracks.find((t) => t.id === S.play.id) || tracks[0];
-  const a = $('#audio'), on = !!S.play.id && cur.id === S.play.id, playing = on && !a.paused;
+  const a = $('#audio'), on = !!S.play.id && cur.id === S.play.id, loading = on && S.play.loading === cur.id, playing = on && !a.paused && !loading;
   const dur = S.play.dur[cur.id];
   return `<div class="nowplaying${playing ? ' playing' : ''}" id="nowPlaying"><img class="art" src="mark.webp" alt="">
       <div class="np-title" id="npTitle">${esc(cur.title)}</div><div class="np-artist">${esc(cur.artist || clubName())}</div>
       <div class="np-bar num"><span id="npAt">${fmtTime(on ? a.currentTime : 0)}</span><input type="range" id="scrub" min="0" max="1000" step="1" value="${on && a.duration ? Math.round(a.currentTime / a.duration * 1000) : 0}" aria-label="Position in the song"${on ? '' : ' disabled'}><span id="npDur">${dur ? fmtTime(dur) : '–:––'}</span></div>
       <div class="np-controls"><button class="round" type="button" data-act="prev" aria-label="Previous song" title="Previous">${ICON.prev}</button>
-        <button class="round big${playing ? '' : ' accent'}" type="button" data-act="playpause" id="npPlay" aria-label="${playing ? 'Pause' : 'Play'}" title="${playing ? 'Pause' : 'Play'}" data-track="${esc(cur.id)}">${playing ? ICON.pause : ICON.playFill}</button>
+        <button class="round big${playing ? '' : ' accent'}" type="button" data-act="playpause" id="npPlay" aria-label="${loading ? 'Loading the song' : playing ? 'Pause' : 'Play'}" title="${playing ? 'Pause' : 'Play'}" data-track="${esc(cur.id)}"${loading ? ' aria-busy="true"' : ''}>${loading ? '<span class="spinner" style="width:22px;height:22px;color:var(--on-sun)"></span>' : playing ? ICON.pause : ICON.playFill}</button>
         <button class="round" type="button" data-act="next-track" aria-label="Next song" title="Next">${ICON.next}</button></div></div>
     <ul class="rows" id="trackList">${tracks.map((t, i) => trackRow(t, i)).join('')}</ul>
     <p class="foot">Songs keep playing while you look around the app, and from the lock screen.</p>`;
 }
 function trackRow(t, i) {
-  const on = t.id === S.play.id && !S.play.bad[t.id], playing = on && !$('#audio').paused;
-  const sub = S.play.bad[t.id] ? 'Couldn’t play this link' : [t.artist, S.play.dur[t.id] ? fmtTime(S.play.dur[t.id]) : ''].filter(Boolean).join(', ');
+  const on = t.id === S.play.id && !S.play.bad[t.id], playing = on && !$('#audio').paused && S.play.loading !== t.id;
+  const sub = S.play.bad[t.id] ? 'Couldn’t play this link' : S.play.loading === t.id ? 'Loading…' : [t.artist, S.play.dur[t.id] ? fmtTime(S.play.dur[t.id]) : ''].filter(Boolean).join(', ');
   return `<li class="track${on ? ' on' : ''}" data-tid="${esc(t.id)}"><button class="row-main" type="button" data-track="${esc(t.id)}" aria-label="${on && playing ? 'Pause' : 'Play'} ${esc(t.title)}">
     <span class="tnum num">${on ? `<span class="eq${playing ? '' : ' still'}" aria-hidden="true"><i></i><i></i><i></i></span>` : i + 1}</span>
     <span class="row-text"><span class="row-title">${esc(t.title)}</span><span class="row-sub">${esc(sub || clubName())}</span></span></button></li>`;
@@ -1568,19 +1568,72 @@ function openPost(id) {
 /* ---------- The club's music player ---------- */
 const audio = $('#audio');
 const trackById = (id) => (D().tracks || []).find((t) => t.id === id);
-function playTrack(id) {
+const SILENT = 'data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YZABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA';
+const SONGS = 'songs-dram';   // songs from Google Drive, kept on the phone after the first play
+const isDrive = (t) => !!(C.driveId && C.driveId(t.url));
+const songKey = (t) => `./song/${t.id}-${C.fnv(t.url)}`;
+function setSrc(u) {
+  const old = audio.getAttribute('src');
+  audio.src = u;
+  if (old && old.startsWith('blob:')) URL.revokeObjectURL(old);
+}
+// Google Drive won't stream to other websites' players, so a Drive song comes through the club's Apps Script
+async function driveSong(t) {
+  try { const c = await caches.open(SONGS); const hit = await c.match(songKey(t)); if (hit) return { url: URL.createObjectURL(await hit.blob()) }; } catch {}
+  const j = await api('song', { trackId: t.id });
+  if (j.preview) return { preview: j.driveId || C.driveId(t.url), size: j.size };
+  const blob = await (await fetch(`data:${j.mime || 'audio/mpeg'};base64,${j.b64}`)).blob();
+  try {
+    const c = await caches.open(SONGS);
+    await c.put(songKey(t), new Response(blob, { headers: { 'Content-Type': blob.type } }));
+    const keys = await c.keys(); for (const k of keys.slice(0, Math.max(0, keys.length - 40))) await c.delete(k);   // keep the latest 40
+  } catch {}
+  return { url: URL.createObjectURL(blob) };
+}
+async function playTrack(id) {
   const t = trackById(id);
   if (!t) return;
-  // a new song, or another go at one that failed: start from its first link
-  if (S.play.id !== id || S.play.bad[id]) { S.play.id = id; S.play.srcs = C.audioSources ? C.audioSources(t.url) : [t.url]; S.play.alt = 0; audio.src = S.play.srcs[0]; delete S.play.bad[id]; }
+  if (S.play.id === id && !S.play.bad[id] && !S.play.loading && audio.getAttribute('src') && audio.getAttribute('src') !== SILENT) {   // carry on where it paused
+    audio.play().catch(() => {}); return;
+  }
+  S.play.id = id; delete S.play.bad[id]; S.play.alt = 0;
   setSession(t);
+  if (isDrive(t)) {
+    // phones only allow sound that starts from a tap: start a moment of silence now, the song once it arrives
+    S.play.loading = id; setSrc(SILENT); audio.play().catch(() => {});
+    syncPlayer();
+    const slow = setTimeout(() => { if (S.play.loading === id) busyToast('Fetching the song from Google Drive…'); }, 600);
+    let r;
+    try { r = await driveSong(t); }
+    catch (err) {
+      clearTimeout(slow);
+      if (S.play.id !== id) return;
+      S.play.loading = null;
+      if (/Unknown action/.test(err.message)) { S.play.srcs = C.audioSources(t.url); setSrc(S.play.srcs[0]); }   // an older Apps Script: try Drive's links
+      else { failTrack(t, friendly(err)); return; }
+    }
+    clearTimeout(slow);
+    if (S.play.id !== id) return;   // they picked another song meanwhile
+    S.play.loading = null;
+    if (r && r.preview) { stopPlayer(); openDrivePlayer(t, r); return; }
+    if (r) { S.play.srcs = [r.url]; setSrc(r.url); }
+    toast(`Playing “${t.title}”`);
+  } else {
+    S.play.srcs = [t.url]; setSrc(t.url);
+  }
   audio.play().catch((err) => { if (err && err.name === 'NotAllowedError') toast('Tap play again to start the song'); });   // a link that fails fires the error event
   syncPlayer();
+}
+function openDrivePlayer(t, r) {
+  const mb = Math.round((r.size || 0) / 1048576);
+  openSheet(`${head(esc(t.title))}<p>${esc(t.artist || clubName())}</p>
+    <div class="video" style="aspect-ratio:auto;height:120px;background:var(--raise-2)"><iframe src="https://drive.google.com/file/d/${encodeURIComponent(r.preview)}/preview" title="${esc(t.title)}" allow="autoplay"></iframe></div>
+    <p class="small" style="margin-top:10px">At ${mb} MB this one is too big to come through Dram, so it plays in Google Drive’s own player and stops when you close this.${amAdmin() ? ' An MP3 of it plays with the full controls.' : ''}</p>`);
 }
 // A link that won't play: try the file's other links (Google Drive has several), then say so
 function onAudioError() {
   const t = S.play.id && trackById(S.play.id);
-  if (!t || !audio.getAttribute('src')) return;
+  if (!t || !audio.getAttribute('src') || S.play.loading || audio.getAttribute('src') === SILENT) return;
   if (S.play.srcs && S.play.alt < S.play.srcs.length - 1) { S.play.alt++; audio.src = S.play.srcs[S.play.alt]; audio.play().catch(() => {}); return; }
   failTrack(t);
 }
@@ -1596,9 +1649,9 @@ function stepTrack(dir) {
   if (j >= ts.length) { stopPlayer(); toast('That was the last song'); return; }
   playTrack(ts[j].id);
 }
-function failTrack(t) {
-  S.play.bad[t.id] = 1;
-  toast(C.driveId && C.driveId(t.url) ? `Couldn’t play “${t.title}” from Google Drive. Drive won’t stream some files, big WAVs especially. An MP3 of it, or a Dropbox link, will play.`
+function failTrack(t, why) {
+  S.play.bad[t.id] = 1; S.play.loading = null;
+  toast(why ? `Couldn’t play “${t.title}”. ${why}` : isDrive(t) ? `Couldn’t play “${t.title}” from Google Drive. Ask whoever looks after the club to check it’s shared with “Anyone with the link”.`
     : `Couldn’t play “${t.title}”. Its link must be an audio file anyone can open.`);
   syncPlayer();
 }
@@ -1630,7 +1683,7 @@ function renderMini() {
   el.hidden = !show;
   document.body.classList.toggle('has-mini', show);
   if (!show) return;
-  const playing = !audio.paused;
+  const playing = !audio.paused && !S.play.loading;
   el.innerHTML = `<div class="mini-in"><img src="mark.webp" alt=""><button class="mini-text" type="button" data-act="open-music"><b>${esc(t.title)}</b><span>${playing ? 'Playing' : 'Paused'}, ${esc(t.artist || clubName())}</span><span class="mini-prog"><i id="miniProg"></i></span></button>
     <button class="round${playing ? '' : ' accent'}" type="button" data-act="playpause" data-track="${esc(t.id)}" aria-label="${playing ? 'Pause' : 'Play'}" title="${playing ? 'Pause' : 'Play'}">${playing ? ICON.pause : ICON.playFill}</button>
     <button class="round" type="button" data-act="stop-music" aria-label="Stop the music" title="Stop">${ICON.x}</button></div>`;
@@ -1647,12 +1700,12 @@ audio.addEventListener('timeupdate', tick);
 audio.addEventListener('play', syncPlayer);
 audio.addEventListener('pause', syncPlayer);
 audio.addEventListener('loadedmetadata', () => {
-  if (!S.play.id || !isFinite(audio.duration)) return;
+  if (!S.play.id || !isFinite(audio.duration) || S.play.loading || audio.getAttribute('src') === SILENT) return;
   S.play.dur[S.play.id] = audio.duration; put('durs', S.play.dur);
   const dd = $('#npDur'); if (dd) dd.textContent = fmtTime(audio.duration);
   const sc = $('#scrub'); if (sc) sc.disabled = false;
 });
-audio.addEventListener('ended', () => stepTrack(1));
+audio.addEventListener('ended', () => { if (S.play.loading || audio.getAttribute('src') === SILENT) return; stepTrack(1); });
 audio.addEventListener('error', onAudioError);
 
 /* ---------- Actions ---------- */
@@ -1776,7 +1829,7 @@ document.addEventListener('click', async (e) => {
   if (d.mview) { S.mediaView = d.mview; renderMain(); renderMini(); return; }
   if (d.video) { openVideo(d.video); return; }
   if (d.post) { openPost(d.post); return; }
-  if (d.track && !d.act) { if (d.track === S.play.id && !audio.paused) audio.pause(); else playTrack(d.track); return; }
+  if (d.track && !d.act) { if (S.play.loading === d.track) return; if (d.track === S.play.id && !audio.paused) audio.pause(); else playTrack(d.track); return; }
   if (d.tmove) { await withBusy(t, async () => { try { await call('moveTrack', { id: d.tmove, by: +d.by }); openSettings('mediaHead'); } catch (err) { $('#trackResult').textContent = friendly(err); } }); return; }
   if (d.tremove) {
     if (t.dataset.armed !== '1') { t.dataset.armed = '1'; $('#trackResult').textContent = 'Tap the × again to take that song off the list.'; return; }
@@ -1830,7 +1883,7 @@ document.addEventListener('click', async (e) => {
 
   switch (d.act) {
     case 'close': closeSheet(); break;
-    case 'playpause': if (S.play.id && S.play.id === d.track && !audio.paused) audio.pause(); else playTrack(d.track || S.play.id); break;
+    case 'playpause': if (S.play.loading && S.play.loading === (d.track || S.play.id)) break; if (S.play.id && S.play.id === d.track && !audio.paused) audio.pause(); else playTrack(d.track || S.play.id); break;
     case 'prev': stepTrack(-1); break;
     case 'next-track': if (!S.play.id) { const ts = D().tracks || []; if (ts[0]) playTrack(ts[Math.min(1, ts.length - 1)].id); } else stepTrack(1); break;
     case 'stop-music': stopPlayer(); break;
