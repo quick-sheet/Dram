@@ -1,0 +1,1730 @@
+<!doctype html>
+<html lang="en-GB" data-theme="amber">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dram</title>
+<meta name="description" content="Our whisky club in one place: meets, tasting scores and a dram to discover.">
+<meta name="theme-color" content="#0D0904">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
+<link rel="preload" as="image" href="logo.webp" fetchpriority="high">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dram">
+<meta name="referrer" content="no-referrer">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600&display=swap">
+<style>
+:root{--bg:#0F1528;--raise:#161E37;--raise-2:#1D2645;--line:rgba(205,214,245,.09);--line-2:rgba(205,214,245,.17);
+--ink:#ECE8DF;--ink-2:#A3ABC2;--ink-3:#6E7794;--sun:#F2C063;--sun-soft:rgba(242,192,99,.17);--on-sun:#1D1505;
+--dome-in:#0A0F21;--dome-out:#1A2448;--sans:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:dark}
+:root[data-theme="red"]{--bg:#0C0404;--raise:#160707;--raise-2:#1F0A0A;--line:rgba(255,90,70,.12);--line-2:rgba(255,90,70,.22);--ink:#E2573F;--ink-2:#A9412F;--ink-3:#74291F;--sun:#FF5B3D;--sun-soft:rgba(255,91,61,.18);--on-sun:#1A0503;--dome-in:#070202;--dome-out:#1E0808}
+:root[data-theme="amber"]{--bg:#0D0904;--raise:#171008;--raise-2:#20170C;--line:rgba(255,190,110,.10);--line-2:rgba(255,190,110,.20);--ink:#EBC48A;--ink-2:#A98A5C;--ink-3:#6F5A3B;--sun:#FFB04A;--sun-soft:rgba(255,176,74,.18);--on-sun:#1A0F02;--dome-in:#080502;--dome-out:#241809}
+:root[data-theme="sea"]{--bg:#06121A;--raise:#0B1C26;--raise-2:#102632;--line:rgba(150,220,230,.09);--line-2:rgba(150,220,230,.18);--ink:#D6E9EC;--ink-2:#8EAEB4;--ink-3:#5A7880;--sun:#6FD9D0;--sun-soft:rgba(111,217,208,.16);--on-sun:#031513;--dome-in:#030B10;--dome-out:#0F2A38}
+:root[data-theme="aurora"]{--bg:#07110D;--raise:#0C1A14;--raise-2:#11241B;--line:rgba(150,235,190,.09);--line-2:rgba(150,235,190,.18);--ink:#D7EBDF;--ink-2:#8DAA9A;--ink-3:#5A7566;--sun:#86E3A8;--sun-soft:rgba(134,227,168,.16);--on-sun:#04140B;--dome-in:#040A07;--dome-out:#12291E}
+:root[data-theme="dusk"]{--bg:#110D1A;--raise:#1A1426;--raise-2:#221A31;--line:rgba(210,190,255,.09);--line-2:rgba(210,190,255,.18);--ink:#E8E1F4;--ink-2:#A79CBD;--ink-3:#6E6485;--sun:#F2A7C8;--sun-soft:rgba(242,167,200,.16);--on-sun:#1E0812;--dome-in:#0A0712;--dome-out:#261C3A}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.45 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+a{color:inherit;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--sun);outline-offset:2px;border-radius:8px}
+.num{font-variant-numeric:tabular-nums}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:34rem;margin:0 auto;padding:0 20px calc(96px + env(safe-area-inset-bottom));position:relative}
+.wrap.gated{padding-bottom:48px}
+
+/* Opening screen: the club's logo while Dram gets ready */
+.splash{position:fixed;inset:0;z-index:100;display:grid;place-items:center;align-content:center;gap:28px;
+  background:radial-gradient(120% 80% at 50% 40%,#2C1809 0%,#0D0904 62%);transition:opacity .45s ease,visibility .45s}
+.splash::before{content:"";position:absolute;left:50%;top:40%;width:72vmin;height:72vmin;margin:-36vmin 0 0 -36vmin;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,140,20,.32),rgba(255,110,10,0) 64%);animation:glow 2.6s ease-in-out infinite alternate}
+.splash img{position:relative;width:min(70vw,300px);height:auto;animation:arrive .9s cubic-bezier(.2,.8,.2,1) both}
+.splash .spinner{position:relative;width:18px;height:18px;color:#EBC48A;opacity:.7;animation:spin .8s linear infinite,fadein .6s .5s both}
+.splash.out{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes glow{from{opacity:.55;transform:scale(.94)}to{opacity:1;transform:scale(1.04)}}
+@keyframes arrive{from{opacity:0;transform:translateY(10px) scale(.96)}}
+@keyframes fadein{from{opacity:0}}
+
+/* Header */
+header{display:grid;grid-template-columns:1fr auto;align-items:start;padding:16px 0 6px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand img{width:36px;height:36px;flex:none;margin:-2px 0 0 -4px;filter:drop-shadow(0 2px 8px rgba(255,120,20,.25))}
+.brand > div{min-width:0}
+.mark{font-weight:600;font-size:17px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.where{display:block;font-size:13px;color:var(--ink-3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.where:empty{display:none}
+.tools{display:flex;gap:2px;margin:-10px -8px 0 0}
+.icon-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2);position:relative;flex:none}
+.icon-btn:active{background:var(--raise)}
+.icon-btn svg{width:22px;height:22px}
+.icon-btn[hidden]{display:none}
+
+/* Notices */
+.notice{display:flex;gap:12px;align-items:center;margin:10px 0 0;padding:10px 12px 10px 14px;border-radius:14px;background:var(--raise);font-size:14px;color:var(--ink-2)}
+.notice p{margin:0;flex:1}
+.notice .link-btn{color:var(--sun);font-weight:600;white-space:nowrap;text-decoration:none}
+.notice .x{color:var(--ink-3);width:32px;height:32px;display:grid;place-items:center;border-radius:50%;flex:none}
+.notice .x svg{width:16px;height:16px}
+
+/* Type and common bits */
+.hero{padding:6px 0 8px}
+.glass{display:block;width:150px;height:auto;margin:4px auto 12px;overflow:visible}
+.glass .pour{animation:slosh 5s ease-in-out infinite alternate}
+.glass .ice rect{fill:#fff;fill-opacity:.12;stroke:#fff;stroke-opacity:.88;stroke-width:2.6}
+.glass .ice .glint{fill:none;stroke:#fff;stroke-opacity:.7;stroke-width:1.6;stroke-linecap:round}
+@keyframes slosh{from{transform:translateX(-3px)}to{transform:translateX(3px)}}
+.state-line{margin:0;font-size:15px;color:var(--ink-2)}
+.state-line strong{color:var(--ink);font-weight:500}
+h1.title{margin:2px 0 0;font-size:26px;line-height:1.15;font-weight:600;letter-spacing:-.015em}
+.edition{margin:4px 0 0;font-size:14px;color:var(--ink-2)}
+.story{margin:12px 0 0;font-size:18px;font-weight:300;line-height:1.55;letter-spacing:.005em;color:var(--ink)}
+.facts{margin:8px 0 0;font-size:14px;color:var(--ink-2)}
+.empty-title{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em}
+.empty-body{margin:8px 0 0;color:var(--ink-2)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+.btn{height:44px;padding:0 18px;border-radius:22px;background:var(--raise-2);font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;position:relative;white-space:nowrap}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.primary{background:var(--sun);color:var(--on-sun)}
+.btn.small{height:38px;font-size:14px;padding:0 14px}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.busy{color:transparent!important}
+.btn.busy svg{visibility:hidden}
+.btn.busy::after{content:"";position:absolute;left:50%;top:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;color:var(--ink)}
+.btn.primary.busy::after{color:var(--on-sun)}
+.link-btn{color:var(--ink-2);font-size:14px;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-2)}
+.link-btn.danger{color:var(--sun)}
+.section-title{margin:34px 0 4px;font-size:18px;font-weight:600;letter-spacing:-.01em}
+.section-note{margin:2px 0 0;font-size:13.5px;color:var(--ink-3)}
+.foot{margin-top:36px;font-size:12.5px;color:var(--ink-3)}
+.foot a{color:var(--ink-3)}
+.spinner,.btn.busy::after{border-radius:50%;background:conic-gradient(from 90deg,transparent 10%,currentColor 95%);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.2px),#000 calc(100% - 2px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 2.2px),#000 calc(100% - 2px));animation:spin .8s linear infinite}
+.spinner{display:inline-block;width:14px;height:14px;vertical-align:-2px;color:var(--ink-2)}
+@keyframes spin{to{transform:rotate(1turn)}}
+
+/* Segmented switch and chips */
+.switcher{display:inline-flex;padding:3px;border-radius:22px;background:var(--raise);margin:14px 0 0}
+.switcher button{height:38px;min-width:64px;padding:0 16px;border-radius:19px;font-size:14px;font-weight:500;color:var(--ink-2)}
+.switcher button[aria-pressed="true"]{background:var(--sun);color:var(--on-sun)}
+.switcher.quiet button[aria-pressed="true"]{background:var(--raise-2);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:2px 20px 4px;overscroll-behavior-x:contain}
+.chips.scroll::-webkit-scrollbar{display:none}
+.chip{height:36px;padding:0 14px;border-radius:18px;background:var(--raise-2);font-size:14px;font-weight:500;color:var(--ink-2);white-space:nowrap;flex:none}
+.chip[aria-pressed="true"]{background:var(--sun);color:var(--on-sun)}
+.chip small{font-weight:400;opacity:.75;margin-left:4px}
+
+/* Lists */
+.rows{margin:6px 0 0;padding:0;list-style:none}
+.row{display:flex;align-items:center;gap:12px;min-height:64px;border-bottom:1px solid var(--line)}
+.row-main{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:10px 0;text-align:left;text-decoration:none}
+.row-text{min-width:0;flex:1}
+.row-title{display:block;font-weight:600;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.row-sub{display:block;font-size:13.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-time{flex:none;min-width:3.4rem;font-size:15px;font-weight:500;color:var(--ink-2)}
+.row-score{flex:none;font-size:22px;font-weight:600;letter-spacing:-.01em;min-width:2.6rem;text-align:right}
+.rank{flex:none;width:1.4rem;text-align:center;font-size:14px;color:var(--ink-3);font-weight:500}
+.thumb{flex:none;width:44px;height:44px;border-radius:12px;background:radial-gradient(circle at 50% 30%,var(--dome-out),var(--dome-in));overflow:hidden;display:grid;place-items:center;position:relative}
+.thumb img{width:100%;height:100%;object-fit:contain}
+.thumb .lab{font-weight:600;font-size:17px;color:var(--sun)}
+.thumb svg{width:26px;height:34px}
+
+/* Drift card */
+.drift-bar{display:flex;align-items:center;gap:8px;margin:8px 0 4px}
+.drift-bar .chips{flex:1;margin-right:0;padding-right:16px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+.drift-bar .icon-btn{margin-right:-10px}
+.drift-count{margin:6px 0 0;font-size:13px;color:var(--ink-3)}
+.card{touch-action:pan-y;will-change:transform;margin-top:10px}
+.pic{position:relative;width:100%;aspect-ratio:1/1;max-height:36vh;border-radius:22px;overflow:hidden;
+  background:radial-gradient(circle at 50% 38%,var(--dome-out),var(--dome-in) 78%);display:grid;place-items:center}
+.pic img{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain;opacity:0;transition:opacity .25s}
+.pic img.on{opacity:1}
+.pic img.wide{inset:0;width:100%;height:100%;object-fit:cover}
+.pic .drawn{width:34%;height:auto;color:var(--sun);opacity:.85}
+.pic .finding{position:absolute;left:12px;bottom:10px;font-size:12.5px;color:var(--ink-3);display:flex;gap:6px;align-items:center}
+.credit{margin:6px 2px 0;font-size:12px;color:var(--ink-3);min-height:1.2em}
+.card-actions{display:flex;justify-content:space-between;margin-top:16px}
+.act{display:grid;justify-items:center;gap:2px;font-size:12px;color:var(--ink-2);min-width:64px;text-decoration:none}
+.act .disc{width:48px;height:48px;border-radius:50%;background:var(--raise-2);display:grid;place-items:center}
+.act .disc svg{width:22px;height:22px}
+.act.accent .disc{background:var(--sun);color:var(--on-sun)}
+.act[aria-pressed="true"] .disc{background:var(--sun-soft);color:var(--sun)}
+.act[aria-pressed="true"] .disc svg{fill:currentColor}
+.hint{margin:12px 0 0;text-align:center;font-size:13px;color:var(--ink-3)}
+
+/* Tasting */
+.dram{margin:16px 0 0;padding:16px;border-radius:20px;background:var(--raise)}
+.dram-head{display:flex;gap:12px;align-items:center}
+.dram-head .thumb{width:52px;height:52px}
+.dram-title{font-weight:600;font-size:17px;line-height:1.25}
+.dram-sub{font-size:13.5px;color:var(--ink-2)}
+.score-row{display:flex;align-items:center;gap:10px;margin:16px 0 4px}
+.score-big{font-size:34px;font-weight:600;letter-spacing:-.02em;min-width:3.2rem;text-align:center}
+.score-big.unset{color:var(--ink-3)}
+.round{width:44px;height:44px;border-radius:50%;background:var(--raise-2);display:grid;place-items:center;flex:none;font-size:22px;font-weight:500;line-height:1}
+input[type=range]{flex:1;min-width:0;height:44px;background:transparent;-webkit-appearance:none;appearance:none;accent-color:var(--sun)}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--raise-2)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--sun);margin-top:-10px;border:0}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--raise-2)}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--sun);border:0}
+.dram .chips{margin-top:10px}
+.dram .chip{height:34px;font-size:13.5px;padding:0 12px}
+.dram textarea{margin-top:10px}
+.dram-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.saved{font-size:13.5px;color:var(--ink-2);display:flex;gap:6px;align-items:center}
+.tick{width:20px;height:20px;border-radius:50%;background:var(--raise-2);display:grid;place-items:center;color:var(--ink)}
+.tick svg{width:12px;height:12px}
+.reveal-box{margin:22px 0 0;padding:18px 16px;border-radius:20px;border:1px dashed var(--line-2);text-align:center}
+.reveal-box p{margin:0 0 12px;color:var(--ink-2);font-size:15px}
+.winner{margin:6px 0 0;text-align:center}
+.winner .big{font-size:56px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.people{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pill{font-size:13px;padding:5px 10px;border-radius:14px;background:var(--raise-2);color:var(--ink-2)}
+.pill b{color:var(--ink);font-weight:600}
+.notes{margin:10px 0 0;padding:0;list-style:none}
+.notes li{font-size:14.5px;color:var(--ink-2);margin:6px 0 0}
+.notes li b{color:var(--ink);font-weight:500}
+
+/* Full-screen layer (tasting, results) */
+.screen{position:fixed;inset:0;z-index:20;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);touch-action:pan-y}
+.screen[hidden]{display:none}
+.screen .wrap{padding-bottom:48px}
+.screen-head{display:flex;align-items:center;gap:4px;padding:10px 0 4px;margin-left:-10px}
+.screen-head .t{font-weight:600;font-size:17px}
+.screen-head .s{font-size:13px;color:var(--ink-3)}
+.back-arrow{position:fixed;left:10px;top:50%;width:44px;height:44px;margin-top:-22px;border-radius:50%;background:var(--raise-2);display:grid;place-items:center;color:var(--ink);opacity:0;pointer-events:none;z-index:40}
+.back-arrow svg{width:22px;height:22px}
+
+/* Tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:8;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);padding:0 0 env(safe-area-inset-bottom)}
+.tabs[hidden]{display:none}
+.tabs-in{max-width:34rem;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tab{height:62px;display:grid;justify-items:center;align-content:center;gap:3px;font-size:12px;font-weight:500;color:var(--ink-3)}
+.tab svg{width:23px;height:23px}
+.tab[aria-current="page"]{color:var(--sun)}
+
+/* Sheets */
+dialog.sheet{position:fixed;inset:auto 0 0 0;margin:0 auto;width:100%;max-width:34rem;max-height:90vh;border:0;border-radius:22px 22px 0 0;padding:0;background:var(--raise);color:var(--ink);overflow:auto;overscroll-behavior:contain}
+dialog.sheet[open]{animation:rise .28s cubic-bezier(.2,.8,.2,1)}
+dialog.sheet::backdrop{background:rgba(4,4,2,.64)}
+@keyframes rise{from{transform:translateY(40px);opacity:0}}
+.sheet-in{padding:10px 22px calc(28px + env(safe-area-inset-bottom))}
+.grab{padding:4px 0 10px;margin:0 -22px;touch-action:none;cursor:grab}
+.grabber{width:36px;height:4px;border-radius:2px;background:var(--line-2);margin:0 auto}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:8px;touch-action:none}
+.sheet-head h2{margin:0;font-size:20px;font-weight:600;letter-spacing:-.01em}
+.sheet-head .lead{display:flex;align-items:center;gap:2px;margin-left:-10px}
+.sheet h3{margin:24px 0 8px;font-size:15px;font-weight:600}
+.sheet p{margin:6px 0;color:var(--ink-2);font-size:15px}
+.sheet .small{font-size:13.5px;color:var(--ink-3)}
+.result{margin:10px 0 0;font-size:14px;color:var(--ink-2)}
+.result:empty{display:none}
+label.lbl{display:block;margin:16px 0 6px;font-size:13.5px;color:var(--ink-2)}
+.field{width:100%;min-width:0;height:44px;border-radius:12px;border:1px solid var(--line-2);background:var(--bg);padding:0 12px;font-size:16px}
+textarea.field{height:auto;min-height:72px;padding:10px 12px;resize:vertical;line-height:1.4}
+select.field{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);background-position:calc(100% - 18px) 19px,calc(100% - 13px) 19px;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
+.field::placeholder{color:var(--ink-3)}
+.field-row{display:flex;gap:8px}
+.field-row .field{flex:1}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
+.toggle-row p{margin:0}
+.switch{width:50px;height:30px;border-radius:15px;background:var(--raise-2);position:relative;flex:none;transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--ink-2);transition:transform .2s,background .2s}
+.switch[aria-checked="true"]{background:var(--sun)}
+.switch[aria-checked="true"]::after{transform:translateX(20px);background:var(--on-sun)}
+.steps{list-style:none;counter-reset:s;padding:0;margin:18px 0 0}
+.steps li{counter-increment:s;position:relative;padding:0 0 18px 40px;color:var(--ink-2);font-size:15px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:-1px;width:26px;height:26px;border-radius:50%;background:var(--raise-2);color:var(--ink);font-size:13px;font-weight:600;display:grid;place-items:center}
+.steps li strong{display:block;color:var(--ink);font-weight:600;margin-bottom:6px}
+.code{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:8px;background:var(--bg);color:var(--ink);font-size:14px;word-break:break-all;user-select:all}
+.mini{color:var(--ink-2);font-size:14px;font-weight:600;padding:10px 4px;min-height:44px}
+.sheet .rows .row{min-height:56px}
+.sheet .pic{max-height:36vh;margin-top:4px}
+.lineup-edit .row{gap:6px}
+.lineup-edit select{height:36px;font-size:14px;width:auto;max-width:9.5rem;border-radius:10px;padding:0 28px 0 10px;background-position:calc(100% - 16px) 15px,calc(100% - 11px) 15px}
+
+/* Popover (theme picker) */
+.pop{position:absolute;top:64px;right:12px;z-index:5;width:min(300px,calc(100% - 24px));padding:16px 12px 12px;border-radius:18px;background:var(--raise);border:1px solid var(--line-2);box-shadow:0 18px 40px rgba(0,0,0,.45);animation:drop .18s ease-out;transform-origin:top right}
+.pop[hidden]{display:none}
+@keyframes drop{from{opacity:0;transform:translateY(-6px) scale(.98)}}
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 6px}
+.theme-opt{display:grid;justify-items:center;gap:6px;padding:4px 0;font-size:12.5px;color:var(--ink-2)}
+.theme-opt[aria-pressed="true"]{color:var(--ink)}
+.sw{width:42px;height:42px;border-radius:50%;border:1px solid var(--line-2);background:radial-gradient(circle,var(--b) 0 6px,transparent 7px),radial-gradient(circle at 50% 35%,var(--c),var(--a))}
+.theme-opt[aria-pressed="true"] .sw{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--sun)}
+.theme-note{margin:12px 4px 0;font-size:12.5px;color:var(--ink-3)}
+
+/* Gate */
+.gate{padding:3vh 0 0;text-align:center}
+.gate .logo{display:block;width:min(64vw,260px);height:auto;margin:0 auto;filter:drop-shadow(0 10px 40px rgba(255,120,20,.18))}
+.gate h1{margin:6px 0 0;font-size:26px;font-weight:600;letter-spacing:-.015em}
+.gate p{color:var(--ink-2);margin:10px auto 0;max-width:22rem}
+.gate form{margin:24px auto 0;max-width:20rem;display:grid;gap:10px}
+.gate #pinIn{text-align:center;font-size:22px;letter-spacing:.2em;height:54px}
+.gate #pinIn::placeholder{letter-spacing:.05em;font-size:17px}
+.gate .err{color:var(--sun);font-size:14.5px;min-height:1.4em;margin:8px 0 0}
+.who{margin:18px auto 0;max-width:22rem;text-align:left}
+
+/* Toast */
+.toast{position:fixed;inset:auto auto calc(84px + env(safe-area-inset-bottom)) 50%;margin:0;border:0;width:max-content;max-width:calc(100% - 40px);
+  transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:22px;font-size:14px;font-weight:500;
+  transition:opacity .2s,transform .2s;text-align:center;z-index:60;display:flex;gap:8px;align-items:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast .spinner{color:var(--bg)}
+.toast:popover-open{display:flex}
+
+.loading-mark{display:block;width:72px;height:72px;margin:28px auto 10px;animation:breathe 1.8s ease-in-out infinite alternate}
+@keyframes breathe{from{opacity:.55;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .spinner,.btn.busy::after{animation:spin 1.6s linear infinite!important}
+}
+</style>
+</head>
+<body>
+<div class="splash" id="splash" aria-hidden="true"><img src="logo.webp" alt="" width="300" height="303"><span class="spinner"></span></div>
+<div class="wrap" id="wrap">
+  <header>
+    <div class="brand"><img src="mark.webp" alt="" width="36" height="36"><div><div class="mark" id="brandName">Dram</div><div class="where" id="clubLine"></div></div></div>
+    <div class="tools">
+      <a class="icon-btn" id="channelBtn" hidden aria-label="Club channel" title="Club channel" target="_blank" rel="noopener"></a>
+      <button class="icon-btn" id="themeBtn" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="themes" aria-label="Colour theme" title="Colour theme"></button>
+      <button class="icon-btn" id="settingsBtn" type="button" aria-label="Settings" title="Settings"></button>
+    </div>
+  </header>
+  <div class="pop" id="themes" hidden role="group" aria-label="Colour theme"></div>
+  <div id="notices"></div>
+  <main id="main"></main>
+</div>
+<nav class="tabs" id="tabs" hidden aria-label="Sections"><div class="tabs-in" id="tabsIn"></div></nav>
+<section class="screen" id="screen" hidden role="dialog" aria-modal="true" aria-labelledby="screenTitle"></section>
+<div class="back-arrow" id="backArrow" aria-hidden="true"></div>
+<dialog class="sheet" id="sheet" aria-labelledby="sheetTitle"><div class="sheet-in" id="sheetBody"></div></dialog>
+<div class="toast" id="toast" role="status" popover="manual"></div>
+
+<script src="core.js?v=1"></script>
+<script>
+(() => {
+'use strict';
+const C = window.Core;
+const V = new URL(document.querySelector('script[src^="core.js"]').src).search;
+
+/* ---------- Settings you fill in ---------- */
+const API = 'https://script.google.com/macros/s/AKfycbz9uy9MyUgzq_JN06K-v7HhbcDQkoMGxmmwmTZ-jrHL0o82IvXYfIdBojqM4FYluxVF/exec';            // Apps Script web app URL, filled in after deploying
+const EXPECT_BUILD = 1;    // the Apps Script release this page needs
+
+/* ---------- Constants ---------- */
+const NTFY = 'https://ntfy.sh';
+const PLAY = 'https://play.google.com/store/apps/details?id=io.heckel.ntfy';
+const APPSTORE = 'https://apps.apple.com/app/ntfy/id1625396347';
+const TAGS = ['Smoke', 'Peat', 'Fruit', 'Sherry', 'Vanilla', 'Spice', 'Honey', 'Citrus', 'Oak', 'Floral', 'Salt', 'Chocolate', 'Nutty', 'Toffee'];
+const THEMES = [
+  { id: 'amber', name: 'Amber', bg: '#0D0904', dome: '#241809', accent: '#FFB04A' },
+  { id: 'twilight', name: 'Twilight', bg: '#0F1528', dome: '#1A2448', accent: '#F2C063' },
+  { id: 'red', name: 'Night red', bg: '#0C0404', dome: '#1E0808', accent: '#FF5B3D' },
+  { id: 'sea', name: 'Deep sea', bg: '#06121A', dome: '#0F2A38', accent: '#6FD9D0' },
+  { id: 'aurora', name: 'Aurora', bg: '#07110D', dome: '#12291E', accent: '#86E3A8' },
+  { id: 'dusk', name: 'Dusk', bg: '#110D1A', dome: '#261C3A', accent: '#F2A7C8' },
+];
+const MIN = 60e3, H = 3600e3, DAY = 864e5;
+const UA = navigator.userAgent;
+const isIOS = /iP(hone|ad|od)/.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isAndroid = /Android/.test(UA);
+const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- Storage ---------- */
+const P = 'drm.';
+const get = (k, d) => { try { const v = localStorage.getItem(P + k); return v == null ? d : JSON.parse(v); } catch { return d; } };
+const put = (k, v) => { try { localStorage.setItem(P + k, JSON.stringify(v)); } catch {} };
+const del = (k) => { try { localStorage.removeItem(P + k); } catch {} };
+
+const S = {
+  pin: get('pin', ''), me: get('me', ''), data: get('data', null), dataAt: get('dataAt', 0), syncFail: false,
+  tab: get('tab', 'meet'), set: Object.assign({ theme: 'amber', type: 'All', hints: 0 }, get('settings', {})),
+  cat: null, catErr: '', catLoading: false, byId: new Map(),
+  deck: [], pos: -1, hist: [], cur: get('drift', null),
+  imgs: get('imgs', {}), finding: new Set(), offAt: 0,
+  connected: get('connected', false), installEvt: null,
+  cabView: 'tasted', cabSort: 'score', screen: null, edit: null, gateErr: '', polling: 0,
+};
+const saveSet = () => put('settings', S.set);
+
+/* ---------- Helpers ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const h12 = new Intl.DateTimeFormat(undefined, { hour: 'numeric' }).resolvedOptions().hour12;
+const tfmt = new Intl.DateTimeFormat('en-GB', { hour: h12 ? 'numeric' : '2-digit', minute: '2-digit', hour12: !!h12 });
+const time = (ms) => tfmt.format(ms);
+const dayKey = (ms) => { const d = new Date(ms); return d.getFullYear() * 1e4 + d.getMonth() * 100 + d.getDate(); };
+const longDate = (ms) => new Date(ms).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+const shortDate = (ms) => new Date(ms).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+function dayWord(ms) {
+  const k = dayKey(ms), now = Date.now();
+  if (k === dayKey(now)) return new Date(ms).getHours() >= 17 ? 'Tonight' : 'Today';
+  if (k === dayKey(now + DAY)) return 'Tomorrow';
+  return longDate(ms);
+}
+function until(ms) {
+  const d = ms - Date.now();
+  if (d <= 0) return 'now';
+  const days = Math.round((new Date(ms).setHours(0, 0, 0, 0) - new Date().setHours(0, 0, 0, 0)) / DAY);
+  if (days >= 2) return `in ${days} days`;
+  const m = Math.round(d / MIN);
+  if (m < 60) return `in ${m} min`;
+  const h = Math.round(m / 60);
+  return `in ${h} hour${h > 1 ? 's' : ''}`;
+}
+function ago(ms) {
+  const m = Math.round((Date.now() - ms) / MIN);
+  if (m < 2) return 'just now';
+  if (m < 60) return `${m} min ago`;
+  const h = Math.round(m / 60);
+  if (h < 36) return `${h} h ago`;
+  return `${Math.round(h / 24)} days ago`;
+}
+const plural = (n, a, b) => `${n} ${n === 1 ? a : b || a + 's'}`;
+const list = (a) => (a.length <= 1 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]);
+const appUrl = () => location.origin + location.pathname;
+const out = (url) => C.outLink(url, isAndroid, standalone);
+const extLink = (url) => `href="${esc(out(url))}"${/^intent:/.test(out(url)) ? '' : ' target="_blank" rel="noopener"'}`;
+const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return ''; } };
+
+const ICON = {
+  x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>',
+  eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/></svg>',
+  sliders: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>',
+  play: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.8" y="5.8" width="18.4" height="12.4" rx="3.6"/><path d="M10.2 9.4v5.2l4.6-2.6Z" fill="currentColor"/></svg>',
+  bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 8h13.6l-1.1 11.1a2 2 0 0 1-2 1.9H8.3a2 2 0 0 1-2-1.9Z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg>',
+  info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor"/></svg>',
+  heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 19.5s-7.2-4.3-7.2-9.8A4.1 4.1 0 0 1 12 7.1a4.1 4.1 0 0 1 7.2 2.6c0 5.5-7.2 9.8-7.2 9.8Z"/></svg>',
+  shuffle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7H7c4.2 0 5.3 10 9.5 10h4M3.5 17H7c1.5 0 2.5-1.3 3.3-3M13.7 10c.8-1.7 1.8-3 3.3-3h3.5M18 4.5 20.5 7 18 9.5M18 14.5l2.5 2.5-2.5 2.5"/></svg>',
+  search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>',
+  pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5 5.3 16 15.8 5.5a1.8 1.8 0 0 1 2.6 0l.1.1a1.8 1.8 0 0 1 0 2.6L8 18.7Z"/><path d="M14 7.3l2.7 2.7"/></svg>',
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  tick: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+  slides: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11.5" rx="2"/><path d="M12 16v3.5M8.5 19.5h7"/></svg>',
+  tabMeet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4.5C5.6 7 5 9.6 5 12.4c0 4.6 2.6 7.1 7 7.1s7-2.5 7-7.1c0-2.8-.6-5.4-1.5-7.9"/><path d="M6 12.6c2-.9 4-.9 6 0s4 .9 6 0"/><rect x="9.2" y="8.6" width="4.4" height="4.4" rx="1" transform="rotate(45 11.4 10.8)"/></svg>',
+  tabDrift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="4.5" y="6.5" width="11" height="14" rx="2.2"/><path d="M8.5 3.5h8.8a2.2 2.2 0 0 1 2.2 2.2V17"/></svg>',
+  tabCab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M4 12h16M8 9V7.5M11 9V6.5M15 9V7M8.5 17v-2M12 17v-2.5M16 17v-1.5"/></svg>',
+  tabFinds: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.5l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L12 16l-5 2.7 1.1-5.5L4 9.3l5.6-.7Z"/></svg>',
+};
+const bottleSvg = (cls = 'drawn') => `<svg class="${cls}" viewBox="0 0 40 64" aria-hidden="true"><path d="M16 2h8v12c0 3 7 5 7 12v32a4 4 0 0 1-4 4H13a4 4 0 0 1-4-4V26c0-7 7-9 7-12Z" fill="currentColor" fill-opacity=".22" stroke="currentColor" stroke-width="1.5"/><rect x="11.5" y="34" width="17" height="14" rx="2" fill="currentColor" fill-opacity=".55"/></svg>`;
+
+// The club's tumbler: layered red, orange and gold, two ice cubes. f is how full, 0 to 1.
+function glassSvg(f, label) {
+  f = Math.max(0, Math.min(1, f));
+  const id = 'g' + Math.random().toString(36).slice(2, 7);
+  const L = 128 - f * 82, ice = Math.min(L - 4, 106);
+  const wave = (dy, a1, a2) => `M-10 ${L + dy}C30 ${L + dy - a1} 60 ${L + dy + a2} 92 ${L + dy}S150 ${L + dy - a1} 172 ${L + dy}V160H-10Z`;
+  const flame = f > 0.25 ? `<path d="M100 ${L + 6}C96 ${L - 10} 104 ${L - 24} 116 ${L - 34}C113 ${L - 18} 124 ${L - 8} 121 ${L + 8}Z" fill="#FFB000" fill-opacity=".9"/>
+    <path d="M114 ${L + 8}C112 ${L - 2} 118 ${L - 12} 126 ${L - 18}C124 ${L - 6} 132 ${L + 2} 128 ${L + 10}Z" fill="#F26B0A"/>` : '';
+  return `<svg class="glass" viewBox="0 0 160 158" role="img" aria-label="${esc(label)}">
+    <defs><clipPath id="${id}c"><path d="M45 21C37 43 29 70 29 96C29 119 46 131 80 131C114 131 131 119 131 96C131 70 123 43 115 21Z"/></clipPath>
+      <linearGradient id="${id}s" x1="0" x2="1"><stop offset="0" stop-color="#F26B0A"/><stop offset="1" stop-color="#FFB000"/></linearGradient>
+      <linearGradient id="${id}l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC21A"/><stop offset="1" stop-color="#F28A0A"/></linearGradient></defs>
+    <g clip-path="url(#${id}c)">${f > 0.02 ? `<g class="pour"><path d="${wave(0, 10, 14)}" fill="#C8141E"/>${flame}<path d="${wave(9, 6, 10)}" fill="#F26B0A"/><path d="${wave(18, 8, 8)}" fill="url(#${id}l)"/></g>` : ''}
+      <g class="ice"><rect x="50" y="${ice - 10}" width="24" height="24" rx="5.5" transform="rotate(45 62 ${ice + 2})"/><path class="glint" d="M56 ${ice - 2}l5-5"/>
+        <rect x="76" y="${ice - 4}" width="24" height="24" rx="5.5"/><path class="glint" d="M92 ${ice - 1}q4 1 5 6"/></g></g>
+    <path d="M43 19C35 42 25 70 25 96C25 123 45 136 80 136C115 136 135 123 135 96C135 70 125 42 117 19" fill="none" stroke="url(#${id}s)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M43 19C60 17 80 16 100 16" fill="none" stroke="#F26B0A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M48 147C82 152 120 149 141 135" fill="none" stroke="url(#${id}s)" stroke-width="4.5" stroke-linecap="round"/>
+  </svg>`;
+}
+
+/* ---------- Toast (above open sheets) ---------- */
+let toastTimer;
+function toast(msg, busy) {
+  const t = $('#toast');
+  t.innerHTML = (busy ? '<span class="spinner" aria-hidden="true"></span>' : '') + `<span>${esc(msg)}</span>`;
+  try { if (t.matches(':popover-open')) t.hidePopover(); t.showPopover(); } catch {}
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  if (!busy) toastTimer = setTimeout(() => { t.classList.remove('show'); setTimeout(() => { try { if (!t.classList.contains('show')) t.hidePopover(); } catch {} }, 250); }, Math.max(2600, msg.length * 55));
+}
+const busyToast = (msg) => toast(msg, true);
+async function withBusy(btn, fn) {
+  if (btn && btn.disabled) return;
+  if (btn) { btn.disabled = true; btn.classList.add('busy'); btn.setAttribute('aria-busy', 'true'); }
+  try { return await fn(); } finally { if (btn && btn.isConnected) { btn.disabled = false; btn.classList.remove('busy'); btn.removeAttribute('aria-busy'); } }
+}
+
+/* ---------- Server ---------- */
+const friendly = (err) => (err && err.name === 'TypeError' ? 'Couldn’t reach the club. Check your connection and try again.' : String((err && err.message) || err));
+async function api(action, data = {}) {
+  if (!API) throw new Error('This copy of Dram isn’t connected to its Apps Script yet.');
+  const r = await fetch(API, { method: 'POST', body: JSON.stringify(Object.assign({ action, pin: S.pin, me: S.me }, data)) });
+  let j;
+  try { j = await r.json(); } catch { throw new Error('The club’s Apps Script sent back something unexpected. Try again in a minute.'); }
+  if (j.error) { const e = new Error(j.error); e.server = true; throw e; }
+  return j;
+}
+function setData(j) {
+  if (!j || !j.members) return;
+  S.data = j; S.dataAt = Date.now(); S.syncFail = false;
+  put('data', j); put('dataAt', S.dataAt);
+  if (S.me && !j.members.some((m) => m.id === S.me)) { S.me = ''; put('me', ''); }
+}
+async function call(action, data) { const j = await api(action, data); setData(j); return j; }
+let refreshing = null;
+function refresh(quiet) {
+  if (!S.pin || !API) return Promise.resolve(false);
+  if (refreshing) return refreshing;
+  refreshing = (async () => {
+    try { await call('state'); return true; }
+    catch (err) {
+      if (err.server && /PIN/.test(err.message)) { signOut(err.message); return false; }
+      S.syncFail = true;
+      if (!quiet) toast(friendly(err));
+      return false;
+    } finally { refreshing = null; renderAll(); }
+  })();
+  return refreshing;
+}
+function signOut(msg) {
+  S.pin = ''; S.me = ''; S.data = null; S.gateErr = msg || '';
+  ['pin', 'me', 'data', 'dataAt'].forEach(del);
+  closeSheet(); closeScreen(true);
+  renderAll();
+}
+
+/* ---------- Club data ---------- */
+const clubName = () => (S.data && S.data.club && S.data.club.name) || 'The Whisky Club';
+function sectionLine() {
+  if (S.tab === 'drift') return S.cat ? `Drift · ${S.cat.length.toLocaleString('en-GB')} whiskies` : 'Drift';
+  if (S.tab === 'cabinet') { const n = C.cabinet(D().meets, D().scores).length; return `Cabinet · ${n} tasted`; }
+  if (S.tab === 'finds') return `Finds · ${(D().finds || []).length} releases`;
+  return `Meets · ${plural(D().members.length, 'member')}`;
+}
+const D = () => S.data || { members: [], meets: [], rsvps: [], scores: [], wishes: [], finds: [], club: {} };
+const memberName = (id) => { const m = D().members.find((x) => x.id === id); return m ? m.name : ''; };
+const myName = () => memberName(S.me);
+const meetById = (id) => D().meets.find((m) => m.id === id);
+function currentMeet() {
+  const now = Date.now();
+  return D().meets.filter((m) => !m.revealed && m.at > now - 18 * H).sort((a, b) => a.at - b.at)[0] || null;
+}
+const pastMeets = () => { const now = Date.now(); return D().meets.filter((m) => m.revealed || m.at <= now - 18 * H).sort((a, b) => b.at - a.at); };
+const rsvpOf = (meetId, memberId) => { const r = D().rsvps.find((x) => x.meetId === meetId && x.memberId === memberId); return r ? r.status : ''; };
+const myScore = (meetId, dramId) => D().scores.find((s) => s.meetId === meetId && s.dramId === dramId && s.memberId === S.me);
+const scoresFor = (meetId) => D().scores.filter((s) => s.meetId === meetId);
+const tastingOpen = (m) => m && Date.now() >= m.at - 3 * H;
+
+/* ---------- Catalogue ---------- */
+let catPromise = null;
+function loadCatalogue() {
+  if (S.cat) return Promise.resolve(S.cat);
+  if (catPromise) return catPromise;
+  S.catLoading = true;
+  catPromise = new Promise((resolve) => {
+    const done = (list, err) => {
+      S.catLoading = false;
+      if (list) { S.cat = list; S.byId = new Map(list.map((w) => [w.id, w])); S.catErr = ''; }
+      else { S.catErr = err || 'Couldn’t load the whisky list.'; catPromise = null; }
+      resolve(S.cat);
+      onCatalogue();
+    };
+    const mainThread = async () => {
+      try { const r = await fetch('whiskies.csv', { cache: 'no-cache' }); if (!r.ok) throw 0; done(C.catalogue(await r.text())); }
+      catch { done(null, 'Couldn’t load the whisky list. Check your connection and try again.'); }
+    };
+    try {
+      const w = new Worker('catalogue-worker.js' + V);
+      w.onmessage = (e) => { w.terminate(); if (e.data.ok) done(e.data.list); else mainThread(); };
+      w.onerror = (e) => { e.preventDefault(); w.terminate(); mainThread(); };
+      w.postMessage(1);
+    } catch { mainThread(); }
+  });
+  return catPromise;
+}
+function onCatalogue() {
+  lineupPictures();
+  if (S.me && S.data) $('#clubLine').textContent = sectionLine();
+  if (S.tab === 'drift' && !S.screen) { ensureDrift(); renderMain(); }
+  const pick = $('#pickList'); if (pick) renderPick();
+}
+function filtered() {
+  const t = S.set.type;
+  return !S.cat ? [] : t === 'All' ? S.cat : S.cat.filter((w) => w.typeLabel === t);
+}
+function buildDeck() {
+  S.deck = C.shuffle(filtered().map((w) => w.id));
+  S.pos = 0;
+}
+function ensureDrift() {
+  if (!S.cat) return;
+  const f = filtered();
+  const cur = S.cur && S.byId.get(S.cur);
+  if (!S.deck.length) buildDeck();
+  if (!cur || (S.set.type !== 'All' && cur.typeLabel !== S.set.type)) { S.cur = S.deck[S.pos] || (f[0] && f[0].id) || null; put('drift', S.cur); }
+}
+function nextDram(dir) {
+  if (!S.cat) return;
+  if (dir < 0) {
+    if (!S.hist.length) { toast('That’s the first one this time'); return false; }
+    S.cur = S.hist.pop();
+  } else {
+    if (S.cur) S.hist.push(S.cur);
+    if (S.hist.length > 60) S.hist.shift();
+    S.pos++;
+    if (S.pos >= S.deck.length) buildDeck();
+    if (S.deck[S.pos] === S.cur && S.deck.length > 1) S.pos = (S.pos + 1) % S.deck.length;
+    S.cur = S.deck[S.pos];
+  }
+  put('drift', S.cur);
+  return true;
+}
+const upcomingId = () => S.deck[(S.pos + 1) % Math.max(1, S.deck.length)];
+
+/* ---------- Pictures: the catalogue's own, else a search ---------- */
+// Cached per whisky: { u, src, kind: 'bottle'|'distillery', at } or { none: 1, at }
+function saveImgs() {
+  const ks = Object.keys(S.imgs);
+  if (ks.length > 1500) ks.sort((a, b) => S.imgs[a].at - S.imgs[b].at).slice(0, ks.length - 1500).forEach((k) => delete S.imgs[k]);
+  put('imgs', S.imgs);
+}
+function picFor(w) {
+  const c = S.imgs[w.id];
+  if (c && c.u) return c;
+  if (w.image && !(c && c.bad === w.image)) return { u: w.image, src: host(w.image), kind: 'bottle', own: true };
+  if (c && c.none && Date.now() - c.at < 14 * DAY) return null;
+  return undefined;   // not known yet: search
+}
+async function getJSON(url, ms = 7000) {
+  const ctl = new AbortController(); const tm = setTimeout(() => ctl.abort(), ms);
+  try { const r = await fetch(url, { signal: ctl.signal }); if (!r.ok) throw new Error(r.status); return await r.json(); }
+  finally { clearTimeout(tm); }
+}
+const fileText = (title) => title.replace(/^File:/, '').replace(/\.[a-z0-9]{3,4}$/i, '').replace(/[_-]+/g, ' ');
+const stillWanted = (w) => S.cur === w.id && S.tab === 'drift';
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// Returns a picture, null for none anywhere, or 'later' when the search was left unfinished
+async function searchPicture(w, force) {
+  const q = C.imageQuery(w);
+  let failed = false;   // a lookup that couldn't be made is not the same as "no picture"
+  // 1. Wikimedia Commons: photos people have uploaded of the bottle
+  try {
+    const j = await getJSON(`https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=10&gsrsearch=${encodeURIComponent(q + ' bottle')}&prop=imageinfo&iiprop=url|mime&iiurlwidth=640`);
+    const pages = Object.values((j.query && j.query.pages) || {});
+    const cands = pages.filter((p) => p.imageinfo && /^image\/(jpeg|png|webp)$/.test(p.imageinfo[0].mime)).map((p) => ({ text: fileText(p.title), url: p.imageinfo[0].thumburl || p.imageinfo[0].url }));
+    const b = C.bestMatch(w, cands);
+    if (b) return { u: b.url, src: 'Wikimedia Commons', kind: 'bottle' };
+  } catch { failed = true; }
+  // 2. Open Food Facts: shop-shelf bottle photos. Its search allows about 10 a minute, so wait for a slot,
+  //    but only while this whisky is still on screen
+  const wait = S.offAt + 7000 - Date.now();
+  if (wait > 0) { await sleep(wait); if (!force && !stillWanted(w)) return 'later'; }
+  S.offAt = Date.now();
+  try {
+    const j = await getJSON(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&search_simple=1&json=1&page_size=12&fields=product_name,brands,image_front_url`);
+    const cands = (j.products || []).filter((p) => p.image_front_url).map((p) => ({ text: `${p.brands || ''} ${p.product_name || ''}`, url: p.image_front_url }));
+    const b = C.bestMatch(w, cands);
+    if (b) return { u: C.httpsUrl(b.url), src: 'Open Food Facts', kind: 'bottle' };
+  } catch { failed = true; }
+  // 3. The distillery's picture on Wikipedia, labelled as such
+  const dname = C.shortDistillery(w.distillery);
+  if (dname) {
+    try {
+      const j = await getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=3&gsrsearch=${encodeURIComponent(dname + ' distillery whisky')}&prop=pageimages&piprop=thumbnail&pithumbsize=640`);
+      const pages = Object.values((j.query && j.query.pages) || {}).sort((a, b) => (a.index || 0) - (b.index || 0));
+      const dw = C.words(dname).filter((x) => x.length > 2);
+      const p = pages.find((x) => x.thumbnail && dw.every((t) => C.words(x.title).includes(t)));
+      if (p) return { u: p.thumbnail.source, src: 'Wikipedia', kind: 'distillery', page: p.title };
+    } catch { failed = true; }
+  }
+  return failed ? 'later' : null;
+}
+async function findPicture(w, force) {
+  if (S.finding.has(w.id)) return;
+  S.finding.add(w.id);
+  let r = null;
+  try { r = await searchPicture(w, force); } catch { r = 'later'; }
+  S.finding.delete(w.id);
+  if (r === 'later') { if (S.cur === w.id) { const box = $('#pic'), cr = $('#credit'); if (box && box.dataset.id === w.id) { box.innerHTML = bottleSvg(); if (cr) cr.textContent = navigator.onLine ? 'Couldn’t look for a picture just now.' : 'Offline, so no picture search.'; } } return; }   // unfinished or unreachable: try again next time it shows
+  const prev = S.imgs[w.id] || {};
+  S.imgs[w.id] = r ? Object.assign(r, { at: Date.now() }) : { none: 1, at: Date.now(), bad: prev.bad };
+  saveImgs();
+  if (S.cur === w.id) paintPic(w);
+  if (r && r.kind === 'bottle') {
+    if (S.edit) S.edit.lineup.forEach((d) => { if (d.whiskyId === w.id && !d.snap.image) d.snap.image = r.u; });
+    shareFound(w, r.u);
+  }
+}
+// Line-ups and the wish list keep a picture for everyone: the first phone to find one fills it in
+const shared = new Set();
+function shareFound(w, url) {
+  const jobs = [];
+  for (const m of D().meets) if (!m.revealed) for (const d of m.lineup || []) if (!d.hidden && d.whiskyId === w.id && !d.snap.image) jobs.push({ kind: 'dram', meetId: m.id, dramId: d.id });
+  for (const x of D().wishes) if (x.whiskyId === w.id && !x.snap.image) jobs.push({ kind: 'wish', wishId: x.id });
+  jobs.forEach((j) => {
+    const k = JSON.stringify(j);
+    if (shared.has(k)) return;
+    shared.add(k);
+    api('fillImage', Object.assign(j, { image: url })).then((st) => { setData(st); if (!S.screen && !sheet.open) renderMain(); }).catch(() => {});
+  });
+}
+function lineupPictures() {
+  if (!S.cat || !S.data) return;
+  const m = currentMeet();
+  const items = (m ? m.lineup : []).map((d) => d).concat(D().wishes);
+  for (const d of items) {
+    const w = d.whiskyId && !d.hidden && !d.snap.image && S.byId.get(d.whiskyId);
+    if (!w) continue;
+    const p = picFor(w);
+    if (p === undefined) findPicture(w, true);
+    else if (p && p.kind === 'bottle') shareFound(w, p.u);
+  }
+}
+function creditFor(p) {
+  if (!p) return '';
+  if (p.kind === 'distillery') return 'A picture of the distillery from Wikipedia, not this bottle.';
+  return `Picture: ${p.src}`;
+}
+function paintPic(w) {
+  const box = $('#pic');
+  if (!box || box.dataset.id !== w.id) return;
+  const p = picFor(w);
+  const cr = $('#credit');
+  if (p === undefined) {
+    box.innerHTML = bottleSvg() + '<span class="finding"><span class="spinner" aria-hidden="true"></span>Looking for a picture…</span>';
+    if (cr) cr.textContent = '';
+    findPicture(w);
+    return;
+  }
+  if (!p) { box.innerHTML = bottleSvg(); if (cr) cr.textContent = 'No picture found for this one.'; return; }
+  box.innerHTML = bottleSvg() + `<img alt="${esc(p.kind === 'distillery' ? `${w.distillery} distillery` : w.title)}" referrerpolicy="no-referrer" decoding="async"${p.kind === 'distillery' ? ' class="wide"' : ''}>`;
+  const img = box.querySelector('img');
+  img.onload = () => { img.classList.add('on'); const d = box.querySelector('.drawn'); if (d) d.style.visibility = 'hidden'; };
+  img.onerror = () => {
+    // the shop or site won't share its picture: search instead, once
+    if (p.own) { S.imgs[w.id] = { bad: w.image, at: Date.now() }; saveImgs(); paintPic(w); }
+    else { S.imgs[w.id] = { none: 1, at: Date.now() }; saveImgs(); box.innerHTML = bottleSvg(); if (cr) cr.textContent = 'No picture found for this one.'; }
+  };
+  img.src = p.u;
+  if (cr) cr.textContent = creditFor(p);
+}
+// The picture to keep with a line-up or wish-list entry
+function keepPic(w) { const p = picFor(w); return p && p.kind === 'bottle' ? p.u : ''; }
+// Warm up the next card's picture when the catalogue has one; searches wait until a card is on screen
+function prefetchNext() {
+  const id = upcomingId(), w = id && S.byId.get(id);
+  const p = w && picFor(w);
+  if (p && p.u) { const i = new Image(); i.referrerPolicy = 'no-referrer'; i.src = p.u; }
+}
+function thumbHtml(snap, label) {
+  if (snap && snap.image) return `<span class="thumb"><img src="${esc(snap.image)}" alt="" referrerpolicy="no-referrer" loading="lazy" onerror="this.remove()">${bottleSvg('')}</span>`;
+  if (label) return `<span class="thumb"><span class="lab">${esc(label)}</span></span>`;
+  return `<span class="thumb" style="color:var(--sun)">${bottleSvg('')}</span>`;
+}
+
+/* ---------- ntfy: messages the phone sends to the club ---------- */
+async function tellClub(title, body) {
+  const topic = D().club && D().club.topic;
+  if (!topic) return false;
+  try {
+    const q = new URLSearchParams({ title, tags: 'tumbler_glass', click: appUrl(), icon: new URL('icon-192.png', appUrl()).href });
+    const r = await fetch(`${NTFY}/${topic}?${q}`, { method: 'POST', body });
+    return r.ok;
+  } catch { return false; }
+}
+
+/* ---------- Rendering ---------- */
+function renderAll() {
+  const signed = !!(S.pin && S.data);
+  const ready = signed && !!S.me;
+  $('#wrap').classList.toggle('gated', !ready);
+  $('#tabs').hidden = !ready;
+  const club = D().club || {};
+  $('#brandName').textContent = ready ? clubName() : 'Dram';
+  $('#clubLine').textContent = ready ? sectionLine() : '';
+  const ch = $('#channelBtn');
+  ch.hidden = !(ready && club.channel);
+  if (club.channel) { ch.setAttribute('href', out(club.channel)); if (/^intent:/.test(out(club.channel))) ch.removeAttribute('target'); else ch.setAttribute('target', '_blank'); }
+  $('#settingsBtn').hidden = !ready;
+  renderNotices();
+  renderTabs();
+  renderMain();
+  if (S.screen) updateScreen();
+}
+function renderTabs() {
+  const T = [['meet', 'Meet', ICON.tabMeet], ['drift', 'Drift', ICON.tabDrift], ['cabinet', 'Cabinet', ICON.tabCab], ['finds', 'Finds', ICON.tabFinds]];
+  $('#tabsIn').innerHTML = T.map(([id, label, ic]) => `<button class="tab" type="button" data-tab="${id}"${S.tab === id ? ' aria-current="page"' : ''}>${ic}<span>${label}</span></button>`).join('');
+}
+function renderNotices() {
+  const outN = [];
+  const dismissed = get('dismissed', {});
+  if (S.data && S.me) {
+    if (S.data.build < EXPECT_BUILD) outN.push(`<div class="notice"><p>Your Apps Script is out of date (release ${S.data.build}, this app needs ${EXPECT_BUILD}). In Apps Script, paste the new Code.gs and deploy a new version.</p></div>`);
+    if (S.syncFail) outN.push(`<div class="notice"><p>Offline. Showing what was saved ${ago(S.dataAt)}.</p><button class="link-btn" type="button" data-act="retry">Try again</button></div>`);
+    if (!S.connected && !dismissed.ntfy) outN.push(`<div class="notice"><p>Get meet reminders and club news on this phone.</p><button class="link-btn" type="button" data-act="connect">Set up</button><button class="x" type="button" data-dismiss="ntfy" aria-label="Dismiss">${ICON.x}</button></div>`);
+  }
+  if (!standalone && !dismissed.install) {
+    if (S.installEvt) outN.push(`<div class="notice"><p>Add Dram to your home screen for one-tap access.</p><button class="link-btn" type="button" data-act="install">Install</button><button class="x" type="button" data-dismiss="install" aria-label="Dismiss">${ICON.x}</button></div>`);
+    else if (isIOS) outN.push(`<div class="notice"><p>Add Dram to your Home Screen: tap Share, then Add to Home Screen.</p><button class="x" type="button" data-dismiss="install" aria-label="Dismiss">${ICON.x}</button></div>`);
+  }
+  $('#notices').innerHTML = outN.join('');
+}
+function renderMain() {
+  const el = $('#main');
+  if (!S.pin || !S.data) { el.innerHTML = gateHtml(); return; }
+  if (!S.me) { el.innerHTML = whoHtml(); return; }
+  try {
+    el.innerHTML = S.tab === 'drift' ? driftHtml() : S.tab === 'cabinet' ? cabinetHtml() : S.tab === 'finds' ? findsHtml() : meetHtml();
+  } catch (err) {
+    console.error(err);
+    el.innerHTML = `<div class="hero"><h1 class="empty-title">Something went wrong here</h1><p class="empty-body">Close Dram fully and open it again.</p></div>`;
+  }
+  if (S.tab === 'drift') afterDrift();
+  else lineupPictures();
+}
+
+/* ---------- Gate ---------- */
+function gateHtml() {
+  if (!API) return `<div class="gate"><img class="logo" src="logo.webp" alt="The Whisky Club. Est 2022. Every sip reveals a story."><p>This copy of Dram isn’t connected to its Apps Script yet. Put the web app address in the API line at the top of the app script.</p></div>`;
+  return `<div class="gate"><img class="logo" src="logo.webp" alt="The Whisky Club. Est 2022. Every sip reveals a story.">
+    <p>Meets, tastings and drams to discover, in Dram. Enter the club PIN to come in.</p>
+    <form id="pinForm" autocomplete="off"><label class="vh" for="pinIn">Club PIN</label>
+      <input class="field num" id="pinIn" type="password" inputmode="numeric" autocomplete="off" enterkeyhint="go" placeholder="PIN" maxlength="20" required>
+      <button class="btn primary" type="submit" style="justify-content:center">Come in</button></form>
+    <p class="err" id="gateErr" role="alert">${esc(S.gateErr)}</p></div>`;
+}
+function whoHtml() {
+  const mem = D().members;
+  return `<div class="gate"><img class="loading-mark" src="mark.webp" alt="" style="animation:none"><h1>Who are you?</h1>
+    <p>${mem.length ? 'Pick your name. Dram remembers it on this phone.' : 'You’re the first one in. Add your name to start the club.'}</p>
+    <div class="who">${mem.length ? `<ul class="rows">${mem.map((m) => `<li class="row"><button class="row-main" type="button" data-iam="${esc(m.id)}"><span class="row-text"><span class="row-title">${esc(m.name)}</span></span></button></li>`).join('')}</ul>` : ''}
+    <label class="lbl" for="newName">${mem.length ? 'Not on the list? Add your name' : 'Your name'}</label>
+    <form class="field-row" id="newMember"><input class="field" id="newName" maxlength="30" autocomplete="given-name" placeholder="Your name"><button class="btn" type="submit">Add me</button></form></div></div>`;
+}
+
+/* ---------- Meet ---------- */
+function rsvpLine(m) {
+  const by = { in: [], maybe: [], out: [], none: [] };
+  D().members.forEach((x) => { by[rsvpOf(m.id, x.id) || 'none'].push(x.id === S.me ? 'you' : x.name); });
+  const parts = [];
+  if (by.in.length) parts.push(`In: ${list(by.in)}.`);
+  if (by.maybe.length) parts.push(`Maybe: ${list(by.maybe)}.`);
+  if (by.out.length) parts.push(`Can’t come: ${list(by.out)}.`);
+  if (by.none.length) parts.push(`Not replied: ${list(by.none)}.`);
+  return { n: by.in.length, text: parts.join(' ') };
+}
+function whenLine(m) {
+  const now = Date.now(), dw = dayWord(m.at);
+  if (m.at <= now) return `<strong>Under way</strong>, since ${time(m.at)}`;
+  if (dw === 'Today' || dw === 'Tonight') return `<strong>${dw}</strong> at ${time(m.at)}, ${esc(until(m.at))}`;
+  if (dw === 'Tomorrow') return `<strong>Tomorrow</strong> at ${time(m.at)}`;
+  return `<strong>${esc(until(m.at).replace(/^in/, 'In'))}</strong>, at ${time(m.at)}`;
+}
+function meetStory(m) {
+  const hostName = m.host === S.me ? 'You’re' : m.host ? `${memberName(m.host)} is` : '';
+  let s = hostName ? `${hostName} hosting${m.place ? `, at ${m.place}` : ''}.` : m.place ? `At ${m.place}.` : 'No host or place yet.';
+  const n = (m.lineup || []).length;
+  s += n ? ` ${plural(n, 'dram')} on the line-up${m.blind ? ', tasted blind' : ''}.` : ' No drams on the line-up yet.';
+  return s;
+}
+function lineupRows(m) {
+  return `<ul class="rows">${(m.lineup || []).map((d) => {
+    const by = d.by ? (d.by === S.me ? 'you' : memberName(d.by)) : '';
+    const sub = d.hidden ? 'Hidden until the reveal' : [d.snap.sub, by && `brought by ${by}`].filter(Boolean).join(', ');
+    return `<li class="row"><button class="row-main" type="button" data-dram="${esc(m.id)}:${esc(d.id)}">${thumbHtml(d.hidden ? null : d.snap, d.hidden ? d.label : '')}
+      <span class="row-text"><span class="row-title">${esc(d.snap.title)}</span><span class="row-sub">${esc(sub)}</span></span></button></li>`;
+  }).join('')}</ul>`;
+}
+function meetHtml() {
+  const m = currentMeet();
+  let html;
+  if (!m) {
+    html = `<section class="hero">${glassSvg(0, 'An empty glass: no meet planned')}
+      <h1 class="empty-title">No meet planned yet</h1>
+      <p class="empty-body">Pick a date, a host and a few drams, and Dram tells the club.</p>
+      <div class="actions"><button class="btn primary" type="button" data-act="new-meet">${ICON.plus}Plan the next meet</button></div></section>`;
+  } else {
+    const r = rsvpLine(m), mine = rsvpOf(m.id, S.me);
+    const now = Date.now(), head = longDate(m.at);
+    const state = whenLine(m);
+    const links = [m.slides && `<a class="btn small" ${extLink(m.slides)}>${ICON.slides}Slides</a>`, m.video && `<a class="btn small" ${extLink(m.video)}>${ICON.play}Song or video</a>`].filter(Boolean).join('');
+    const pct = Math.round(C.fill(m.at, now) * 100);
+    html = `<section class="hero">${glassSvg(C.fill(m.at, now), `A glass ${pct}% full: the meet is ${until(m.at)}`)}
+      <p class="state-line num">${state}</p>
+      <h1 class="title">${esc(head)}</h1>
+      <p class="story">${esc(meetStory(m))}</p>
+      <p class="facts">${esc(`${r.n} of ${D().members.length} ${r.n === 1 ? 'is' : 'are'} in.`)} ${m.notes ? esc(m.notes) : ''}</p>
+      <div class="switcher" role="group" aria-label="Are you coming?">${[['in', 'I’m in'], ['maybe', 'Maybe'], ['out', 'Can’t']].map(([v, l]) => `<button type="button" data-rsvp="${v}" data-meet="${esc(m.id)}" aria-pressed="${mine === v}">${l}</button>`).join('')}</div>
+      <div class="actions">${tastingOpen(m) ? `<button class="btn primary" type="button" data-act="tasting" data-meet="${esc(m.id)}">Start tasting</button>` : ''}
+        <button class="btn" type="button" data-act="edit-meet" data-meet="${esc(m.id)}">${ICON.pencil}Edit meet</button>${links}</div>
+    </section>
+    <h2 class="section-title">Line-up</h2>
+    ${(m.lineup || []).length ? lineupRows(m) : `<p class="section-note">Nothing yet. Tap Edit meet to add drams from the catalogue or the wish list.</p>`}
+    <h2 class="section-title">Who’s coming</h2><p class="section-note" style="font-size:14.5px;color:var(--ink-2)">${esc(r.text)}</p>`;
+  }
+  const past = pastMeets().slice(0, 12);
+  if (past.length) {
+    html += `<h2 class="section-title">Past meets</h2><ul class="rows">${past.map((p) => {
+      const top = p.revealed ? C.rankDrams(p.lineup || [], scoresFor(p.id))[0] : null;
+      const sub = p.revealed ? (top && top.avg != null ? `Top: ${top.dram.snap.title}, ${top.avg.toFixed(1)}` : 'No scores') : 'Scores not revealed yet';
+      return `<li class="row"><button class="row-main" type="button" data-act="${p.revealed ? 'results' : 'tasting'}" data-meet="${esc(p.id)}"><span class="row-time num">${esc(shortDate(p.at).replace(/^\w+ /, ''))}</span>
+        <span class="row-text"><span class="row-title">${esc(p.place ? `At ${p.place}` : longDate(p.at))}</span><span class="row-sub">${esc(sub)}</span></span></button></li>`;
+    }).join('')}</ul>`;
+  }
+  if (m) html += `<div class="actions" style="margin-top:28px"><button class="link-btn" type="button" data-act="new-meet">Plan another meet</button></div>`;
+  return html;
+}
+
+/* ---------- Meet editor ---------- */
+function toLocalInputs(ms) {
+  const d = new Date(ms), p = (n) => String(n).padStart(2, '0');
+  return { date: `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`, time: `${p(d.getHours())}:${p(d.getMinutes())}` };
+}
+function openEditor(m) {
+  if (m) S.edit = JSON.parse(JSON.stringify({ id: m.id, at: m.at, host: m.host, place: m.place, notes: m.notes, slides: m.slides, video: m.video, blind: m.blind, lineup: m.lineup, revealed: m.revealed, tell: true, hiddenLineup: (m.lineup || []).some((d) => d.hidden) }));
+  else {
+    const d = new Date(); d.setDate(d.getDate() + 14); d.setHours(19, 30, 0, 0);
+    S.edit = { id: '', at: d.getTime(), host: S.me, place: '', notes: '', slides: '', video: '', blind: false, lineup: [], tell: true };
+  }
+  renderEditor();
+  loadCatalogue();
+}
+function readEditor() {
+  const e = S.edit, f = (id) => { const x = $('#' + id); return x ? x.value : ''; };
+  if (!$('#edDate')) return e;
+  const [y, mo, da] = f('edDate').split('-').map(Number), [hh, mi] = (f('edTime') || '19:30').split(':').map(Number);
+  if (y) e.at = new Date(y, mo - 1, da, hh || 0, mi || 0).getTime();
+  e.host = f('edHost'); e.place = f('edPlace'); e.notes = f('edNotes'); e.slides = f('edSlides').trim(); e.video = f('edVideo').trim();
+  document.querySelectorAll('[data-by]').forEach((s) => { const d = e.lineup.find((x) => x.id === s.dataset.by); if (d) d.by = s.value; });
+  return e;
+}
+function renderEditor() {
+  const e = S.edit, t = toLocalInputs(e.at), mem = D().members;
+  const opts = (sel, none) => `<option value="">${none}</option>` + mem.map((m) => `<option value="${esc(m.id)}"${m.id === sel ? ' selected' : ''}>${esc(m.id === S.me ? `${m.name} (you)` : m.name)}</option>`).join('');
+  const locked = e.revealed;
+  const rows = e.lineup.map((d) => `<li class="row"><span class="row-main" style="padding:8px 0">${thumbHtml(d.hidden ? null : d.snap, d.hidden ? d.label : '')}<span class="row-text"><span class="row-title">${esc(d.snap.title)}</span>
+      ${locked || d.hidden ? '' : `<select class="field" data-by="${esc(d.id)}" aria-label="Who brings it">${opts(d.by, 'Brought by…')}</select>`}</span></span>
+      ${locked || d.hidden ? '' : `<button class="icon-btn" type="button" data-unline="${esc(d.id)}" aria-label="Take ${esc(d.snap.title)} off the line-up" title="Remove">${ICON.x}</button>`}</li>`).join('');
+  openSheet(`${head(e.id ? 'Edit meet' : 'Plan a meet')}
+    <div class="field-row" style="margin-top:12px"><div style="flex:1.3"><label class="lbl" for="edDate">Date</label><input class="field num" id="edDate" type="date" value="${t.date}"></div>
+      <div style="flex:1"><label class="lbl" for="edTime">Time</label><input class="field num" id="edTime" type="time" value="${t.time}"></div></div>
+    <label class="lbl" for="edHost">Host</label><select class="field" id="edHost">${opts(e.host, 'No host yet')}</select>
+    <label class="lbl" for="edPlace">Place</label><input class="field" id="edPlace" maxlength="80" value="${esc(e.place)}" placeholder="Raj’s, or the Anglers">
+    <h3>Line-up</h3>
+    ${e.hiddenLineup ? '<p class="small">This is a blind tasting, so only the host sees the bottles until the reveal.</p>' : locked ? '<p class="small">The scores are revealed, so the line-up stays as it was.</p>' : ''}
+    ${e.lineup.length ? `<ul class="rows lineup-edit">${rows}</ul>` : '<p class="small">No drams yet.</p>'}
+    ${locked || e.hiddenLineup ? '' : `<div class="actions" style="margin-top:10px"><button class="btn small" type="button" data-act="pick">${ICON.plus}Add a whisky</button></div>
+    <div class="toggle-row"><p>Blind tasting<br><span class="small">Everyone sees Dram A, B, C until the reveal</span></p><button class="switch" type="button" role="switch" data-act="ed-blind" aria-checked="${!!e.blind}" aria-label="Blind tasting"></button></div>`}
+    <label class="lbl" for="edNotes">Notes</label><textarea class="field" id="edNotes" maxlength="600" placeholder="Theme, what to bring, parking">${esc(e.notes)}</textarea>
+    <label class="lbl" for="edSlides">Slides link</label><input class="field" id="edSlides" inputmode="url" value="${esc(e.slides)}" placeholder="https://docs.google.com/presentation/…">
+    <label class="lbl" for="edVideo">Song or video link</label><input class="field" id="edVideo" inputmode="url" value="${esc(e.video)}" placeholder="https://youtu.be/…">
+    <div class="toggle-row"><p>Tell the club<br><span class="small">Sends a message to everyone’s ntfy</span></p><button class="switch" type="button" role="switch" data-act="ed-tell" aria-checked="${!!e.tell}" aria-label="Tell the club"></button></div>
+    <p class="result" id="edResult"></p>
+    <div class="actions"><button class="btn primary" type="button" data-act="save-meet">${e.id ? 'Save changes' : 'Save meet'}</button>
+      ${e.id ? '<button class="link-btn danger" type="button" data-act="delete-meet">Delete meet</button>' : ''}</div>`);
+}
+function lineupItem(w, customTitle) {
+  const id = Math.random().toString(36).slice(2, 8);
+  if (w) return { id, whiskyId: w.id, by: '', snap: C.snap(w, keepPic(w)) };
+  return { id, whiskyId: '', by: '', snap: { title: customTitle, edition: '', sub: '', image: '', type: '', info: '', q: C.shopQuery(customTitle) } };
+}
+function openPick() {
+  readEditor();
+  openSheet(`<div class="sheet-head"><div class="lead"><button class="icon-btn" type="button" data-act="pick-back" aria-label="Back to the meet">${ICON.back}</button><h2 id="sheetTitle">Add a whisky</h2></div></div>
+    <form class="field-row" id="pickForm" style="margin-top:12px"><input class="field" id="pickQ" placeholder="Search 6,000 whiskies" autocomplete="off" enterkeyhint="search" aria-label="Search the catalogue"></form>
+    <div id="pickList"></div>`);
+  renderPick();
+  setTimeout(() => { const q = $('#pickQ'); if (q && !isIOS) q.focus(); }, 60);
+}
+function renderPick() {
+  const el = $('#pickList');
+  if (!el) return;
+  const q = ($('#pickQ') || {}).value || '';
+  const already = new Set(S.edit.lineup.map((d) => d.whiskyId).filter(Boolean));
+  if (!q.trim()) {
+    const w = D().wishes.slice().sort((a, b) => b.votes.length - a.votes.length || b.added - a.added).slice(0, 12);
+    el.innerHTML = w.length ? `<h3>From the wish list</h3><ul class="rows">${w.map((x) => `<li class="row"><button class="row-main" type="button" data-pickwish="${esc(x.id)}"${already.has(x.whiskyId) ? ' disabled' : ''}>${thumbHtml(x.snap)}
+        <span class="row-text"><span class="row-title">${esc(x.snap.title)}</span><span class="row-sub">${esc(already.has(x.whiskyId) ? 'On the line-up' : plural(x.votes.length, 'vote'))}</span></span></button></li>`).join('')}</ul>`
+      : `<p class="small" style="margin-top:14px">Type a name, a distillery or a region, such as Islay.</p>`;
+    return;
+  }
+  if (!S.cat) { el.innerHTML = S.catErr ? `<p class="result">${esc(S.catErr)}</p>` : `<p class="small" style="margin-top:14px"><span class="spinner"></span> Loading the whisky list…</p>`; return; }
+  const res = C.search(S.cat, q, 25);
+  el.innerHTML = `<ul class="rows">${res.map((w) => `<li class="row"><button class="row-main" type="button" data-pickw="${esc(w.id)}"${already.has(w.id) ? ' disabled' : ''}>${thumbHtml({ image: keepPic(w) })}
+      <span class="row-text"><span class="row-title">${esc(w.title)}</span><span class="row-sub">${esc(already.has(w.id) ? 'On the line-up' : [w.edition, C.sub(w)].filter(Boolean).join(', '))}</span></span></button></li>`).join('')}</ul>
+    ${res.length ? '' : `<p class="small" style="margin-top:12px">No whisky in the catalogue matches “${esc(q)}”.</p>`}
+    <div class="actions"><button class="btn small" type="button" data-act="pick-custom">${ICON.plus}Add “${esc(q.trim().slice(0, 40))}” as it is</button></div>`;
+}
+
+/* ---------- Dram detail sheet (from a line-up, the cabinet or the wish list) ---------- */
+function openDram(meetId, dramId) {
+  const m = meetById(meetId), d = m && (m.lineup || []).find((x) => x.id === dramId);
+  if (!d) return;
+  if (d.hidden) { openSheet(`${head(`Dram ${esc(d.label)}`)}<p>This is a blind tasting. The bottle stays hidden until the scores are revealed.</p>`); return; }
+  const w = d.whiskyId && S.byId.get(d.whiskyId);
+  const sc = m.revealed ? scoresFor(m.id).filter((s) => s.dramId === d.id) : [];
+  const st = C.summarise(sc);
+  openSheet(`${head(esc(d.snap.title))}
+    ${d.snap.edition ? `<p class="edition">${esc(d.snap.edition)}</p>` : ''}
+    ${d.snap.image ? `<div class="pic"><img class="on" src="${esc(d.snap.image)}" alt="${esc(d.snap.title)}" referrerpolicy="no-referrer"></div>` : ''}
+    <p class="story" style="font-size:16px">${esc(w ? C.story(w) : d.snap.sub || 'Not in the catalogue.')}</p>
+    ${m.revealed && st.n ? `<h3>The club’s verdict: ${st.avg.toFixed(1)}</h3>${verdictHtml(sc)}` : ''}
+    ${shopRow(d.snap, w)}`);
+  if (!S.cat && d.whiskyId) loadCatalogue().then(() => { if ($('#sheet').open && $('#sheetTitle') && $('#sheetTitle').textContent === d.snap.title) openDram(meetId, dramId); });
+}
+function shopRow(snap, w) {
+  const q = snap.q || C.shopQuery(snap.title, w);
+  const info = snap.info || (w && w.info);
+  return `<div class="card-actions" style="justify-content:flex-start;gap:18px">
+    <a class="act" ${extLink(C.shoppingUrl(q))} aria-label="Search Google Shopping for ${esc(snap.title)}" title="Search Google Shopping"><span class="disc">${ICON.bag}</span>Shop</a>
+    ${info ? `<a class="act" ${extLink(info)} aria-label="Read more about ${esc(snap.title)}" title="Read more"><span class="disc">${ICON.info}</span>Read</a>` : ''}</div>`;
+}
+function verdictHtml(sc) {
+  const people = sc.slice().sort((a, b) => b.score - a.score).map((s) => `<span class="pill"><b class="num">${s.score.toFixed(1)}</b> ${esc(s.memberId === S.me ? 'you' : memberName(s.memberId) || 'Former member')}</span>`).join('');
+  const tagCount = {};
+  sc.forEach((s) => (s.tags || []).forEach((t) => { tagCount[t] = (tagCount[t] || 0) + 1; }));
+  const tags = Object.entries(tagCount).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([t, n]) => `${t}${n > 1 ? ` (${n})` : ''}`);
+  const notes = sc.filter((s) => s.note).map((s) => `<li><b>${esc(s.memberId === S.me ? 'You' : memberName(s.memberId) || 'Former member')}:</b> ${esc(s.note)}</li>`).join('');
+  return `<div class="people">${people}</div>${tags.length ? `<p class="small" style="margin-top:8px">Picked up: ${esc(tags.join(', '))}</p>` : ''}${notes ? `<ul class="notes">${notes}</ul>` : ''}`;
+}
+
+/* ---------- Tasting and results (full screen) ---------- */
+function openScreen(kind, meetId) {
+  S.screen = { kind, meetId };
+  const el = $('#screen');
+  el.hidden = false;
+  document.body.style.overflow = 'hidden';
+  renderScreen();
+  el.scrollTop = 0;
+  history.pushState({ screen: kind, meetId }, '');
+  if (kind === 'tasting') startPolling();
+}
+function closeScreen(silent) {
+  if (!S.screen) return;
+  S.screen = null;
+  stopPolling();
+  const el = $('#screen');
+  el.hidden = true; el.style.transform = ''; el.innerHTML = ''; delete el.dataset.sig;
+  document.body.style.overflow = '';
+  if (!silent) renderAll();
+}
+function goBack() {
+  if (history.state && history.state.screen) {
+    let done = false;
+    const fin = () => { if (done) return; done = true; window.removeEventListener('popstate', fin); closeScreen(); };
+    window.addEventListener('popstate', fin);
+    history.back();
+    setTimeout(fin, 400);
+  } else closeScreen();
+}
+window.addEventListener('popstate', () => { if (S.screen && !(history.state && history.state.screen)) closeScreen(); });
+function startPolling() { stopPolling(); S.polling = setInterval(() => { if (document.visibilityState === 'visible') refresh(true); }, 20000); }
+function stopPolling() { clearInterval(S.polling); S.polling = 0; }
+
+const draft = {};   // unsaved score edits, kept while the screen re-renders
+function renderScreen() {
+  const s = S.screen, el = $('#screen');
+  if (!s) return;
+  const m = meetById(s.meetId);
+  if (!m) { el.innerHTML = `<div class="wrap">${screenHead('Meet', '')}<p class="empty-body">This meet has been deleted.</p></div>`; return; }
+  const keepY = el.scrollTop;
+  const active = document.activeElement && document.activeElement.id;
+  el.innerHTML = `<div class="wrap">${m.revealed ? resultsHtml(m) : tastingHtml(m)}</div>`;
+  el.dataset.sig = `${m.revealed}|${(m.lineup || []).map((d) => d.id + d.snap.title).join(',')}`;
+  el.scrollTop = keepY;
+  if (active && $('#' + active)) $('#' + active).focus();
+}
+// Background refreshes only touch the counts, so a slider or a note being typed is never interrupted
+function updateScreen() {
+  const s = S.screen, el = $('#screen'), m = s && meetById(s.meetId);
+  const sig = m ? `${m.revealed}|${(m.lineup || []).map((d) => d.id + d.snap.title).join(',')}` : 'gone';
+  if (!el.dataset.sig || el.dataset.sig !== sig) { renderScreen(); return; }
+  if (m.revealed) { renderScreen(); return; }
+  const c = $('#scorerCount');
+  if (c) c.textContent = scorerText(m);
+  el.querySelectorAll('.dram[data-k]').forEach((card) => {
+    const dramId = card.dataset.k.split(':')[1], n = (m.scored || {})[dramId] || 0, d = m.lineup.find((x) => x.id === dramId);
+    const sub = card.querySelector('.dram-sub');
+    if (sub && d) sub.textContent = [d.hidden ? '' : d.snap.sub, plural(n, 'score')].filter(Boolean).join(', ');
+  });
+}
+const scorerText = (m) => { const n = (m.scorers || []).length; return `${n} of ${D().members.length} ${n === 1 ? 'has' : 'have'} scored so far. Nobody sees anyone else’s scores until the reveal.`; };
+function screenHead(t, sub) {
+  return `<div class="screen-head"><button class="icon-btn" type="button" data-act="screen-back" aria-label="Back">${ICON.back}</button>
+    <div><div class="t" id="screenTitle">${esc(t)}</div>${sub ? `<div class="s">${esc(sub)}</div>` : ''}</div></div>`;
+}
+function tastingHtml(m) {
+  const lineup = m.lineup || [];
+  const mine = lineup.filter((d) => myScore(m.id, d.id)).length;
+  const done = lineup.length && mine === lineup.length;
+  let html = screenHead('Tasting', `${longDate(m.at)}${m.place ? `, at ${m.place}` : ''}`);
+  html += `<p class="state-line num" style="margin-top:8px"><strong>You’ve scored ${mine} of ${lineup.length}</strong>${done ? ' <span class="vh">all scored</span>' : ''}</p>
+    <p class="section-note" id="scorerCount">${esc(scorerText(m))}</p>`;
+  if (!lineup.length) html += `<p class="empty-body" style="margin-top:20px">There’s nothing on the line-up. Go back and tap Edit meet to add the drams.</p>`;
+  html += lineup.map((d) => {
+    const s = myScore(m.id, d.id), k = `${m.id}:${d.id}`;
+    const dv = draft[k] || { score: s ? s.score : null, tags: s ? s.tags.slice() : [], note: s ? s.note : '' };
+    draft[k] = dv;
+    const changed = !s || s.score !== dv.score || s.note !== dv.note || s.tags.join() !== dv.tags.join();
+    const n = (m.scored || {})[d.id] || 0;
+    return `<div class="dram" data-k="${esc(k)}">
+      <div class="dram-head">${thumbHtml(d.hidden ? null : d.snap, d.hidden ? d.label : '')}<div style="min-width:0"><div class="dram-title">${esc(d.hidden ? d.snap.title : `${d.label}. ${d.snap.title}`)}</div>
+        <div class="dram-sub">${esc([d.hidden ? '' : d.snap.sub, plural(n, 'score')].filter(Boolean).join(', '))}</div></div></div>
+      <div class="score-row"><button class="round" type="button" data-step="-0.5" aria-label="Lower score">−</button>
+        <input type="range" min="0" max="10" step="0.5" value="${dv.score == null ? 5 : dv.score}" data-range aria-label="Your score for ${esc(d.snap.title)}, 0 to 10">
+        <button class="round" type="button" data-step="0.5" aria-label="Raise score">+</button>
+        <span class="score-big num${dv.score == null ? ' unset' : ''}" data-big>${dv.score == null ? '–' : dv.score.toFixed(1)}</span></div>
+      <div class="chips" role="group" aria-label="What you picked up">${TAGS.map((t) => `<button class="chip" type="button" data-tag="${t}" aria-pressed="${dv.tags.includes(t)}">${t}</button>`).join('')}</div>
+      <textarea class="field" data-note id="note-${esc(d.id)}" maxlength="400" placeholder="A note for later (optional)">${esc(dv.note)}</textarea>
+      <div class="dram-foot"><span class="saved">${s && !changed ? `<span class="tick">${ICON.tick}</span>Saved` : s ? 'Changed, not saved yet' : 'Not scored yet'}</span>
+        <button class="btn small${s && !changed ? '' : ' primary'}" type="button" data-act="save-score"${dv.score == null ? ' disabled' : ''}>${s ? 'Save change' : 'Save score'}</button></div></div>`;
+  }).join('');
+  if (lineup.length) html += `<div class="reveal-box"><p>When everyone’s done, reveal the scores together. They can’t be changed after that.</p>
+    <button class="btn primary" type="button" data-act="reveal" id="revealBtn">Reveal scores</button></div>`;
+  return html;
+}
+function resultsHtml(m) {
+  const ranked = C.rankDrams(m.lineup || [], scoresFor(m.id));
+  const top = ranked[0];
+  let html = screenHead('Results', `${longDate(m.at)}${m.place ? `, at ${m.place}` : ''}`);
+  if (top && top.avg != null) {
+    html += `<section class="hero">${glassSvg(top.avg / 10, `Top dram scored ${top.avg.toFixed(1)} out of 10`)}
+      <p class="state-line" style="text-align:center">Top of the night</p>
+      <div class="winner"><div class="big num">${top.avg.toFixed(1)}</div></div>
+      <h1 class="title" style="text-align:center;margin-top:6px">${esc(top.dram.snap.title)}</h1>
+      <p class="facts" style="text-align:center">${esc(`${plural(top.n, 'score')}, from ${top.min.toFixed(1)} to ${top.max.toFixed(1)}`)}</p></section>`;
+  } else html += `<p class="empty-body" style="margin-top:18px">Nobody scored anything at this meet.</p>`;
+  html += ranked.map((r, i) => {
+    const sc = scoresFor(m.id).filter((s) => s.dramId === r.dram.id);
+    return `<div class="dram"><div class="dram-head"><span class="rank num">${i + 1}</span>${thumbHtml(r.dram.snap)}<div style="flex:1;min-width:0"><div class="dram-title">${esc(r.dram.snap.title)}</div>
+      <div class="dram-sub">${esc(r.n ? `${plural(r.n, 'score')}, ${r.spread === 0 ? 'everyone agreed' : `${r.min.toFixed(1)} to ${r.max.toFixed(1)}`}` : 'No scores')}${m.blind ? `, poured as Dram ${esc(r.dram.label)}` : ''}</div></div>
+      <span class="row-score num">${r.avg == null ? '–' : r.avg.toFixed(1)}</span></div>${r.n ? verdictHtml(sc) : ''}
+      <div style="margin-top:8px">${shopRow(r.dram.snap, r.dram.whiskyId && S.byId.get(r.dram.whiskyId))}</div></div>`;
+  }).join('');
+  return html;
+}
+
+/* ---------- Drift ---------- */
+function driftHtml() {
+  if (!S.cat) {
+    loadCatalogue();
+    return `<section class="hero" style="text-align:center"><img class="loading-mark" src="mark.webp" alt=""${S.catErr ? ' style="animation:none;opacity:.5"' : ''}>
+      <p class="facts">${S.catErr ? esc(S.catErr) : 'Opening the cabinet of 6,000 whiskies…'}</p>
+      ${S.catErr ? '<div class="actions" style="justify-content:center"><button class="btn" type="button" data-act="cat-retry">Try again</button></div>' : ''}</section>`;
+  }
+  ensureDrift();
+  const counts = C.typeCounts(S.cat);
+  const chips = [{ label: 'All', n: S.cat.length }, ...counts].map((c) => `<button class="chip" type="button" data-type="${esc(c.label)}" aria-pressed="${S.set.type === c.label}">${esc(c.label)}<small class="num">${c.n.toLocaleString('en-GB')}</small></button>`).join('');
+  const w = S.cur && S.byId.get(S.cur);
+  if (!w) return `<div class="drift-bar"><div class="chips scroll">${chips}</div></div><p class="empty-body">No whiskies of that kind in the catalogue.</p>`;
+  const facts = C.facts(w);
+  const wished = D().wishes.some((x) => x.whiskyId === w.id);
+  return `<div class="drift-bar"><div class="chips scroll" role="group" aria-label="Kind of whisky">${chips}</div>
+      <button class="icon-btn" type="button" data-act="search" aria-label="Search the catalogue" title="Search">${ICON.search}</button></div>
+    <article class="card" id="card" data-id="${esc(w.id)}">
+      <div class="pic" id="pic" data-id="${esc(w.id)}"></div>
+      <p class="credit" id="credit"></p>
+      <h1 class="title">${esc(w.title)}</h1>
+      ${w.edition ? `<p class="edition">${esc(w.edition)}</p>` : ''}
+      <p class="story">${esc(C.story(w))}</p>
+      ${facts.length ? `<p class="facts">${esc(facts.join('. '))}.</p>` : ''}
+      <div class="card-actions">
+        <a class="act" ${extLink(C.shoppingUrl(C.shopQuery(w.title, w)))} aria-label="Search Google Shopping for ${esc(w.title)}" title="Search Google Shopping"><span class="disc">${ICON.bag}</span>Shop</a>
+        ${w.info ? `<a class="act" ${extLink(w.info)} aria-label="Read more about ${esc(w.title)}" title="Read more"><span class="disc">${ICON.info}</span>Read</a>` : ''}
+        <button class="act" type="button" data-act="wish" aria-pressed="${wished}" aria-label="${wished ? 'On the wish list' : 'Add to the wish list'}" title="Wish list"><span class="disc">${ICON.heart}</span>${wished ? 'Wished' : 'Wish list'}</button>
+        <button class="act accent" type="button" data-act="next" aria-label="Another whisky" title="Another whisky"><span class="disc">${ICON.shuffle}</span>Another</button>
+      </div>
+    </article>
+    ${(S.set.hints || 0) < 4 ? '<p class="hint">Swipe the card for another, or back for the last one.</p>' : ''}
+    <p class="foot">Catalogue: Global Spirits Inventory v2026.10 by E. Pace, The Remade Agency, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Pictures belong to the sites they come from. No prices yet: the Shop button searches Google Shopping.</p>`;
+}
+function afterDrift() {
+  const w = S.cur && S.byId.get(S.cur);
+  if (!w) return;
+  paintPic(w);
+  prefetchNext();
+  bindCardSwipe();
+}
+function showNext(dir) {
+  if (!nextDram(dir)) return;
+  if (dir > 0 && (S.set.hints || 0) < 4) { S.set.hints = (S.set.hints || 0) + 1; saveSet(); }
+  renderMain();
+}
+function openSearch() {
+  openSheet(`${head('Find a whisky')}
+    <form class="field-row" id="searchForm" style="margin-top:12px"><input class="field" id="searchQ" placeholder="Name, distillery or region" autocomplete="off" enterkeyhint="search" aria-label="Search the catalogue"></form>
+    <div id="searchList"><p class="small" style="margin-top:14px">Try Springbank, Islay, Kentucky or Mizunara.</p></div>`);
+  setTimeout(() => { const q = $('#searchQ'); if (q && !isIOS) q.focus(); }, 60);
+}
+function renderSearch() {
+  const q = ($('#searchQ') || {}).value || '', el = $('#searchList');
+  if (!el) return;
+  if (!q.trim()) { el.innerHTML = '<p class="small" style="margin-top:14px">Try Springbank, Islay, Kentucky or Mizunara.</p>'; return; }
+  const res = C.search(S.cat || [], q, 30);
+  el.innerHTML = res.length ? `<ul class="rows">${res.map((w) => `<li class="row"><button class="row-main" type="button" data-show="${esc(w.id)}">${thumbHtml({ image: keepPic(w) })}
+    <span class="row-text"><span class="row-title">${esc(w.title)}</span><span class="row-sub">${esc([w.edition, C.sub(w)].filter(Boolean).join(', '))}</span></span></button></li>`).join('')}</ul>`
+    : `<p class="small" style="margin-top:14px">Nothing in the catalogue matches “${esc(q)}”.</p>`;
+}
+
+/* ---------- Cabinet ---------- */
+function cabinetHtml() {
+  const v = S.cabView;
+  let html = `<div class="switcher quiet" role="group" aria-label="Cabinet"><button type="button" data-cab="tasted" aria-pressed="${v === 'tasted'}">Tasted</button><button type="button" data-cab="wish" aria-pressed="${v === 'wish'}">Wish list</button></div>`;
+  if (v === 'tasted') {
+    const all = C.cabinet(D().meets, D().scores);
+    if (!all.length) return html + `<section class="hero" style="margin-top:12px">${glassSvg(0, 'An empty glass')}<h1 class="empty-title">Nothing tasted yet</h1><p class="empty-body">After a meet’s scores are revealed, every dram lands here, best first.</p></section>`;
+    const sorted = all.slice().sort(S.cabSort === 'score' ? (a, b) => b.avg - a.avg || b.meet.at - a.meet.at : (a, b) => b.meet.at - a.meet.at);
+    html += `<p class="drift-count num" style="margin-top:12px">${esc(plural(all.length, 'dram'))} tasted at ${esc(plural(new Set(all.map((x) => x.meet.id)).size, 'meet'))}</p>
+      <div class="chips" style="margin-top:8px" role="group" aria-label="Order"><button class="chip" type="button" data-sort="score" aria-pressed="${S.cabSort === 'score'}">Best first</button><button class="chip" type="button" data-sort="recent" aria-pressed="${S.cabSort === 'recent'}">Most recent</button></div>
+      <ul class="rows">${sorted.map((x, i) => `<li class="row"><button class="row-main" type="button" data-dram="${esc(x.meet.id)}:${esc(x.dram.id)}">${S.cabSort === 'score' ? `<span class="rank num">${i + 1}</span>` : ''}${thumbHtml(x.dram.snap)}
+        <span class="row-text"><span class="row-title">${esc(x.dram.snap.title)}</span><span class="row-sub">${esc(`${shortDate(x.meet.at)}${x.dram.by ? `, brought by ${x.dram.by === S.me ? 'you' : memberName(x.dram.by) || 'a former member'}` : ''}`)}</span></span>
+        <span class="row-score num">${x.avg.toFixed(1)}</span></button></li>`).join('')}</ul>`;
+    return html;
+  }
+  const ws = D().wishes.slice().sort((a, b) => b.votes.length - a.votes.length || b.added - a.added);
+  if (!ws.length) return html + `<section class="hero" style="margin-top:12px">${glassSvg(0, 'An empty glass')}<h1 class="empty-title">The wish list is empty</h1><p class="empty-body">In Drift, tap the heart on anything you’d like the club to try. Members vote, and the host picks from here.</p>
+    <div class="actions"><button class="btn" type="button" data-tab="drift">Open Drift</button></div></section>`;
+  html += `<p class="drift-count num" style="margin-top:12px">${esc(plural(ws.length, 'whisky', 'whiskies'))}, most wanted first</p><ul class="rows">${ws.map((x) => {
+    const mine = x.votes.includes(S.me);
+    return `<li class="row"><button class="row-main" type="button" data-wishopen="${esc(x.id)}">${thumbHtml(x.snap)}<span class="row-text"><span class="row-title">${esc(x.snap.title)}</span>
+      <span class="row-sub">${esc(`Suggested by ${x.by === S.me ? 'you' : memberName(x.by) || 'a former member'}`)}</span></span></button>
+      <button class="act" type="button" data-vote="${esc(x.id)}" aria-pressed="${mine}" aria-label="${mine ? 'Take back your vote' : 'Vote for this'}, ${plural(x.votes.length, 'vote')}" title="Vote" style="min-width:52px"><span class="disc" style="width:40px;height:40px">${ICON.heart}</span><span class="num">${x.votes.length}</span></button></li>`;
+  }).join('')}</ul>`;
+  return html;
+}
+function openWish(id) {
+  const x = D().wishes.find((w) => w.id === id);
+  if (!x) return;
+  const w = x.whiskyId && S.byId.get(x.whiskyId);
+  const voters = x.votes.map((v) => (v === S.me ? 'you' : memberName(v))).filter(Boolean);
+  openSheet(`${head(esc(x.snap.title))}
+    ${x.snap.edition ? `<p class="edition">${esc(x.snap.edition)}</p>` : ''}
+    ${x.snap.image ? `<div class="pic"><img class="on" src="${esc(x.snap.image)}" alt="${esc(x.snap.title)}" referrerpolicy="no-referrer"></div>` : ''}
+    <p class="story" style="font-size:16px">${esc(w ? C.story(w) : x.snap.sub || '')}</p>
+    <p class="facts">${esc(`Wanted by ${list(voters) || 'nobody yet'}.`)}</p>
+    ${shopRow(x.snap, w)}
+    <p class="result" id="wishResult"></p>
+    <div class="actions"><button class="link-btn danger" type="button" data-unwish="${esc(x.id)}">Take off the wish list</button></div>`);
+}
+
+/* ---------- Finds ---------- */
+function findsHtml() {
+  const f = D().finds || [], info = D().findsInfo;
+  const when = info ? `Last looked ${ago(info.at)}${info.ok ? `, ${plural(info.added, 'new find')}` : ''}.` : 'Dram looks each Friday morning.';
+  let html = `<section style="padding-top:8px"><h1 class="title" style="font-size:22px">Limited releases</h1>
+    <p class="section-note" style="font-size:14px">${esc(`New limited editions and special releases spotted in the news. Dram looks every Friday and tells the club when there’s something new. ${when}`)}</p>
+    ${info && !info.ok ? `<p class="result">${esc(info.reason)}</p>` : ''}
+    <div class="actions"><button class="btn small" type="button" data-act="finds-now">${ICON.search}Look now</button></div></section>`;
+  if (!f.length) return html + `<p class="empty-body" style="margin-top:22px">Nothing spotted yet. Tap Look now, or wait for Friday.</p>`;
+  let last = null;
+  html += f.map((x) => {
+    const k = dayKey(x.published);
+    const headTxt = k !== last ? `<h2 class="section-title" style="font-size:14px;color:var(--ink-3);font-weight:500;margin-top:22px">${esc(longDate(x.published))}</h2>` : '';
+    last = k;
+    return `${headTxt}<div class="row"><a class="row-main" ${extLink(x.link)}><span class="row-text"><span class="row-title" style="font-weight:500">${esc(x.title)}</span>
+      <span class="row-sub">${esc(x.source || host(x.link))}</span></span></a></div>`;
+  }).join('');
+  return html + `<p class="foot">From Google News searches for limited and special whisky releases. Check the retailer’s own page before you buy.</p>`;
+}
+
+/* ---------- Sheets ---------- */
+const sheet = $('#sheet');
+function head(title) { return `<div class="grab" data-grab><div class="grabber"></div></div><div class="sheet-head" data-grab><h2 id="sheetTitle">${title}</h2><button class="icon-btn" type="button" data-act="close" aria-label="Close">${ICON.x}</button></div>`; }
+function openSheet(html) {
+  const b = $('#sheetBody');
+  b.innerHTML = html.startsWith('<div class="grab"') ? html : `<div class="grab" data-grab><div class="grabber"></div></div>` + html;
+  sheet.style.transform = '';
+  if (!sheet.open) sheet.showModal();
+  sheet.scrollTop = 0;
+}
+function closeSheet() { if (sheet.open) sheet.close(); }
+sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSheet(); });
+sheet.addEventListener('close', () => { sheet.style.transform = ''; });
+
+function openConnect() {
+  const topic = D().club && D().club.topic;
+  if (!topic) { openSheet(`${head('Notifications')}<p>The club has no ntfy topic yet. Run setup in Apps Script, then open Dram again.</p>`); return; }
+  const deep = `ntfy://ntfy.sh/${topic}?display=Dram`;
+  const steps = isIOS ? `
+    <li><strong>Install ntfy</strong>A free notification app. No account needed.<br><a class="btn small" href="${APPSTORE}" target="_blank" rel="noopener">Get ntfy</a></li>
+    <li><strong>Copy the club’s code</strong><button class="btn small" type="button" data-act="copy">Copy code</button><br><span class="code">${esc(topic)}</span></li>
+    <li><strong>Subscribe in ntfy</strong>Tap +, paste the code as the topic and tap Subscribe.</li>`
+    : `<li><strong>Install ntfy</strong>A free notification app. No account needed.<br><a class="btn small" href="${PLAY}" target="_blank" rel="noopener">Get ntfy</a></li>
+    <li><strong>Connect it to the club</strong><a class="btn small" href="${esc(deep)}">Connect ntfy</a><br><span class="small">Or in ntfy tap +, and subscribe to <span class="code">${esc(topic)}</span></span></li>
+    <li><strong>Turn on instant delivery</strong>In ntfy, open Dram, tap the ⋮ menu and enable instant delivery. Without it, messages can arrive late.</li>`;
+  openSheet(`${head('Notifications')}
+    <p>Everyone in the club shares one ntfy topic. Messages come the day before and on the morning of each meet, when a meet is planned or moved, when scores are revealed, and on Fridays when there are new limited releases.</p>
+    <ol class="steps">${steps}</ol>
+    <p class="result" id="connectResult"></p>
+    <div class="actions"><button class="btn primary" type="button" data-act="connected">Done</button><button class="btn" type="button" data-act="hello">Send test notification</button></div>
+    <p class="small" style="margin-top:12px">The test goes to everyone, as a hello from you.</p>`);
+}
+
+function themeGridHtml() {
+  return `<div class="theme-grid">${THEMES.map((t) => `<button class="theme-opt" type="button" data-theme="${t.id}" aria-pressed="${S.set.theme === t.id}"><span class="sw" style="--a:${t.bg};--c:${t.dome};--b:${t.accent}"></span>${t.name}</button>`).join('')}</div>
+    <p class="theme-note">Night red and Amber are gentlest on eyes adjusted to the dark.</p>`;
+}
+function setTheme(id) {
+  const t = THEMES.find((x) => x.id === id) || THEMES[0];
+  S.set.theme = t.id; saveSet();
+  if (t.id === 'twilight') delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = t.id;
+  $('meta[name=theme-color]').setAttribute('content', t.bg);
+  document.querySelectorAll('.theme-opt').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.theme === t.id)));
+}
+const POPS = { themes: '#themeBtn' };
+function togglePop(id, open) {
+  const pop = $('#' + id), show = open == null ? pop.hidden : open;
+  if (show) pop.innerHTML = themeGridHtml();
+  pop.hidden = !show;
+  $(POPS[id]).setAttribute('aria-expanded', String(show));
+}
+const popOpen = () => Object.keys(POPS).some((id) => !$('#' + id).hidden);
+function closePops() { Object.keys(POPS).forEach((id) => { if (!$('#' + id).hidden) togglePop(id, false); }); }
+document.addEventListener('click', (e) => {
+  if (!popOpen() || e.target.closest('.pop, ' + Object.values(POPS).join(', '))) return;
+  e.preventDefault(); e.stopPropagation(); closePops();
+}, true);
+
+function openSettings() {
+  const d = D(), club = d.club || {}, n = d.notify;
+  const last = n ? (n.ok ? `Last message sent ${ago(n.at)}: “${n.title}”.` : `The last message didn’t send (${ago(n.at)}). ${n.reason}`) : '';
+  openSheet(`${head('Settings')}
+    <h3>You</h3><p>You’re ${esc(myName())} on this phone.</p>
+    <div class="actions" style="margin-top:6px"><button class="btn small" type="button" data-act="switch-me">Not ${esc(myName())}? Change</button></div>
+    <h3>Notifications</h3>
+    <p>Reminders go to the club the day before and on the morning of each meet, around 10:00. Limited-release finds come on Fridays around 9:00, only when there’s something new. New meets and revealed scores are sent from the phone that made them.</p>
+    <div class="actions"><button class="btn small${S.connected ? '' : ' primary'}" type="button" data-act="connect">${S.connected ? 'Setup steps' : 'Set up notifications'}</button><button class="btn small" type="button" data-act="test-reminder">Send a test reminder</button></div>
+    <p class="small">The test reminder comes from Apps Script by email, so it proves the reminders work. It goes to everyone in the club.</p>
+    <p class="result" id="testResult">${esc(last)}</p>
+    <h3>The club</h3>
+    <label class="lbl" for="clubName">Club name</label><input class="field" id="clubName" maxlength="40" value="${esc(club.name)}" placeholder="The Whisky Club">
+    <label class="lbl" for="clubChannel">YouTube channel or playlist link</label><input class="field" id="clubChannel" inputmode="url" value="${esc(club.channel)}" placeholder="https://www.youtube.com/@…">
+    <p class="small">The play button at the top opens it. Private videos only play for the Google accounts they’re shared with.</p>
+    <div class="actions"><button class="btn small" type="button" data-act="save-club">Save club details</button></div>
+    <p class="result" id="clubResult"></p>
+    <h3>Members</h3>
+    <ul class="rows" id="memberList">${d.members.map((m) => `<li class="row"><span class="row-main"><span class="row-text"><span class="row-title">${esc(m.name)}${m.id === S.me ? ' (you)' : ''}</span></span></span>
+      <button class="icon-btn" type="button" data-rename="${esc(m.id)}" aria-label="Rename ${esc(m.name)}" title="Rename">${ICON.pencil}</button>
+      ${m.id === S.me ? '' : `<button class="icon-btn" type="button" data-remove="${esc(m.id)}" aria-label="Remove ${esc(m.name)} from the club" title="Remove">${ICON.x}</button>`}</li>`).join('')}</ul>
+    <form class="field-row" id="addMemberForm" style="margin-top:10px"><input class="field" id="addMemberName" maxlength="30" placeholder="Add a member" aria-label="New member’s name"><button class="btn" type="submit">Add</button></form>
+    <p class="result" id="memberResult"></p>
+    <h3>Colour theme</h3>${themeGridHtml()}
+    <h3>About</h3>
+    <p class="small">Apps Script release ${esc(d.build || '?')}${(d.build || 0) >= EXPECT_BUILD ? ', up to date' : `, this app needs ${EXPECT_BUILD}`}. App release ${esc(V.replace('?v=', ''))}.</p>
+    <p class="small">Logo: The Whisky Club. Whisky catalogue: Global Spirits Inventory v2026.10 by E. Pace, The Remade Agency, CC BY 4.0. Pictures belong to the sites they come from, or to Open Food Facts, Wikimedia Commons and Wikipedia contributors.</p>
+    <div class="actions"><button class="link-btn" type="button" data-act="signout">Sign out of the club on this phone</button></div>`);
+}
+
+/* ---------- Actions ---------- */
+async function doRsvp(meetId, status, btn) {
+  const prev = rsvpOf(meetId, S.me);
+  if (prev === status) return;
+  btn.parentElement.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+  try { await call('rsvp', { meetId, status }); toast(status === 'in' ? 'You’re in' : status === 'maybe' ? 'Marked as maybe' : 'Marked as can’t come'); }
+  catch (err) { toast(friendly(err)); }
+  renderAll();
+}
+async function saveMeet(btn) {
+  const e = readEditor(), res = $('#edResult');
+  if (!e.at || isNaN(e.at)) { res.textContent = 'Pick a date.'; return; }
+  for (const [k, label] of [['slides', 'The slides link'], ['video', 'The song or video link']]) {
+    if (e[k] && !/^https:\/\//i.test(e[k])) { res.textContent = `${label} must start with https://`; return; }
+  }
+  const old = e.id && meetById(e.id);
+  await withBusy(btn, async () => {
+    res.textContent = '';
+    try {
+      e.lineup.forEach((d) => { const w = d.whiskyId && S.byId.get(d.whiskyId); const p = w && picFor(w); if (!d.snap.image && p && p.kind === 'bottle') d.snap.image = p.u; });
+      // a blind line-up this phone can't see isn't sent: the server keeps the real one
+      const payload = { id: e.id, at: e.at, host: e.host, place: e.place, notes: e.notes, slides: e.slides, video: e.video, blind: e.blind, lineup: e.hiddenLineup || e.revealed ? undefined : e.lineup };
+      const j = await call('saveMeet', { meet: payload });
+      const saved = meetById(j.savedId);
+      closeSheet(); S.edit = null; renderAll();
+      let told = '';
+      if (e.tell && saved) {
+        const moved = old && (old.at !== saved.at || old.place !== saved.place);
+        if (!old || moved) {
+          const title = old ? `Meet moved: ${longDate(saved.at)}` : `New meet: ${longDate(saved.at)}`;
+          const ok = await tellClub(title, `${time(saved.at)}. ${meetStory(saved)} Open Dram to say if you’re in.`);
+          told = ok ? ' The club has been told.' : ' Couldn’t reach ntfy to tell the club.';
+        }
+      }
+      toast((old ? 'Meet saved.' : 'Meet planned.') + told);
+    } catch (err) { res.textContent = friendly(err); toast(friendly(err)); }
+  });
+}
+async function saveScore(card, btn) {
+  const k = card.dataset.k, [meetId, dramId] = k.split(':'), dv = draft[k];
+  if (dv.score == null) return;
+  await withBusy(btn, async () => {
+    try {
+      await call('score', { meetId, dramId, score: dv.score, tags: dv.tags, note: dv.note });
+      const m = meetById(meetId), d = m && m.lineup.find((x) => x.id === dramId);
+      delete draft[k];
+      renderScreen();
+      toast(`Saved your ${dv.score.toFixed(1)} for ${d ? d.snap.title : 'that dram'}`);
+    } catch (err) { toast(friendly(err)); }
+  });
+}
+let revealArm = 0;
+async function revealScores(btn) {
+  const m = meetById(S.screen.meetId);
+  const missing = D().members.filter((x) => !(m.scorers || []).includes(x.id)).length;
+  if (Date.now() - revealArm > 4000) {
+    revealArm = Date.now();
+    btn.textContent = missing ? `${plural(missing, 'member')} hasn’t scored. Tap again to reveal` : 'Tap again to reveal for everyone';
+    setTimeout(() => { if (btn.isConnected && Date.now() - revealArm >= 4000) btn.textContent = 'Reveal scores'; }, 4100);
+    return;
+  }
+  revealArm = 0;
+  await withBusy(btn, async () => {
+    try {
+      busyToast('Revealing the scores…');
+      await call('reveal', { meetId: m.id });
+      const fresh = meetById(m.id);
+      const top = C.rankDrams(fresh.lineup || [], scoresFor(fresh.id))[0];
+      renderScreen();
+      $('#screen').scrollTop = 0;
+      const ok = await tellClub('Scores are in', top && top.avg != null ? `Top of the night: ${top.dram.snap.title}, ${top.avg.toFixed(1)} from ${plural(top.n, 'score')}. Open Dram for everyone’s notes.` : 'Open Dram for the results.');
+      toast(ok ? 'Scores revealed. The club has been told.' : 'Scores revealed.');
+    } catch (err) { toast(friendly(err)); }
+  });
+}
+async function toggleWish(btn) {
+  const w = S.byId.get(S.cur);
+  if (!w) return;
+  const ex = D().wishes.find((x) => x.whiskyId === w.id);
+  const mine = ex && ex.votes.includes(S.me);
+  btn.setAttribute('aria-pressed', 'true');
+  await withBusy(btn, async () => {
+    try {
+      if (mine) { toast('Already on the wish list, with your vote'); return; }
+      await call(ex ? 'vote' : 'wish', ex ? { id: ex.id } : { whiskyId: w.id, snap: C.snap(w, keepPic(w)) });
+      toast(ex ? 'Your vote is in' : 'Added to the wish list');
+    } catch (err) { toast(friendly(err)); btn.setAttribute('aria-pressed', 'false'); }
+  });
+  if (S.tab === 'drift') { const b = $('[data-act=wish]'); if (b) { const on = D().wishes.some((x) => x.whiskyId === w.id); b.setAttribute('aria-pressed', String(on)); b.lastChild.textContent = on ? 'Wished' : 'Wish list'; } }
+}
+
+document.addEventListener('click', async (e) => {
+  const t = e.target.closest('button, a');
+  if (!t) return;
+  const d = t.dataset;
+  if (d.theme) { setTheme(d.theme); return; }
+  if (d.tab) { closeSheet(); S.tab = d.tab; put('tab', S.tab); renderAll(); window.scrollTo(0, 0); if (S.tab !== 'meet') refresh(true); return; }
+  if (d.dismiss) { const x = get('dismissed', {}); x[d.dismiss] = 1; put('dismissed', x); renderNotices(); return; }
+  if (d.iam) { S.me = d.iam; put('me', S.me); renderAll(); toast(`Welcome, ${myName()}`); return; }
+  if (d.rsvp) { doRsvp(d.meet, d.rsvp, t); return; }
+  if (d.dram) { const [mid, did] = d.dram.split(':'); openDram(mid, did); return; }
+  if (d.type) { S.set.type = d.type; saveSet(); S.deck = []; S.hist = []; S.cur = null; ensureDrift(); renderMain(); return; }
+  if (d.cab) { S.cabView = d.cab; renderMain(); return; }
+  if (d.sort) { S.cabSort = d.sort; renderMain(); return; }
+  if (d.show) { const w = S.byId.get(d.show); if (w) { if (S.cur) S.hist.push(S.cur); S.cur = w.id; put('drift', S.cur); closeSheet(); renderMain(); window.scrollTo(0, 0); } return; }
+  if (d.pickw || d.pickwish) {
+    let item;
+    if (d.pickw) { const w = S.byId.get(d.pickw); item = lineupItem(w); if (picFor(w) === undefined) findPicture(w, true); }
+    else { const x = D().wishes.find((y) => y.id === d.pickwish); item = { id: Math.random().toString(36).slice(2, 8), whiskyId: x.whiskyId, by: x.by, snap: x.snap }; }
+    S.edit.lineup.push(item);
+    renderEditor();
+    toast(`${item.snap.title} added to the line-up`);
+    return;
+  }
+  if (d.unline) { readEditor(); S.edit.lineup = S.edit.lineup.filter((x) => x.id !== d.unline); renderEditor(); return; }
+  if (d.vote) {
+    const x = D().wishes.find((y) => y.id === d.vote); const was = x && x.votes.includes(S.me);
+    t.setAttribute('aria-pressed', String(!was));
+    try { await call('vote', { id: d.vote }); toast(was ? 'Vote taken back' : 'Your vote is in'); } catch (err) { toast(friendly(err)); }
+    renderMain(); return;
+  }
+  if (d.wishopen) { openWish(d.wishopen); return; }
+  if (d.unwish) { await withBusy(t, async () => { try { await call('unwish', { id: d.unwish }); closeSheet(); renderMain(); toast('Taken off the wish list'); } catch (err) { $('#wishResult').textContent = friendly(err); } }); return; }
+  if (d.rename) {
+    const m = D().members.find((x) => x.id === d.rename);
+    const li = t.closest('li');
+    li.innerHTML = `<form class="field-row" data-renameform="${esc(m.id)}" style="flex:1;padding:6px 0"><input class="field" value="${esc(m.name)}" maxlength="30" aria-label="New name"><button class="btn small" type="submit">Rename</button></form>`;
+    li.querySelector('input').focus();
+    return;
+  }
+  if (d.remove) {
+    const m = D().members.find((x) => x.id === d.remove);
+    if (t.dataset.armed !== '1') { t.dataset.armed = '1'; $('#memberResult').textContent = `Tap the × again to remove ${m.name}. Their past scores stay.`; return; }
+    await withBusy(t, async () => { try { await call('removeMember', { id: m.id }); openSettings(); toast(`${m.name} removed`); } catch (err) { $('#memberResult').textContent = friendly(err); } });
+    return;
+  }
+  if (d.step) {
+    const card = t.closest('.dram'), dv = draft[card.dataset.k];
+    dv.score = C.clampScore((dv.score == null ? 5 : dv.score) + +d.step);
+    syncDram(card); return;
+  }
+  if (d.tag) {
+    const card = t.closest('.dram'), dv = draft[card.dataset.k];
+    dv.tags = dv.tags.includes(d.tag) ? dv.tags.filter((x) => x !== d.tag) : dv.tags.concat(d.tag);
+    t.setAttribute('aria-pressed', String(dv.tags.includes(d.tag)));
+    syncDram(card, true); return;
+  }
+
+  switch (d.act) {
+    case 'close': closeSheet(); break;
+    case 'retry': withBusy(t, () => refresh(false)); break;
+    case 'install': if (S.installEvt) { S.installEvt.prompt(); S.installEvt = null; renderNotices(); } break;
+    case 'connect': openConnect(); break;
+    case 'connected': S.connected = true; put('connected', true); closeSheet(); renderNotices(); toast('Notifications are set up'); break;
+    case 'copy': try { await navigator.clipboard.writeText(D().club.topic); toast('Code copied'); } catch { toast('Press and hold the code to copy it'); } break;
+    case 'hello': {
+      await withBusy(t, async () => {
+        const ok = await tellClub(`${myName()} is on Dram`, 'Club messages arrive here: meet reminders, new meets, revealed scores and limited releases.');
+        $('#connectResult').textContent = ok ? `Sent at ${time(Date.now())}. It should appear in ntfy in a few seconds.` : 'Couldn’t reach ntfy. Check your connection and try again.';
+        toast(ok ? 'Test sent to the club' : 'Couldn’t reach ntfy');
+      });
+      break;
+    }
+    case 'test-reminder': {
+      await withBusy(t, async () => {
+        const res = $('#testResult');
+        try {
+          const j = await call('testNotify');
+          res.textContent = j.test && j.test.ok ? `Sent at ${time(j.test.at)}. It should reach ntfy within a minute.` : (j.test && j.test.reason) || 'It didn’t send.';
+          toast(j.test && j.test.ok ? 'Test reminder sent' : 'The test reminder didn’t send');
+        } catch (err) { res.textContent = friendly(err); toast(friendly(err)); }
+      });
+      break;
+    }
+    case 'new-meet': openEditor(null); break;
+    case 'edit-meet': openEditor(meetById(d.meet)); break;
+    case 'ed-blind': readEditor(); S.edit.blind = !S.edit.blind; t.setAttribute('aria-checked', String(S.edit.blind)); break;
+    case 'ed-tell': readEditor(); S.edit.tell = !S.edit.tell; t.setAttribute('aria-checked', String(S.edit.tell)); break;
+    case 'pick': openPick(); break;
+    case 'pick-back': renderEditor(); break;
+    case 'pick-custom': {
+      const q = ($('#pickQ').value || '').trim();
+      if (!q) break;
+      S.edit.lineup.push(lineupItem(null, q.slice(0, 120)));
+      renderEditor(); toast(`${q} added to the line-up`);
+      break;
+    }
+    case 'save-meet': saveMeet(t); break;
+    case 'delete-meet': {
+      if (t.dataset.armed !== '1') { t.dataset.armed = '1'; t.textContent = 'Tap again to delete, with its scores'; setTimeout(() => { if (t.isConnected) { t.dataset.armed = ''; t.textContent = 'Delete meet'; } }, 4000); break; }
+      await withBusy(t, async () => { try { await call('deleteMeet', { id: S.edit.id }); closeSheet(); S.edit = null; renderAll(); toast('Meet deleted'); } catch (err) { $('#edResult').textContent = friendly(err); } });
+      break;
+    }
+    case 'tasting': openScreen('tasting', d.meet); refresh(true); break;
+    case 'results': openScreen('results', d.meet); break;
+    case 'screen-back': goBack(); break;
+    case 'save-score': saveScore(t.closest('.dram'), t); break;
+    case 'reveal': revealScores(t); break;
+    case 'next': showNext(1); break;
+    case 'wish': toggleWish(t); break;
+    case 'search': if (!S.cat) { toast('The whisky list is still loading'); break; } openSearch(); break;
+    case 'cat-retry': catPromise = null; S.catErr = ''; renderMain(); loadCatalogue(); break;
+    case 'finds-now': {
+      await withBusy(t, async () => {
+        busyToast('Looking for new limited releases…');
+        try { await call('findsNow'); renderMain(); const i = D().findsInfo; toast(i && i.ok ? (i.added ? `${plural(i.added, 'new find')}` : 'Nothing new since the last look') : (i && i.reason) || 'Couldn’t look just now'); }
+        catch (err) { toast(friendly(err)); }
+      });
+      break;
+    }
+    case 'switch-me': closeSheet(); S.me = ''; put('me', ''); renderAll(); break;
+    case 'signout': signOut(''); break;
+    case 'save-club': {
+      await withBusy(t, async () => {
+        const name = $('#clubName').value.trim(), channel = $('#clubChannel').value.trim();
+        const res = $('#clubResult');
+        if (channel && !/^https:\/\//i.test(channel)) { res.textContent = 'The channel link must start with https://'; return; }
+        try { await call('setClub', { name, channel }); res.textContent = 'Saved.'; renderAll(); toast('Club details saved'); } catch (err) { res.textContent = friendly(err); }
+      });
+      break;
+    }
+  }
+});
+$('#themeBtn').addEventListener('click', () => togglePop('themes'));
+$('#settingsBtn').addEventListener('click', () => openSettings());
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && popOpen()) { closePops(); $('#themeBtn').focus(); } });
+
+function syncDram(card, keepSaved) {
+  const dv = draft[card.dataset.k];
+  const big = card.querySelector('[data-big]');
+  big.textContent = dv.score == null ? '–' : dv.score.toFixed(1);
+  big.classList.toggle('unset', dv.score == null);
+  if (dv.score != null) card.querySelector('[data-range]').value = dv.score;
+  const [meetId, dramId] = card.dataset.k.split(':');
+  const s = myScore(meetId, dramId);
+  const changed = !s || s.score !== dv.score || s.note !== dv.note || s.tags.join() !== dv.tags.join();
+  const btn = card.querySelector('[data-act=save-score]');
+  btn.disabled = dv.score == null;
+  btn.classList.toggle('primary', changed);
+  card.querySelector('.saved').innerHTML = s && !changed ? `<span class="tick">${ICON.tick}</span>Saved` : s ? 'Changed, not saved yet' : 'Not scored yet';
+}
+document.addEventListener('input', (e) => {
+  const t = e.target;
+  if (t.matches('[data-range]')) { const card = t.closest('.dram'); draft[card.dataset.k].score = C.clampScore(t.value); syncDram(card); }
+  else if (t.matches('[data-note]')) { const card = t.closest('.dram'); draft[card.dataset.k].note = t.value; syncDram(card); }
+  else if (t.id === 'pickQ') renderPick();
+  else if (t.id === 'searchQ') renderSearch();
+});
+document.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const f = e.target;
+  if (f.id === 'pinForm') {
+    const pin = $('#pinIn').value.trim();
+    if (!pin) return;
+    const btn = f.querySelector('button');
+    await withBusy(btn, async () => {
+      S.pin = pin;
+      try { await call('state'); put('pin', pin); S.gateErr = ''; renderAll(); }
+      catch (err) { S.pin = ''; S.gateErr = friendly(err); $('#gateErr').textContent = S.gateErr; }
+    });
+    return;
+  }
+  if (f.id === 'newMember' || f.id === 'addMemberForm') {
+    const inp = f.querySelector('input'), name = inp.value.trim();
+    if (!name) return;
+    await withBusy(f.querySelector('button'), async () => {
+      try {
+        await call('addMember', { name });
+        if (f.id === 'newMember') { const m = D().members.find((x) => x.name.toLowerCase() === name.toLowerCase()); if (m) { S.me = m.id; put('me', S.me); } renderAll(); toast(`Welcome, ${name}`); }
+        else { openSettings(); toast(`${name} added`); }
+      } catch (err) { if (f.id === 'addMemberForm') $('#memberResult').textContent = friendly(err); else toast(friendly(err)); }
+    });
+    return;
+  }
+  if (f.dataset.renameform) {
+    const name = f.querySelector('input').value.trim();
+    await withBusy(f.querySelector('button'), async () => {
+      try { await call('renameMember', { id: f.dataset.renameform, name }); renderAll(); openSettings(); toast('Name changed'); } catch (err) { $('#memberResult').textContent = friendly(err); }
+    });
+  }
+});
+
+/* ---------- Gestures ---------- */
+// One helper: decide the direction after 10px; only a sideways (or downward) drag is ours.
+function drag(el, opts) {
+  let st = null;
+  el.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) { st = null; return; }
+    const t = e.touches[0], tg = e.target;
+    if (tg.closest('input, textarea, select') || (opts.skip && opts.skip(tg, t))) { st = null; return; }
+    if (String(getSelection && getSelection()).length) { st = null; return; }
+    st = { x: t.clientX, y: t.clientY, t: Date.now(), dir: null, dx: 0, dy: 0 };
+  }, { passive: true });
+  el.addEventListener('touchmove', (e) => {
+    if (!st) return;
+    const t = e.touches[0];
+    st.dx = t.clientX - st.x; st.dy = t.clientY - st.y;
+    if (!st.dir) {
+      if (Math.hypot(st.dx, st.dy) < 10) return;
+      const horiz = Math.abs(st.dx) > Math.abs(st.dy);
+      st.dir = opts.axis === 'y' ? (!horiz && st.dy > 0 ? 'y' : 'none') : horiz ? 'x' : 'none';
+      if (st.dir === 'none') { st = null; return; }
+      if (opts.axis === 'x' && opts.onlyRight && st.dx < 0) { st = null; return; }
+    }
+    e.preventDefault();
+    opts.move(st);
+  }, { passive: false });
+  const end = () => {
+    if (!st || !st.dir) { st = null; return; }
+    const v = (opts.axis === 'y' ? st.dy : st.dx) / Math.max(1, Date.now() - st.t);
+    opts.end(st, v);
+    st = null;
+  };
+  el.addEventListener('touchend', end);
+  el.addEventListener('touchcancel', () => { if (st && st.dir) opts.cancel && opts.cancel(st); st = null; });
+}
+const scrollsSideways = (el) => {
+  for (let n = el; n && n !== document.body; n = n.parentElement) {
+    const ox = getComputedStyle(n).overflowX;
+    if ((ox === 'auto' || ox === 'scroll') && n.scrollWidth > n.clientWidth) return true;
+  }
+  return false;
+};
+const edgeSkip = (tg, t) => scrollsSideways(tg) || (!standalone && t.clientX < 24);
+const springBack = (el) => { el.style.transition = reduced() ? 'none' : 'transform .22s ease'; el.style.transform = ''; setTimeout(() => { el.style.transition = ''; }, 240); };
+const arrow = (p) => { const a = $('#backArrow'); a.innerHTML = ICON.back; a.style.opacity = String(Math.min(1, p)); };
+
+// Full-screen layer: swipe right to go back
+drag($('#screen'), {
+  axis: 'x', onlyRight: true, skip: edgeSkip,
+  move: (st) => { const dx = Math.max(0, st.dx); if (!reduced()) $('#screen').style.transform = `translateX(${dx}px)`; arrow(dx / (innerWidth / 3)); },
+  end: (st, v) => {
+    const el = $('#screen');
+    arrow(0);
+    if (st.dx > innerWidth / 3 || v > 0.5) {
+      if (!reduced()) { el.style.transition = 'transform .18s ease-out'; el.style.transform = `translateX(${innerWidth}px)`; }
+      setTimeout(() => { el.style.transition = ''; goBack(); }, reduced() ? 0 : 180);
+    } else springBack(el);
+  },
+  cancel: () => { arrow(0); springBack($('#screen')); },
+});
+// Sheets: drag the handle or title down to close
+drag(sheet, {
+  axis: 'y', skip: (tg) => !tg.closest('[data-grab]') || tg.closest('button'),
+  move: (st) => { if (!reduced()) sheet.style.transform = `translateY(${Math.max(0, st.dy)}px)`; },
+  end: (st, v) => {
+    if (st.dy > sheet.offsetHeight / 4 || v > 0.5) {
+      if (!reduced()) { sheet.style.transition = 'transform .18s ease-out'; sheet.style.transform = `translateY(${sheet.offsetHeight}px)`; }
+      setTimeout(() => { sheet.style.transition = ''; closeSheet(); }, reduced() ? 0 : 180);
+    } else springBack(sheet);
+  },
+  cancel: () => springBack(sheet),
+});
+// Drift card: swipe left for another, right for the last one
+let cardBound = null;
+function bindCardSwipe() {
+  const card = $('#card');
+  if (!card || card === cardBound) return;
+  cardBound = card;
+  drag(card, {
+    axis: 'x', skip: (tg) => scrollsSideways(tg),
+    move: (st) => { if (!reduced()) card.style.transform = `translateX(${st.dx}px) rotate(${st.dx / 40}deg)`; },
+    end: (st, v) => {
+      const go = Math.abs(st.dx) > innerWidth / 3 || Math.abs(v) > 0.5;
+      if (!go) { springBack(card); return; }
+      const dir = st.dx < 0 ? 1 : -1;
+      if (dir < 0 && !S.hist.length) { springBack(card); toast('That’s the first one this time'); return; }
+      if (reduced()) { showNext(dir); return; }
+      card.style.transition = 'transform .16s ease-in, opacity .16s';
+      card.style.transform = `translateX(${dir > 0 ? -innerWidth : innerWidth}px) rotate(${dir > 0 ? -8 : 8}deg)`;
+      card.style.opacity = '0';
+      setTimeout(() => showNext(dir), 160);
+    },
+    cancel: () => springBack(card),
+  });
+}
+
+/* ---------- Opening screen ---------- */
+const splashFrom = performance.now();
+let splashGone = false;
+function hideSplash() {
+  if (splashGone) return;
+  splashGone = true;
+  const el = $('#splash');
+  const wait = Math.max(0, 900 - (performance.now() - splashFrom));   // long enough to read, never longer than needed
+  setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 500); }, reduced() ? Math.min(wait, 300) : wait);
+}
+
+/* ---------- Start ---------- */
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); S.installEvt = e; renderNotices(); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && S.pin) refresh(true); });
+window.addEventListener('online', () => { if (S.pin) refresh(true); });
+setInterval(() => { if (S.tab === 'meet' && !S.screen && !sheet.open && S.me && document.visibilityState === 'visible') renderMain(); }, 60000);
+(function start() {
+  $('#themeBtn').innerHTML = ICON.eye; $('#settingsBtn').innerHTML = ICON.sliders; $('#channelBtn').innerHTML = ICON.play;
+  setTheme(S.set.theme);
+  renderAll();
+  // Signed in with saved data: the app is ready at once. Signed in without it: wait for the club, up to 2.5 s.
+  if (S.pin && !S.data) { refresh(true).then(hideSplash); setTimeout(hideSplash, 2500); }
+  else { hideSplash(); if (S.pin) refresh(true); }
+  if (S.tab === 'drift' || S.me) setTimeout(loadCatalogue, S.tab === 'drift' ? 0 : 1500);
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+})();
+</script>
+</body>
+</html>
