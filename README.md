@@ -10,7 +10,9 @@ Live at **https://quick-sheet.github.io/Dram/**. Behind a club PIN, for The Whis
 - **Tasting**: everyone scores each dram out of 10, with flavour tags and a note. Scores stay hidden until someone taps Reveal; then the whole club sees the results. A blind tasting shows Dram A, B and C until then.
 - **Drift**: swipe through 6,059 whiskies from the catalogue. Each card has Shop (Google Shopping), Read (the source page) and a heart for the club's wish list.
 - **Cabinet**: every dram tasted, best first, and the wish list with votes.
-- **Finds**: limited and special releases spotted in Google News, checked every Friday.
+- **Finds**: limited and special releases spotted in Google News, checked every Friday. Look now works once for the club, then Fridays only. Hearting a find adds it to **Worth a look**, the club's voted shortlist.
+- **Media**: the club's music (with lock-screen controls), its YouTube channel or playlist, and its Instagram posts.
+- **Light and dark**: the sun and moon button at the top switches; Settings also offers Same as phone.
 
 ## Host it
 
@@ -22,7 +24,7 @@ Live at **https://quick-sheet.github.io/Dram/**. Behind a club PIN, for The Whis
 
 1. On script.google.com, choose **New project** and name it **Dram**.
 2. Paste `apps-script/Code.gs` over the default file. In **Project Settings**, tick **Show "appsscript.json" manifest file in editor**, then paste `apps-script/appsscript.json` into it.
-3. Choose **setup** in the toolbar, press **Run** and approve. It creates the club's Google Sheet, the ntfy topic, the daily and weekly triggers, and a 6-digit club PIN. Read the PIN under **Execution log**. To change it, edit `PIN` under **Project Settings, Script Properties**.
+3. Choose **setup** in the toolbar, press **Run** and approve (this includes read-only YouTube access, for the club's channel). It creates the club's Google Sheet, the ntfy topics, the daily and weekly triggers, the club PIN, the admin PIN and your developer PIN. Read them under **Execution log**. To change one, edit `PIN`, `ADMIN_PIN` or `DEV_PIN` under **Project Settings, Script Properties**. Running setup again is safe: it keeps what exists.
 4. If a test reminder later says permission is missing, choose **authorise**, press **Run** and approve.
 5. **Deploy, New deployment, Web app**. Execute as **Me**, Who has access **Anyone**. Copy the web app URL into `index.html`.
 
@@ -33,9 +35,19 @@ To update it later: **Deploy, Manage deployments**, ✎ **Edit**, Version **New 
 - **Android (Chrome)**: open the live address and tap **Install** on the banner, or Chrome ⋮ then **Install app**.
 - **iPhone (Safari)**: tap **Share** (under the ⋯ beside the address bar on iOS 26), then **Add to Home Screen**, keeping **Open as Web App** on.
 
-## Share it
+## People
 
-Send members the live address and the club PIN. Each person picks their name once on their phone.
+- **Administrator**: one person looks after the club. They unlock admin in Settings with the admin PIN, then add members, share invites (link and club PIN), set the club's name, YouTube, Instagram and music. Unlocking on another phone hands admin over.
+- **Members**: the administrator adds their name first. Newcomers enter the club PIN, then pick their name. Nobody can add themselves, except the very first person in an empty club.
+- **Developer**: a separate developer PIN signs in as a hidden member. Nobody sees the developer, not even the administrator: not in the member list, and not their replies, scores, votes, wishes or test meets. The developer can't change the club's meets, reveal its scores or be admin. Messages from the developer's actions go to a separate developer ntfy topic.
+
+## Handing over
+
+1. In Apps Script, choose **resetClub** and press **Run**. It clears members, meets, replies, scores, the wish list and Worth a look, and the administrator. It keeps the PINs, club name, media, music and finds.
+2. On your phone, sign out (Settings, at the bottom), then come back in with the developer PIN.
+3. Give the founder the address, the club PIN and the admin PIN. They add their name as the first member, then unlock admin in Settings.
+
+Or, without clearing anything: add the founder as a member, let them unlock admin, then the old administrator taps **Step down and leave** in Settings.
 
 ## Update
 
@@ -55,14 +67,16 @@ Send members the live address and the club PIN. Each person picks their name onc
 | `whiskies.csv` | The catalogue |
 | `sw.js` | Offline support and instant updates |
 | `logo.webp`, `mark.webp`, icons | The club's artwork |
-| `apps-script/` | The club's server, deployed separately |
+| `apps-script/` | The club's server, deployed separately. Uses the YouTube service (read-only) |
 
 ## Good to know
 
 - **Notifications** come through the free ntfy app. The whole club shares one topic. Reminders arrive the day before and on the morning of each meet, around 10:00, and limited-release finds on Fridays around 9:00 when there's something new. New meets and revealed scores are sent by the phone that made them. Never put anything private in a meet's place or notes, since the topic is only private because nobody else knows its name.
 - **Pictures**: about half the catalogue has its own picture. For the rest, Dram searches Wikimedia Commons, Open Food Facts and, as a last resort, shows the distillery's Wikipedia picture, clearly labelled. Some shops block their pictures elsewhere; Dram then searches instead.
 - **Prices**: the catalogue has none yet, so the Shop button searches Google Shopping.
-- **YouTube**: private videos only play for the Google accounts they're shared with. Unlisted ones work for anyone with the link.
+- **YouTube**: Dram lists the channel's videos through the YouTube service in Apps Script. If the channel belongs to the Google account running the script, private and unlisted videos are listed too; otherwise only public ones, or everything in an unlisted playlist. Private videos only play for the Google accounts they're shared with, so set club videos to Unlisted to play them inside Dram.
+- **Instagram**: the account must be a professional account (Creator is free), which makes it public. The administrator pastes an access token from a Meta developer app; Apps Script keeps it and renews it weekly.
+- **Music**: Suno song links, Google Drive files shared with "Anyone with the link", Dropbox links and direct MP3 links all play.
 - **Android**: if every launch plays a sound and shows "Tap to copy the URL for this app", that's Chrome's **Full screen site controls** notification. Long-press it and turn that category off.
 
 Catalogue: Global Spirits Inventory v2026.10 by E. Pace, The Remade Agency, CC BY 4.0. Logo: The Whisky Club.

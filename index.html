@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="en-GB" data-theme="amber">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dram</title>
 <meta name="description" content="Our whisky club in one place: meets, tasting scores and a dram to discover.">
-<meta name="theme-color" content="#0D0904">
+<meta name="theme-color" content="#0E0A06">
 <link rel="manifest" href="manifest.webmanifest">
+<script>try{var m=(JSON.parse(localStorage.getItem('drm.settings')||'{}').look)||'dark';if(m==='auto')m=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';if(m==='light')document.documentElement.dataset.theme='light'}catch(e){}</script>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
 <link rel="preload" as="image" href="logo.webp" fetchpriority="high">
@@ -20,14 +21,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600&display=swap">
 <style>
-:root{--bg:#0F1528;--raise:#161E37;--raise-2:#1D2645;--line:rgba(205,214,245,.09);--line-2:rgba(205,214,245,.17);
---ink:#ECE8DF;--ink-2:#A3ABC2;--ink-3:#6E7794;--sun:#F2C063;--sun-soft:rgba(242,192,99,.17);--on-sun:#1D1505;
---dome-in:#0A0F21;--dome-out:#1A2448;--sans:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:dark}
-:root[data-theme="red"]{--bg:#0C0404;--raise:#160707;--raise-2:#1F0A0A;--line:rgba(255,90,70,.12);--line-2:rgba(255,90,70,.22);--ink:#E2573F;--ink-2:#A9412F;--ink-3:#74291F;--sun:#FF5B3D;--sun-soft:rgba(255,91,61,.18);--on-sun:#1A0503;--dome-in:#070202;--dome-out:#1E0808}
-:root[data-theme="amber"]{--bg:#0D0904;--raise:#171008;--raise-2:#20170C;--line:rgba(255,190,110,.10);--line-2:rgba(255,190,110,.20);--ink:#EBC48A;--ink-2:#A98A5C;--ink-3:#6F5A3B;--sun:#FFB04A;--sun-soft:rgba(255,176,74,.18);--on-sun:#1A0F02;--dome-in:#080502;--dome-out:#241809}
-:root[data-theme="sea"]{--bg:#06121A;--raise:#0B1C26;--raise-2:#102632;--line:rgba(150,220,230,.09);--line-2:rgba(150,220,230,.18);--ink:#D6E9EC;--ink-2:#8EAEB4;--ink-3:#5A7880;--sun:#6FD9D0;--sun-soft:rgba(111,217,208,.16);--on-sun:#031513;--dome-in:#030B10;--dome-out:#0F2A38}
-:root[data-theme="aurora"]{--bg:#07110D;--raise:#0C1A14;--raise-2:#11241B;--line:rgba(150,235,190,.09);--line-2:rgba(150,235,190,.18);--ink:#D7EBDF;--ink-2:#8DAA9A;--ink-3:#5A7566;--sun:#86E3A8;--sun-soft:rgba(134,227,168,.16);--on-sun:#04140B;--dome-in:#040A07;--dome-out:#12291E}
-:root[data-theme="dusk"]{--bg:#110D1A;--raise:#1A1426;--raise-2:#221A31;--line:rgba(210,190,255,.09);--line-2:rgba(210,190,255,.18);--ink:#E8E1F4;--ink-2:#A79CBD;--ink-3:#6E6485;--sun:#F2A7C8;--sun-soft:rgba(242,167,200,.16);--on-sun:#1E0812;--dome-in:#0A0712;--dome-out:#261C3A}
+/* Two themes drawn from the club's logo. Cask: deep oak and lamplight. Parchment: a tasting card in daylight. */
+:root{--bg:#0E0A06;--raise:#18110A;--raise-2:#231910;--line:rgba(255,206,150,.09);--line-2:rgba(255,206,150,.18);
+--ink:#F4E8D4;--ink-2:#BDA98E;--ink-3:#85725B;--sun:#FFA42B;--sun-ink:#FFB04A;--sun-soft:rgba(255,164,43,.16);--on-sun:#1C0F02;
+--dome-in:#0A0704;--dome-out:#2B1B0C;--ice:#FFFFFF;--shadow:none;--glow:rgba(255,120,20,.22);
+--sans:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:dark}
+:root[data-theme="light"]{--bg:#FBF6EE;--raise:#F3EADC;--raise-2:#EADDC8;--line:rgba(74,44,14,.10);--line-2:rgba(74,44,14,.20);
+--ink:#24180C;--ink-2:#5F4A35;--ink-3:#836C55;--sun:#F0922A;--sun-ink:#A9520A;--sun-soft:rgba(240,146,42,.16);--on-sun:#1F1205;
+--dome-in:#FFFDF8;--dome-out:#EEDFC8;--ice:#7A5A38;--shadow:0 1px 2px rgba(74,44,14,.06),0 8px 24px rgba(74,44,14,.07);--glow:rgba(200,110,20,.18);color-scheme:light}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.45 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;
@@ -70,7 +71,7 @@ header{display:grid;grid-template-columns:1fr auto;align-items:start;padding:16p
 /* Notices */
 .notice{display:flex;gap:12px;align-items:center;margin:10px 0 0;padding:10px 12px 10px 14px;border-radius:14px;background:var(--raise);font-size:14px;color:var(--ink-2)}
 .notice p{margin:0;flex:1}
-.notice .link-btn{color:var(--sun);font-weight:600;white-space:nowrap;text-decoration:none}
+.notice .link-btn{color:var(--sun-ink);font-weight:600;white-space:nowrap;text-decoration:none}
 .notice .x{color:var(--ink-3);width:32px;height:32px;display:grid;place-items:center;border-radius:50%;flex:none}
 .notice .x svg{width:16px;height:16px}
 
@@ -78,8 +79,8 @@ header{display:grid;grid-template-columns:1fr auto;align-items:start;padding:16p
 .hero{padding:6px 0 8px}
 .glass{display:block;width:150px;height:auto;margin:4px auto 12px;overflow:visible}
 .glass .pour{animation:slosh 5s ease-in-out infinite alternate}
-.glass .ice rect{fill:#fff;fill-opacity:.12;stroke:#fff;stroke-opacity:.88;stroke-width:2.6}
-.glass .ice .glint{fill:none;stroke:#fff;stroke-opacity:.7;stroke-width:1.6;stroke-linecap:round}
+.glass .ice rect{fill:#fff;fill-opacity:.14;stroke:var(--ice);stroke-opacity:.88;stroke-width:2.6}
+.glass .ice .glint{fill:none;stroke:var(--ice);stroke-opacity:.7;stroke-width:1.6;stroke-linecap:round}
 @keyframes slosh{from{transform:translateX(-3px)}to{transform:translateX(3px)}}
 .state-line{margin:0;font-size:15px;color:var(--ink-2)}
 .state-line strong{color:var(--ink);font-weight:500}
@@ -100,7 +101,7 @@ h1.title{margin:2px 0 0;font-size:26px;line-height:1.15;font-weight:600;letter-s
 .btn.busy::after{content:"";position:absolute;left:50%;top:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;color:var(--ink)}
 .btn.primary.busy::after{color:var(--on-sun)}
 .link-btn{color:var(--ink-2);font-size:14px;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-2)}
-.link-btn.danger{color:var(--sun)}
+.link-btn.danger{color:var(--sun-ink)}
 .section-title{margin:34px 0 4px;font-size:18px;font-weight:600;letter-spacing:-.01em}
 .section-note{margin:2px 0 0;font-size:13.5px;color:var(--ink-3)}
 .foot{margin-top:36px;font-size:12.5px;color:var(--ink-3)}
@@ -135,7 +136,7 @@ h1.title{margin:2px 0 0;font-size:26px;line-height:1.15;font-weight:600;letter-s
 .rank{flex:none;width:1.4rem;text-align:center;font-size:14px;color:var(--ink-3);font-weight:500}
 .thumb{flex:none;width:44px;height:44px;border-radius:12px;background:radial-gradient(circle at 50% 30%,var(--dome-out),var(--dome-in));overflow:hidden;display:grid;place-items:center;position:relative}
 .thumb img{width:100%;height:100%;object-fit:contain}
-.thumb .lab{font-weight:600;font-size:17px;color:var(--sun)}
+.thumb .lab{font-weight:600;font-size:17px;color:var(--sun-ink)}
 .thumb svg{width:26px;height:34px}
 
 /* Drift card */
@@ -149,7 +150,7 @@ h1.title{margin:2px 0 0;font-size:26px;line-height:1.15;font-weight:600;letter-s
 .pic img{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain;opacity:0;transition:opacity .25s}
 .pic img.on{opacity:1}
 .pic img.wide{inset:0;width:100%;height:100%;object-fit:cover}
-.pic .drawn{width:34%;height:auto;color:var(--sun);opacity:.85}
+.pic .drawn{width:34%;height:auto;color:var(--sun-ink);opacity:.85}
 .pic .finding{position:absolute;left:12px;bottom:10px;font-size:12.5px;color:var(--ink-3);display:flex;gap:6px;align-items:center}
 .credit{margin:6px 2px 0;font-size:12px;color:var(--ink-3);min-height:1.2em}
 .card-actions{display:flex;justify-content:space-between;margin-top:16px}
@@ -157,7 +158,7 @@ h1.title{margin:2px 0 0;font-size:26px;line-height:1.15;font-weight:600;letter-s
 .act .disc{width:48px;height:48px;border-radius:50%;background:var(--raise-2);display:grid;place-items:center}
 .act .disc svg{width:22px;height:22px}
 .act.accent .disc{background:var(--sun);color:var(--on-sun)}
-.act[aria-pressed="true"] .disc{background:var(--sun-soft);color:var(--sun)}
+.act[aria-pressed="true"] .disc{background:var(--sun-soft);color:var(--sun-ink)}
 .act[aria-pressed="true"] .disc svg{fill:currentColor}
 .hint{margin:12px 0 0;text-align:center;font-size:13px;color:var(--ink-3)}
 
@@ -171,7 +172,7 @@ h1.title{margin:2px 0 0;font-size:26px;line-height:1.15;font-weight:600;letter-s
 .score-big{font-size:34px;font-weight:600;letter-spacing:-.02em;min-width:3.2rem;text-align:center}
 .score-big.unset{color:var(--ink-3)}
 .round{width:44px;height:44px;border-radius:50%;background:var(--raise-2);display:grid;place-items:center;flex:none;font-size:22px;font-weight:500;line-height:1}
-input[type=range]{flex:1;min-width:0;height:44px;background:transparent;-webkit-appearance:none;appearance:none;accent-color:var(--sun)}
+input[type=range]{flex:1;min-width:0;height:44px;background:transparent;-webkit-appearance:none;appearance:none;accent-color:var(--sun-ink)}
 input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--raise-2)}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--sun);margin-top:-10px;border:0}
 input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--raise-2)}
@@ -208,10 +209,68 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:8;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   border-top:1px solid var(--line);padding:0 0 env(safe-area-inset-bottom)}
 .tabs[hidden]{display:none}
-.tabs-in{max-width:34rem;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tabs-in{max-width:34rem;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
 .tab{height:62px;display:grid;justify-items:center;align-content:center;gap:3px;font-size:12px;font-weight:500;color:var(--ink-3)}
 .tab svg{width:23px;height:23px}
-.tab[aria-current="page"]{color:var(--sun)}
+.tab[aria-current="page"]{color:var(--sun-ink)}
+
+/* Media */
+.media-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 4px}
+.media-head h2{margin:0;font-size:18px;font-weight:600;letter-spacing:-.01em;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;margin-top:10px}
+.vcard{display:block;text-align:left;min-width:0}
+.vthumb{position:relative;display:block;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--raise-2)}
+.vthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.vthumb .lock{position:absolute;left:6px;top:6px;font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:10px;background:rgba(0,0,0,.66);color:#fff}
+.vthumb .playg{position:absolute;right:8px;bottom:8px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.55);display:grid;place-items:center;color:#fff}
+.vthumb .playg svg{width:14px;height:14px}
+.vtitle{display:block;margin-top:6px;font-size:14px;font-weight:500;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.vdate{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:10px -4px 0}
+.igrid button{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--raise-2);border-radius:4px}
+.igrid img{width:100%;height:100%;object-fit:cover;display:block}
+.igrid .reel{position:absolute;right:6px;top:6px;color:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+.igrid .reel svg{width:16px;height:16px}
+.video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;margin-top:10px}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.nowplaying{margin:16px 0 0;padding:18px 16px 14px;border-radius:22px;background:radial-gradient(120% 120% at 50% 0%,var(--dome-out),var(--raise) 70%);text-align:center}
+.nowplaying .art{width:96px;height:96px;margin:0 auto 6px;display:block;filter:drop-shadow(0 8px 24px rgba(255,120,20,.3))}
+.nowplaying.playing .art{animation:breathe 2.4s ease-in-out infinite alternate}
+.np-title{font-size:19px;font-weight:600;letter-spacing:-.01em;line-height:1.25}
+.np-artist{font-size:14px;color:var(--ink-2);margin-top:2px}
+.np-bar{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:12.5px;color:var(--ink-3)}
+.np-bar input{flex:1;height:30px}
+.np-controls{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:6px}
+.np-controls .round svg,.mini .round svg{width:20px;height:20px}
+.round.big{width:60px;height:60px}
+.round.big svg{width:26px;height:26px}
+.round.accent{background:var(--sun);color:var(--on-sun)}
+.track{display:flex;align-items:center;gap:12px;min-height:58px;border-bottom:1px solid var(--line)}
+.track .row-main{gap:14px}
+.tnum{flex:none;width:22px;text-align:center;font-size:14px;color:var(--ink-3)}
+.track.on .row-title{color:var(--sun-ink)}
+.eq{display:inline-flex;gap:2px;align-items:flex-end;height:14px;width:22px;justify-content:center}
+.eq i{display:block;width:3px;background:var(--sun);border-radius:1px;animation:eq 1s ease-in-out infinite alternate}
+.eq i:nth-child(1){height:60%}.eq i:nth-child(2){height:100%;animation-delay:-.4s}.eq i:nth-child(3){height:40%;animation-delay:-.7s}
+.eq.still i{animation:none}
+@keyframes eq{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+.eq i{transform-origin:bottom}
+.mini{position:fixed;left:0;right:0;bottom:calc(63px + env(safe-area-inset-bottom));z-index:7;padding:0 12px 8px;pointer-events:none}
+.mini[hidden]{display:none}
+.mini-in{pointer-events:auto;max-width:34rem;margin:0 auto;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 10px;border-radius:18px;background:var(--raise-2);border:1px solid var(--line-2);box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.mini-in img{width:34px;height:34px;flex:none}
+.mini-text{flex:1;min-width:0;text-align:left}
+.mini-text b{display:block;font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-text span{display:block;font-size:12.5px;color:var(--ink-3)}
+.mini-prog{height:2px;border-radius:1px;background:var(--line-2);margin-top:4px;overflow:hidden}
+.mini-prog i{display:block;height:100%;width:0;background:var(--sun)}
+body.has-mini .wrap{padding-bottom:calc(160px + env(safe-area-inset-bottom))}
+details.how{margin-top:10px;color:var(--ink-2);font-size:14.5px}
+details.how summary{cursor:pointer;color:var(--ink);font-weight:500;min-height:36px;display:flex;align-items:center}
+details.how ol{margin:6px 0 0;padding-left:20px}
+details.how li{margin:4px 0}
+.admin-card{margin-top:10px;padding:14px;border-radius:16px;background:var(--bg);border:1px solid var(--line)}
+.admin-card p{margin:0 0 10px}
 
 /* Sheets */
 dialog.sheet{position:fixed;inset:auto 0 0 0;margin:0 auto;width:100%;max-width:34rem;max-height:90vh;border:0;border-radius:22px 22px 0 0;padding:0;background:var(--raise);color:var(--ink);overflow:auto;overscroll-behavior:contain}
@@ -253,26 +312,16 @@ select.field{appearance:none;-webkit-appearance:none;background-image:linear-gra
 .lineup-edit .row{gap:6px}
 .lineup-edit select{height:36px;font-size:14px;width:auto;max-width:9.5rem;border-radius:10px;padding:0 28px 0 10px;background-position:calc(100% - 16px) 15px,calc(100% - 11px) 15px}
 
-/* Popover (theme picker) */
-.pop{position:absolute;top:64px;right:12px;z-index:5;width:min(300px,calc(100% - 24px));padding:16px 12px 12px;border-radius:18px;background:var(--raise);border:1px solid var(--line-2);box-shadow:0 18px 40px rgba(0,0,0,.45);animation:drop .18s ease-out;transform-origin:top right}
-.pop[hidden]{display:none}
-@keyframes drop{from{opacity:0;transform:translateY(-6px) scale(.98)}}
-.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 6px}
-.theme-opt{display:grid;justify-items:center;gap:6px;padding:4px 0;font-size:12.5px;color:var(--ink-2)}
-.theme-opt[aria-pressed="true"]{color:var(--ink)}
-.sw{width:42px;height:42px;border-radius:50%;border:1px solid var(--line-2);background:radial-gradient(circle,var(--b) 0 6px,transparent 7px),radial-gradient(circle at 50% 35%,var(--c),var(--a))}
-.theme-opt[aria-pressed="true"] .sw{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--sun)}
-.theme-note{margin:12px 4px 0;font-size:12.5px;color:var(--ink-3)}
 
 /* Gate */
 .gate{padding:3vh 0 0;text-align:center}
-.gate .logo{display:block;width:min(64vw,260px);height:auto;margin:0 auto;filter:drop-shadow(0 10px 40px rgba(255,120,20,.18))}
+.gate .logo{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 40px var(--glow))}
 .gate h1{margin:6px 0 0;font-size:26px;font-weight:600;letter-spacing:-.015em}
 .gate p{color:var(--ink-2);margin:10px auto 0;max-width:22rem}
 .gate form{margin:24px auto 0;max-width:20rem;display:grid;gap:10px}
 .gate #pinIn{text-align:center;font-size:22px;letter-spacing:.2em;height:54px}
 .gate #pinIn::placeholder{letter-spacing:.05em;font-size:17px}
-.gate .err{color:var(--sun);font-size:14.5px;min-height:1.4em;margin:8px 0 0}
+.gate .err{color:var(--sun-ink);font-size:14.5px;min-height:1.4em;margin:8px 0 0}
 .who{margin:18px auto 0;max-width:22rem;text-align:left}
 
 /* Toast */
@@ -284,6 +333,14 @@ select.field{appearance:none;-webkit-appearance:none;background-image:linear-gra
 .toast:popover-open{display:flex}
 
 .loading-mark{display:block;width:72px;height:72px;margin:28px auto 10px;animation:breathe 1.8s ease-in-out infinite alternate}
+.dram,.nowplaying,.admin-card,.notice{box-shadow:var(--shadow)}
+.logo-stage{display:block;width:min(70vw,290px);margin:0 auto;border-radius:30px}
+:root[data-theme="light"] .gate .logo-stage{margin-bottom:20px}
+:root[data-theme="light"] .logo-stage{padding:16px 18px 18px;background:radial-gradient(120% 90% at 50% 38%,#2C1809,#0D0904 70%);box-shadow:0 18px 40px rgba(60,30,5,.28)}
+:root[data-theme="light"] .brand img,:root[data-theme="light"] .loading-mark,:root[data-theme="light"] .nowplaying .art,:root[data-theme="light"] .mini-in img{filter:drop-shadow(0 1px 1.5px rgba(60,30,5,.55))}
+:root[data-theme="light"] .mini-in{box-shadow:0 10px 30px rgba(74,44,14,.18)}
+:root[data-theme="light"] dialog.sheet::backdrop{background:rgba(40,24,8,.42)}
+:root[data-theme="light"] .tabs{background:color-mix(in srgb,var(--bg) 88%,transparent)}
 @keyframes breathe{from{opacity:.55;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -297,22 +354,22 @@ select.field{appearance:none;-webkit-appearance:none;background-image:linear-gra
   <header>
     <div class="brand"><img src="mark.webp" alt="" width="36" height="36"><div><div class="mark" id="brandName">Dram</div><div class="where" id="clubLine"></div></div></div>
     <div class="tools">
-      <a class="icon-btn" id="channelBtn" hidden aria-label="Club channel" title="Club channel" target="_blank" rel="noopener"></a>
-      <button class="icon-btn" id="themeBtn" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="themes" aria-label="Colour theme" title="Colour theme"></button>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to light" title="Switch to light"></button>
       <button class="icon-btn" id="settingsBtn" type="button" aria-label="Settings" title="Settings"></button>
     </div>
   </header>
-  <div class="pop" id="themes" hidden role="group" aria-label="Colour theme"></div>
   <div id="notices"></div>
   <main id="main"></main>
 </div>
 <nav class="tabs" id="tabs" hidden aria-label="Sections"><div class="tabs-in" id="tabsIn"></div></nav>
 <section class="screen" id="screen" hidden role="dialog" aria-modal="true" aria-labelledby="screenTitle"></section>
 <div class="back-arrow" id="backArrow" aria-hidden="true"></div>
+<div class="mini" id="mini" hidden></div>
+<audio id="audio" preload="none"></audio>
 <dialog class="sheet" id="sheet" aria-labelledby="sheetTitle"><div class="sheet-in" id="sheetBody"></div></dialog>
 <div class="toast" id="toast" role="status" popover="manual"></div>
 
-<script src="core.js?v=1"></script>
+<script src="core.js?v=2"></script>
 <script>
 (() => {
 'use strict';
@@ -321,21 +378,13 @@ const V = new URL(document.querySelector('script[src^="core.js"]').src).search;
 
 /* ---------- Settings you fill in ---------- */
 const API = 'https://script.google.com/macros/s/AKfycbz9uy9MyUgzq_JN06K-v7HhbcDQkoMGxmmwmTZ-jrHL0o82IvXYfIdBojqM4FYluxVF/exec';            // Apps Script web app URL, filled in after deploying
-const EXPECT_BUILD = 1;    // the Apps Script release this page needs
+const EXPECT_BUILD = 2;    // the Apps Script release this page needs
 
 /* ---------- Constants ---------- */
 const NTFY = 'https://ntfy.sh';
 const PLAY = 'https://play.google.com/store/apps/details?id=io.heckel.ntfy';
 const APPSTORE = 'https://apps.apple.com/app/ntfy/id1625396347';
 const TAGS = ['Smoke', 'Peat', 'Fruit', 'Sherry', 'Vanilla', 'Spice', 'Honey', 'Citrus', 'Oak', 'Floral', 'Salt', 'Chocolate', 'Nutty', 'Toffee'];
-const THEMES = [
-  { id: 'amber', name: 'Amber', bg: '#0D0904', dome: '#241809', accent: '#FFB04A' },
-  { id: 'twilight', name: 'Twilight', bg: '#0F1528', dome: '#1A2448', accent: '#F2C063' },
-  { id: 'red', name: 'Night red', bg: '#0C0404', dome: '#1E0808', accent: '#FF5B3D' },
-  { id: 'sea', name: 'Deep sea', bg: '#06121A', dome: '#0F2A38', accent: '#6FD9D0' },
-  { id: 'aurora', name: 'Aurora', bg: '#07110D', dome: '#12291E', accent: '#86E3A8' },
-  { id: 'dusk', name: 'Dusk', bg: '#110D1A', dome: '#261C3A', accent: '#F2A7C8' },
-];
 const MIN = 60e3, H = 3600e3, DAY = 864e5;
 const UA = navigator.userAgent;
 const isIOS = /iP(hone|ad|od)/.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -351,12 +400,14 @@ const del = (k) => { try { localStorage.removeItem(P + k); } catch {} };
 
 const S = {
   pin: get('pin', ''), me: get('me', ''), data: get('data', null), dataAt: get('dataAt', 0), syncFail: false,
-  tab: get('tab', 'meet'), set: Object.assign({ theme: 'amber', type: 'All', hints: 0 }, get('settings', {})),
+  tab: get('tab', 'meet'), set: Object.assign({ look: 'dark', type: 'All', hints: 0 }, get('settings', {})),
   cat: null, catErr: '', catLoading: false, byId: new Map(),
   deck: [], pos: -1, hist: [], cur: get('drift', null),
   imgs: get('imgs', {}), finding: new Set(), offAt: 0,
   connected: get('connected', false), installEvt: null,
   cabView: 'tasted', cabSort: 'score', screen: null, edit: null, gateErr: '', polling: 0,
+  admin: get('admin', ''), media: get('media', null), mediaBusy: false, mediaView: null,
+  play: { id: null, dur: get('durs', {}), bad: {} },
 };
 const saveSet = () => put('settings', S.set);
 
@@ -403,6 +454,8 @@ const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } 
 const ICON = {
   x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
   back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>',
+  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M19.5 14.6A8 8 0 0 1 9.4 4.5a8 8 0 1 0 10.1 10.1Z"/></svg>',
   eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/></svg>',
   sliders: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>',
   play: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.8" y="5.8" width="18.4" height="12.4" rx="3.6"/><path d="M10.2 9.4v5.2l4.6-2.6Z" fill="currentColor"/></svg>',
@@ -418,6 +471,16 @@ const ICON = {
   tabMeet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4.5C5.6 7 5 9.6 5 12.4c0 4.6 2.6 7.1 7 7.1s7-2.5 7-7.1c0-2.8-.6-5.4-1.5-7.9"/><path d="M6 12.6c2-.9 4-.9 6 0s4 .9 6 0"/><rect x="9.2" y="8.6" width="4.4" height="4.4" rx="1" transform="rotate(45 11.4 10.8)"/></svg>',
   tabDrift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="4.5" y="6.5" width="11" height="14" rx="2.2"/><path d="M8.5 3.5h8.8a2.2 2.2 0 0 1 2.2 2.2V17"/></svg>',
   tabCab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M4 12h16M8 9V7.5M11 9V6.5M15 9V7M8.5 17v-2M12 17v-2.5M16 17v-1.5"/></svg>',
+  tabMedia: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18.5V6.2l10-2.2v12.3"/><circle cx="6.6" cy="18.5" r="2.4"/><circle cx="16.6" cy="16.3" r="2.4"/><path d="M9 10l10-2.2"/></svg>',
+  pause: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1.2"/><rect x="13.5" y="5" width="4" height="14" rx="1.2"/></svg>',
+  playFill: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.6v12.8a1 1 0 0 0 1.5.86l10.2-6.4a1 1 0 0 0 0-1.72L9.5 4.74A1 1 0 0 0 8 5.6Z"/></svg>',
+  prev: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="5.5" width="2.4" height="13" rx="1"/><path d="M19 6.4v11.2a.9.9 0 0 1-1.4.75L9.8 12.75a.9.9 0 0 1 0-1.5l7.8-5.6A.9.9 0 0 1 19 6.4Z"/></svg>',
+  next: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="16.6" y="5.5" width="2.4" height="13" rx="1"/><path d="M5 6.4v11.2a.9.9 0 0 0 1.4.75l7.8-5.6a.9.9 0 0 0 0-1.5l-7.8-5.6A.9.9 0 0 0 5 6.4Z"/></svg>',
+  up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 14.5 6-6 6 6"/></svg>',
+  down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9.5 6 6 6-6"/></svg>',
+  share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11M8 7.5l4-4 4 4"/><path d="M6 11.5H5.5a1.5 1.5 0 0 0-1.5 1.5v6a1.5 1.5 0 0 0 1.5 1.5h13a1.5 1.5 0 0 0 1.5-1.5v-6a1.5 1.5 0 0 0-1.5-1.5H18"/></svg>',
+  lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>',
+  insta: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>',
   tabFinds: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.5l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L12 16l-5 2.7 1.1-5.5L4 9.3l5.6-.7Z"/></svg>',
 };
 const bottleSvg = (cls = 'drawn') => `<svg class="${cls}" viewBox="0 0 40 64" aria-hidden="true"><path d="M16 2h8v12c0 3 7 5 7 12v32a4 4 0 0 1-4 4H13a4 4 0 0 1-4-4V26c0-7 7-9 7-12Z" fill="currentColor" fill-opacity=".22" stroke="currentColor" stroke-width="1.5"/><rect x="11.5" y="34" width="17" height="14" rx="2" fill="currentColor" fill-opacity=".55"/></svg>`;
@@ -464,7 +527,7 @@ async function withBusy(btn, fn) {
 const friendly = (err) => (err && err.name === 'TypeError' ? 'Couldn’t reach the club. Check your connection and try again.' : String((err && err.message) || err));
 async function api(action, data = {}) {
   if (!API) throw new Error('This copy of Dram isn’t connected to its Apps Script yet.');
-  const r = await fetch(API, { method: 'POST', body: JSON.stringify(Object.assign({ action, pin: S.pin, me: S.me }, data)) });
+  const r = await fetch(API, { method: 'POST', body: JSON.stringify(Object.assign({ action, pin: S.pin, me: S.me }, S.admin ? { admin: S.admin } : {}, data)) });
   let j;
   try { j = await r.json(); } catch { throw new Error('The club’s Apps Script sent back something unexpected. Try again in a minute.'); }
   if (j.error) { const e = new Error(j.error); e.server = true; throw e; }
@@ -475,6 +538,9 @@ function setData(j) {
   S.data = j; S.dataAt = Date.now(); S.syncFail = false;
   put('data', j); put('dataAt', S.dataAt);
   if (S.me && !j.members.some((m) => m.id === S.me)) { S.me = ''; put('me', ''); }
+  if (j.dev && j.me && S.me !== j.me) { S.me = j.me; put('me', S.me); }   // the developer's PIN: the hidden member
+  if (j.adminStale) { S.admin = ''; del('admin'); }   // admin has moved to someone else
+  if (S.play.id && !(j.tracks || []).some((t) => t.id === S.play.id)) stopPlayer();
 }
 async function call(action, data) { const j = await api(action, data); setData(j); return j; }
 let refreshing = null;
@@ -494,17 +560,24 @@ function refresh(quiet) {
 }
 function signOut(msg) {
   S.pin = ''; S.me = ''; S.data = null; S.gateErr = msg || '';
-  ['pin', 'me', 'data', 'dataAt'].forEach(del);
+  S.admin = ''; stopPlayer();
+  ['pin', 'me', 'data', 'dataAt', 'admin', 'media'].forEach(del);
   closeSheet(); closeScreen(true);
   renderAll();
 }
 
 /* ---------- Club data ---------- */
 const clubName = () => (S.data && S.data.club && S.data.club.name) || 'The Whisky Club';
-function sectionLine() {
+const amAdmin = () => !!(S.data && S.data.isAdmin);
+const amDev = () => !!(S.data && S.data.dev);
+const devTest = (m) => amDev() && m && m.createdBy === S.me;
+const adminName = () => (S.data && S.data.admin && S.data.admin.name) || '';
+function sectionLine() { return sectionText() + (amDev() ? ' · developer view' : ''); }
+function sectionText() {
   if (S.tab === 'drift') return S.cat ? `Drift · ${S.cat.length.toLocaleString('en-GB')} whiskies` : 'Drift';
   if (S.tab === 'cabinet') { const n = C.cabinet(D().meets, D().scores).length; return `Cabinet · ${n} tasted`; }
-  if (S.tab === 'finds') return `Finds · ${(D().finds || []).length} releases`;
+  if (S.tab === 'finds') return S.findsView === 'picks' ? `Finds · ${(D().picks || []).length} worth a look` : `Finds · ${(D().finds || []).length} releases`;
+  if (S.tab === 'media') return `Media · ${plural((D().tracks || []).length, 'track')}`;
   return `Meets · ${plural(D().members.length, 'member')}`;
 }
 const D = () => S.data || { members: [], meets: [], rsvps: [], scores: [], wishes: [], finds: [], club: {} };
@@ -709,6 +782,7 @@ function paintPic(w) {
   img.onerror = () => {
     // the shop or site won't share its picture: search instead, once
     if (p.own) { S.imgs[w.id] = { bad: w.image, at: Date.now() }; saveImgs(); paintPic(w); }
+    else if (!navigator.onLine) { box.innerHTML = bottleSvg(); if (cr) cr.textContent = 'Offline, so no picture.'; }
     else { S.imgs[w.id] = { none: 1, at: Date.now() }; saveImgs(); box.innerHTML = bottleSvg(); if (cr) cr.textContent = 'No picture found for this one.'; }
   };
   img.src = p.u;
@@ -725,12 +799,12 @@ function prefetchNext() {
 function thumbHtml(snap, label) {
   if (snap && snap.image) return `<span class="thumb"><img src="${esc(snap.image)}" alt="" referrerpolicy="no-referrer" loading="lazy" onerror="this.remove()">${bottleSvg('')}</span>`;
   if (label) return `<span class="thumb"><span class="lab">${esc(label)}</span></span>`;
-  return `<span class="thumb" style="color:var(--sun)">${bottleSvg('')}</span>`;
+  return `<span class="thumb" style="color:var(--sun-ink)">${bottleSvg('')}</span>`;
 }
 
 /* ---------- ntfy: messages the phone sends to the club ---------- */
 async function tellClub(title, body) {
-  const topic = D().club && D().club.topic;
+  const topic = amDev() ? D().devTopic : D().club && D().club.topic;   // the developer's sends never reach the club
   if (!topic) return false;
   try {
     const q = new URLSearchParams({ title, tags: 'tumbler_glass', click: appUrl(), icon: new URL('icon-192.png', appUrl()).href });
@@ -748,9 +822,6 @@ function renderAll() {
   const club = D().club || {};
   $('#brandName').textContent = ready ? clubName() : 'Dram';
   $('#clubLine').textContent = ready ? sectionLine() : '';
-  const ch = $('#channelBtn');
-  ch.hidden = !(ready && club.channel);
-  if (club.channel) { ch.setAttribute('href', out(club.channel)); if (/^intent:/.test(out(club.channel))) ch.removeAttribute('target'); else ch.setAttribute('target', '_blank'); }
   $('#settingsBtn').hidden = !ready;
   renderNotices();
   renderTabs();
@@ -758,7 +829,7 @@ function renderAll() {
   if (S.screen) updateScreen();
 }
 function renderTabs() {
-  const T = [['meet', 'Meet', ICON.tabMeet], ['drift', 'Drift', ICON.tabDrift], ['cabinet', 'Cabinet', ICON.tabCab], ['finds', 'Finds', ICON.tabFinds]];
+  const T = [['meet', 'Meet', ICON.tabMeet], ['drift', 'Drift', ICON.tabDrift], ['cabinet', 'Cabinet', ICON.tabCab], ['finds', 'Finds', ICON.tabFinds], ['media', 'Media', ICON.tabMedia]];
   $('#tabsIn').innerHTML = T.map(([id, label, ic]) => `<button class="tab" type="button" data-tab="${id}"${S.tab === id ? ' aria-current="page"' : ''}>${ic}<span>${label}</span></button>`).join('');
 }
 function renderNotices() {
@@ -767,6 +838,7 @@ function renderNotices() {
   if (S.data && S.me) {
     if (S.data.build < EXPECT_BUILD) outN.push(`<div class="notice"><p>Your Apps Script is out of date (release ${S.data.build}, this app needs ${EXPECT_BUILD}). In Apps Script, paste the new Code.gs and deploy a new version.</p></div>`);
     if (S.syncFail) outN.push(`<div class="notice"><p>Offline. Showing what was saved ${ago(S.dataAt)}.</p><button class="link-btn" type="button" data-act="retry">Try again</button></div>`);
+    if (!D().admin && !amDev() && !dismissed.admin) outN.push(`<div class="notice"><p>Nobody looks after the club yet. Have the admin PIN?</p><button class="link-btn" type="button" data-act="admin-open">Unlock</button><button class="x" type="button" data-dismiss="admin" aria-label="Dismiss">${ICON.x}</button></div>`);
     if (!S.connected && !dismissed.ntfy) outN.push(`<div class="notice"><p>Get meet reminders and club news on this phone.</p><button class="link-btn" type="button" data-act="connect">Set up</button><button class="x" type="button" data-dismiss="ntfy" aria-label="Dismiss">${ICON.x}</button></div>`);
   }
   if (!standalone && !dismissed.install) {
@@ -780,19 +852,21 @@ function renderMain() {
   if (!S.pin || !S.data) { el.innerHTML = gateHtml(); return; }
   if (!S.me) { el.innerHTML = whoHtml(); return; }
   try {
-    el.innerHTML = S.tab === 'drift' ? driftHtml() : S.tab === 'cabinet' ? cabinetHtml() : S.tab === 'finds' ? findsHtml() : meetHtml();
+    el.innerHTML = S.tab === 'drift' ? driftHtml() : S.tab === 'cabinet' ? cabinetHtml() : S.tab === 'finds' ? findsHtml() : S.tab === 'media' ? mediaHtml() : meetHtml();
   } catch (err) {
     console.error(err);
     el.innerHTML = `<div class="hero"><h1 class="empty-title">Something went wrong here</h1><p class="empty-body">Close Dram fully and open it again.</p></div>`;
   }
   if (S.tab === 'drift') afterDrift();
   else lineupPictures();
+  if (S.tab === 'media') afterMedia();
+  renderMini();
 }
 
 /* ---------- Gate ---------- */
 function gateHtml() {
-  if (!API) return `<div class="gate"><img class="logo" src="logo.webp" alt="The Whisky Club. Est 2022. Every sip reveals a story."><p>This copy of Dram isn’t connected to its Apps Script yet. Put the web app address in the API line at the top of the app script.</p></div>`;
-  return `<div class="gate"><img class="logo" src="logo.webp" alt="The Whisky Club. Est 2022. Every sip reveals a story.">
+  if (!API) return `<div class="gate"><span class="logo-stage"><img class="logo" src="logo.webp" alt="The Whisky Club. Est 2022. Every sip reveals a story."></span><p>This copy of Dram isn’t connected to its Apps Script yet. Put the web app address in the API line at the top of the app script.</p></div>`;
+  return `<div class="gate"><span class="logo-stage"><img class="logo" src="logo.webp" alt="The Whisky Club. Est 2022. Every sip reveals a story."></span>
     <p>Meets, tastings and drams to discover, in Dram. Enter the club PIN to come in.</p>
     <form id="pinForm" autocomplete="off"><label class="vh" for="pinIn">Club PIN</label>
       <input class="field num" id="pinIn" type="password" inputmode="numeric" autocomplete="off" enterkeyhint="go" placeholder="PIN" maxlength="20" required>
@@ -804,8 +878,9 @@ function whoHtml() {
   return `<div class="gate"><img class="loading-mark" src="mark.webp" alt="" style="animation:none"><h1>Who are you?</h1>
     <p>${mem.length ? 'Pick your name. Dram remembers it on this phone.' : 'You’re the first one in. Add your name to start the club.'}</p>
     <div class="who">${mem.length ? `<ul class="rows">${mem.map((m) => `<li class="row"><button class="row-main" type="button" data-iam="${esc(m.id)}"><span class="row-text"><span class="row-title">${esc(m.name)}</span></span></button></li>`).join('')}</ul>` : ''}
-    <label class="lbl" for="newName">${mem.length ? 'Not on the list? Add your name' : 'Your name'}</label>
-    <form class="field-row" id="newMember"><input class="field" id="newName" maxlength="30" autocomplete="given-name" placeholder="Your name"><button class="btn" type="submit">Add me</button></form></div></div>`;
+    ${mem.length ? `<p class="small" style="margin-top:16px">Not on the list? Ask ${esc(adminName() || 'whoever looks after the club')} to add you.</p>`
+      : `<label class="lbl" for="newName">Your name</label>
+    <form class="field-row" id="newMember"><input class="field" id="newName" maxlength="30" autocomplete="given-name" placeholder="Your name"><button class="btn" type="submit">Add me</button></form>`}</div></div>`;
 }
 
 /* ---------- Meet ---------- */
@@ -859,10 +934,10 @@ function meetHtml() {
       <p class="state-line num">${state}</p>
       <h1 class="title">${esc(head)}</h1>
       <p class="story">${esc(meetStory(m))}</p>
-      <p class="facts">${esc(`${r.n} of ${D().members.length} ${r.n === 1 ? 'is' : 'are'} in.`)} ${m.notes ? esc(m.notes) : ''}</p>
+      <p class="facts">${devTest(m) ? '<b>Test meet: only you can see it.</b> ' : ''}${esc(`${r.n} of ${D().members.length} ${r.n === 1 ? 'is' : 'are'} in.`)} ${m.notes ? esc(m.notes) : ''}</p>
       <div class="switcher" role="group" aria-label="Are you coming?">${[['in', 'I’m in'], ['maybe', 'Maybe'], ['out', 'Can’t']].map(([v, l]) => `<button type="button" data-rsvp="${v}" data-meet="${esc(m.id)}" aria-pressed="${mine === v}">${l}</button>`).join('')}</div>
       <div class="actions">${tastingOpen(m) ? `<button class="btn primary" type="button" data-act="tasting" data-meet="${esc(m.id)}">Start tasting</button>` : ''}
-        <button class="btn" type="button" data-act="edit-meet" data-meet="${esc(m.id)}">${ICON.pencil}Edit meet</button>${links}</div>
+        ${amDev() && !devTest(m) ? '' : `<button class="btn" type="button" data-act="edit-meet" data-meet="${esc(m.id)}">${ICON.pencil}Edit meet</button>`}${links}</div>
     </section>
     <h2 class="section-title">Line-up</h2>
     ${(m.lineup || []).length ? lineupRows(m) : `<p class="section-note">Nothing yet. Tap Edit meet to add drams from the catalogue or the wish list.</p>`}
@@ -1004,6 +1079,7 @@ function openScreen(kind, meetId) {
   el.scrollTop = 0;
   history.pushState({ screen: kind, meetId }, '');
   if (kind === 'tasting') startPolling();
+  renderMini();
 }
 function closeScreen(silent) {
   if (!S.screen) return;
@@ -1013,6 +1089,7 @@ function closeScreen(silent) {
   el.hidden = true; el.style.transform = ''; el.innerHTML = ''; delete el.dataset.sig;
   document.body.style.overflow = '';
   if (!silent) renderAll();
+  renderMini();
 }
 function goBack() {
   if (history.state && history.state.screen) {
@@ -1085,7 +1162,8 @@ function tastingHtml(m) {
       <div class="dram-foot"><span class="saved">${s && !changed ? `<span class="tick">${ICON.tick}</span>Saved` : s ? 'Changed, not saved yet' : 'Not scored yet'}</span>
         <button class="btn small${s && !changed ? '' : ' primary'}" type="button" data-act="save-score"${dv.score == null ? ' disabled' : ''}>${s ? 'Save change' : 'Save score'}</button></div></div>`;
   }).join('');
-  if (lineup.length) html += `<div class="reveal-box"><p>When everyone’s done, reveal the scores together. They can’t be changed after that.</p>
+  if (lineup.length && amDev() && !devTest(m)) html += `<div class="reveal-box"><p>Developer view: your scores stay hidden from everyone, and the club reveals its own.</p></div>`;
+  else if (lineup.length) html += `<div class="reveal-box"><p>When everyone’s done, reveal the scores together. They can’t be changed after that.</p>
     <button class="btn primary" type="button" data-act="reveal" id="revealBtn">Reveal scores</button></div>`;
   return html;
 }
@@ -1214,23 +1292,65 @@ function openWish(id) {
 }
 
 /* ---------- Finds ---------- */
+function nextFriday() {
+  const d = new Date(); d.setHours(9, 0, 0, 0);
+  const add = (5 - d.getDay() + 7) % 7 || (Date.now() > d.getTime() ? 7 : 0);
+  d.setDate(d.getDate() + add);
+  return d.getTime();
+}
 function findsHtml() {
-  const f = D().finds || [], info = D().findsInfo;
-  const when = info ? `Last looked ${ago(info.at)}${info.ok ? `, ${plural(info.added, 'new find')}` : ''}.` : 'Dram looks each Friday morning.';
-  let html = `<section style="padding-top:8px"><h1 class="title" style="font-size:22px">Limited releases</h1>
-    <p class="section-note" style="font-size:14px">${esc(`New limited editions and special releases spotted in the news. Dram looks every Friday and tells the club when there’s something new. ${when}`)}</p>
+  const v = S.findsView || 'latest', picks = D().picks || [];
+  let html = `<div class="switcher quiet" role="group" aria-label="Finds"><button type="button" data-fview="latest" aria-pressed="${v === 'latest'}">Latest</button><button type="button" data-fview="picks" aria-pressed="${v === 'picks'}">Worth a look${picks.length ? ` <span class="num" style="opacity:.7">${picks.length}</span>` : ''}</button></div>`;
+  return html + (v === 'picks' ? picksHtml(picks) : latestHtml(picks));
+}
+function heartBtn(attr, id, mine, n, what) {
+  return `<button class="act" type="button" ${attr}="${esc(id)}" aria-pressed="${mine}" aria-label="${mine ? 'Take back your vote' : `Vote for ${what}`}, ${plural(n, 'vote')}" title="${mine ? 'Take back your vote' : 'Worth a look'}" style="min-width:52px"><span class="disc" style="width:40px;height:40px">${ICON.heart}</span><span class="num">${n}</span></button>`;
+}
+function latestHtml(picks) {
+  const f = D().finds || [], info = D().findsInfo, used = D().findsManualUsed;
+  const when = info ? `Last looked ${ago(info.at)}.` : '';
+  const next = `The next look is ${dayWord(nextFriday()) === 'Today' ? 'this morning' : longDate(nextFriday())}, around 9:00.`;
+  let html = `<section style="padding-top:12px"><h1 class="title" style="font-size:22px">Limited releases</h1>
+    <p class="section-note" style="font-size:14px">${esc(`New limited editions and special releases spotted in the news. Dram looks every Friday and tells the club when there’s something new. ${when} ${used ? next : ''}`)}</p>
     ${info && !info.ok ? `<p class="result">${esc(info.reason)}</p>` : ''}
-    <div class="actions"><button class="btn small" type="button" data-act="finds-now">${ICON.search}Look now</button></div></section>`;
-  if (!f.length) return html + `<p class="empty-body" style="margin-top:22px">Nothing spotted yet. Tap Look now, or wait for Friday.</p>`;
+    ${used ? '' : `<div class="actions"><button class="btn small" type="button" data-act="finds-now">${ICON.search}Look now</button><span class="small">Once for the club, then every Friday</span></div>`}
+    <p class="section-note">Tap the heart on anything worth a look, and it joins the club’s list.</p></section>`;
+  if (!f.length) return html + `<p class="empty-body" style="margin-top:22px">${used ? 'Nothing spotted yet. Dram looks again on Friday.' : 'Nothing spotted yet. Tap Look now, or wait for Friday.'}</p>`;
   let last = null;
   html += f.map((x) => {
     const k = dayKey(x.published);
     const headTxt = k !== last ? `<h2 class="section-title" style="font-size:14px;color:var(--ink-3);font-weight:500;margin-top:22px">${esc(longDate(x.published))}</h2>` : '';
     last = k;
+    const p = picks.find((y) => y.findId === x.id), mine = !!p && p.votes.includes(S.me);
     return `${headTxt}<div class="row"><a class="row-main" ${extLink(x.link)}><span class="row-text"><span class="row-title" style="font-weight:500">${esc(x.title)}</span>
-      <span class="row-sub">${esc(x.source || host(x.link))}</span></span></a></div>`;
+      <span class="row-sub">${esc(x.source || host(x.link))}</span></span></a>${heartBtn('data-pickfind', x.id, mine, p ? p.votes.length : 0, x.title)}</div>`;
   }).join('');
   return html + `<p class="foot">From Google News searches for limited and special whisky releases. Check the retailer’s own page before you buy.</p>`;
+}
+function picksHtml(picks) {
+  if (!picks.length) return `<section class="hero" style="margin-top:12px">${glassSvg(0, 'An empty glass')}<h1 class="empty-title">Nothing worth a look yet</h1>
+    <p class="empty-body">In Latest, tap the heart on a release the club should keep an eye on. Members vote, so the most wanted rise to the top.</p>
+    <div class="actions"><button class="btn" type="button" data-fview="latest">Open Latest</button></div></section>`;
+  const ps = picks.slice().sort((a, b) => b.votes.length - a.votes.length || b.added - a.added);
+  return `<p class="drift-count num" style="margin-top:12px">${esc(plural(ps.length, 'release'))}, most wanted first</p><ul class="rows">${ps.map((x) => {
+    const mine = x.votes.includes(S.me);
+    return `<li class="row"><button class="row-main" type="button" data-pickopen="${esc(x.id)}"><span class="thumb" style="color:var(--sun-ink)">${ICON.tabFinds}</span><span class="row-text"><span class="row-title">${esc(x.title)}</span>
+      <span class="row-sub">${esc(`${x.source ? x.source + ', ' : ''}picked by ${x.by === S.me ? 'you' : memberName(x.by) || 'a former member'}`)}</span></span></button>
+      ${heartBtn('data-votepick', x.id, mine, x.votes.length, x.title)}</li>`;
+  }).join('')}</ul>`;
+}
+function openFindPick(id) {
+  const x = (D().picks || []).find((y) => y.id === id);
+  if (!x) return;
+  const voters = x.votes.map((v) => (v === S.me ? 'you' : memberName(v))).filter(Boolean);
+  openSheet(`${head(esc(x.title))}
+    <p class="edition">${esc([x.source, x.published ? longDate(x.published) : ''].filter(Boolean).join(', '))}</p>
+    <p class="facts">${esc(`Worth a look for ${list(voters) || 'nobody yet'}.`)}</p>
+    <div class="card-actions" style="justify-content:flex-start;gap:18px">
+      <a class="act" ${extLink(x.link)} aria-label="Read the article" title="Read the article"><span class="disc">${ICON.info}</span>Read</a>
+      <a class="act" ${extLink(C.shoppingUrl(C.shopQuery(x.title)))} aria-label="Search Google Shopping for this release" title="Search Google Shopping"><span class="disc">${ICON.bag}</span>Shop</a></div>
+    <p class="result" id="pickResult"></p>
+    <div class="actions"><button class="link-btn danger" type="button" data-unpick="${esc(x.id)}">Take off the list</button></div>`);
 }
 
 /* ---------- Sheets ---------- */
@@ -1245,7 +1365,7 @@ function openSheet(html) {
 }
 function closeSheet() { if (sheet.open) sheet.close(); }
 sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSheet(); });
-sheet.addEventListener('close', () => { sheet.style.transform = ''; });
+sheet.addEventListener('close', () => { sheet.style.transform = ''; const f = sheet.querySelector('iframe'); if (f) f.remove(); });
 
 function openConnect() {
   const topic = D().club && D().club.topic;
@@ -1261,65 +1381,270 @@ function openConnect() {
   openSheet(`${head('Notifications')}
     <p>Everyone in the club shares one ntfy topic. Messages come the day before and on the morning of each meet, when a meet is planned or moved, when scores are revealed, and on Fridays when there are new limited releases.</p>
     <ol class="steps">${steps}</ol>
+    ${amDev() && D().devTopic ? `<div class="admin-card"><p><b>Your developer topic</b><br><span class="small">Test messages and reminders for your test meets go here, never to the club. Subscribe to it as well.</span></p>
+      ${isIOS ? '' : `<a class="btn small" href="${esc(`ntfy://ntfy.sh/${D().devTopic}?display=Dram%20dev`)}">Connect developer topic</a><br>`}<span class="code">${esc(D().devTopic)}</span></div>` : ''}
     <p class="result" id="connectResult"></p>
     <div class="actions"><button class="btn primary" type="button" data-act="connected">Done</button><button class="btn" type="button" data-act="hello">Send test notification</button></div>
-    <p class="small" style="margin-top:12px">The test goes to everyone, as a hello from you.</p>`);
+    <p class="small" style="margin-top:12px">${amDev() ? 'Your test goes only to your developer topic.' : 'The test goes to everyone, as a hello from you.'}</p>`);
 }
 
-function themeGridHtml() {
-  return `<div class="theme-grid">${THEMES.map((t) => `<button class="theme-opt" type="button" data-theme="${t.id}" aria-pressed="${S.set.theme === t.id}"><span class="sw" style="--a:${t.bg};--c:${t.dome};--b:${t.accent}"></span>${t.name}</button>`).join('')}</div>
-    <p class="theme-note">Night red and Amber are gentlest on eyes adjusted to the dark.</p>`;
+/* ---------- Light and dark ---------- */
+const lightMq = matchMedia('(prefers-color-scheme: light)');
+const isLight = () => (S.set.look === 'auto' ? lightMq.matches : S.set.look === 'light');
+function applyLook() {
+  const light = isLight();
+  if (light) document.documentElement.dataset.theme = 'light'; else delete document.documentElement.dataset.theme;
+  $('meta[name=theme-color]').setAttribute('content', light ? '#FBF6EE' : '#0E0A06');
+  const b = $('#themeBtn');
+  b.innerHTML = light ? ICON.moon : ICON.sun;
+  const label = light ? 'Switch to dark' : 'Switch to light';
+  b.setAttribute('aria-label', label); b.title = label;
+  document.querySelectorAll('[data-look]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.look === S.set.look)));
 }
-function setTheme(id) {
-  const t = THEMES.find((x) => x.id === id) || THEMES[0];
-  S.set.theme = t.id; saveSet();
-  if (t.id === 'twilight') delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = t.id;
-  $('meta[name=theme-color]').setAttribute('content', t.bg);
-  document.querySelectorAll('.theme-opt').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.theme === t.id)));
-}
-const POPS = { themes: '#themeBtn' };
-function togglePop(id, open) {
-  const pop = $('#' + id), show = open == null ? pop.hidden : open;
-  if (show) pop.innerHTML = themeGridHtml();
-  pop.hidden = !show;
-  $(POPS[id]).setAttribute('aria-expanded', String(show));
-}
-const popOpen = () => Object.keys(POPS).some((id) => !$('#' + id).hidden);
-function closePops() { Object.keys(POPS).forEach((id) => { if (!$('#' + id).hidden) togglePop(id, false); }); }
-document.addEventListener('click', (e) => {
-  if (!popOpen() || e.target.closest('.pop, ' + Object.values(POPS).join(', '))) return;
-  e.preventDefault(); e.stopPropagation(); closePops();
-}, true);
+function setLook(look) { S.set.look = look; saveSet(); applyLook(); }
+if (lightMq.addEventListener) lightMq.addEventListener('change', () => { if (S.set.look === 'auto') applyLook(); });
+const lookHtml = () => `<div class="switcher quiet" role="group" aria-label="Appearance" style="margin-top:4px">${[['dark', 'Dark'], ['light', 'Light'], ['auto', 'Same as phone']].map(([v, l]) => `<button type="button" data-look="${v}" aria-pressed="${S.set.look === v}">${l}</button>`).join('')}</div>`;
 
-function openSettings() {
-  const d = D(), club = d.club || {}, n = d.notify;
+function openSettings(focus) {
+  const d = D(), club = d.club || {}, n = d.notify, admin = amAdmin();
   const last = n ? (n.ok ? `Last message sent ${ago(n.at)}: “${n.title}”.` : `The last message didn’t send (${ago(n.at)}). ${n.reason}`) : '';
+  const who = adminName();
+  const adminBlock = admin
+    ? `<p>You look after the club: members, invites, the club’s details and its media.</p>
+      <div class="admin-card"><p><b>Invite someone</b><br><span class="small">Add their name under Members, then share the invite. It has the link and the club PIN, so only you can send it.</span></p>
+        <button class="btn small primary" type="button" data-act="invite">${ICON.share}Share an invite</button><p class="result" id="inviteResult"></p></div>
+      <div class="admin-card"><p><b>Handing over</b><br><span class="small">Step down and leave the club. Your name comes off the list and the next person to unlock with the admin PIN looks after the club.</span></p>
+        <button class="link-btn danger" type="button" data-act="step-down">Step down and leave</button><p class="result" id="stepResult"></p></div>`
+    : `<p>${who ? `${esc(who)} looks after the club: members, invites and media.` : 'Nobody looks after the club yet.'}</p>
+      <details class="how"${who ? '' : ' open'}><summary>${who ? 'Taking over? Unlock with the admin PIN' : 'Unlock with the admin PIN'}</summary>
+        <form class="field-row" id="adminForm" style="margin-top:8px"><input class="field" id="adminPin" type="password" autocomplete="off" placeholder="Admin PIN" aria-label="Admin PIN"><button class="btn" type="submit">${ICON.lock}Unlock</button></form>
+        <p class="result" id="adminResult"></p></details>`;
+  const ms = d.mediaSet || {};
+  const tracks = d.tracks || [];
+  const igLine = ms.igConnected ? `Connected to @${esc(ms.instagram)}${ms.igRenewed ? `, renewed ${ago(ms.igRenewed)}` : ''}. Dram renews it every week.${ms.igNote ? ` ${esc(ms.igNote)}` : ''}` : 'Not connected. Without it, Media shows a button to the account instead of its posts.';
+  const mediaBlock = !admin ? '' : `<h3 id="mediaHead">Media</h3>
+    <label class="lbl" for="ytLink">YouTube channel, @handle or playlist</label><input class="field" id="ytLink" inputmode="url" value="${esc(ms.youtube)}" placeholder="https://www.youtube.com/@…">
+    <p class="small">Private videos only play for the Google accounts they’re shared with. Set club videos to Unlisted and they play here for everyone, still unseen by the public.</p>
+    <label class="lbl" for="igUser">Instagram account</label><input class="field" id="igUser" value="${esc(ms.instagram)}" placeholder="@thewhiskyclub" autocapitalize="off">
+    <label class="lbl" for="igToken">Instagram access token</label><input class="field" id="igToken" type="password" autocomplete="off" placeholder="${ms.igConnected ? 'Connected. Paste a new one to replace it' : 'Paste the token to show the posts'}">
+    <p class="small">${igLine}</p>
+    <details class="how"><summary>How to get the token</summary><ol>
+      <li>In Instagram, make the club’s account a professional account (Creator is fine and free). Professional accounts are public.</li>
+      <li>At developers.facebook.com, choose My Apps, Create app, and add the Instagram product with “API setup with Instagram login”.</li>
+      <li>Under Generate access tokens, add the club’s account, log in, and copy the token it shows.</li>
+      <li>Paste it here and tap Save media. Dram keeps it in Apps Script, never on phones, and renews it every week.</li></ol></details>
+    <div class="actions"><button class="btn small" type="button" data-act="save-media">Save media</button>${ms.igConnected ? '<button class="link-btn" type="button" data-act="ig-off">Disconnect Instagram</button>' : ''}</div>
+    <p class="result" id="mediaResult"></p>
+    <h3>Club music</h3>
+    <ul class="rows" id="trackAdmin">${tracks.map((t, i) => `<li class="row"><span class="row-main" style="padding:8px 0"><span class="row-text"><span class="row-title">${esc(t.title)}</span><span class="row-sub">${esc(t.artist || host(t.url))}</span></span></span>
+      <button class="icon-btn" type="button" data-tmove="${esc(t.id)}" data-by="-1" aria-label="Move ${esc(t.title)} up" title="Move up"${i ? '' : ' disabled style="opacity:.3"'}>${ICON.up}</button>
+      <button class="icon-btn" type="button" data-tmove="${esc(t.id)}" data-by="1" aria-label="Move ${esc(t.title)} down" title="Move down"${i < tracks.length - 1 ? '' : ' disabled style="opacity:.3"'}>${ICON.down}</button>
+      <button class="icon-btn" type="button" data-tremove="${esc(t.id)}" aria-label="Remove ${esc(t.title)}" title="Remove">${ICON.x}</button></li>`).join('')}</ul>
+    <form id="trackForm" style="margin-top:10px"><label class="lbl" for="trackUrl">Link to the song</label>
+      <input class="field" id="trackUrl" inputmode="url" placeholder="Suno, Google Drive, Dropbox or an MP3 link" required>
+      <div class="field-row" style="margin-top:8px"><input class="field" id="trackTitle" maxlength="100" placeholder="Title (optional for Suno)" aria-label="Title"><input class="field" id="trackArtist" maxlength="60" placeholder="Artist (optional)" aria-label="Artist"></div>
+      <div class="actions"><button class="btn small" type="submit">${ICON.plus}Add track</button></div></form>
+    <p class="small">Google Drive files must be shared with “Anyone with the link”.</p>
+    <p class="result" id="trackResult"></p>`;
   openSheet(`${head('Settings')}
-    <h3>You</h3><p>You’re ${esc(myName())} on this phone.</p>
-    <div class="actions" style="margin-top:6px"><button class="btn small" type="button" data-act="switch-me">Not ${esc(myName())}? Change</button></div>
+    <h3>You</h3>${amDev() ? `<p>You’re in the developer view. Nobody sees you, not even the administrator: not in the member list, and not your replies, scores, votes, wishes or test meets. Messages your actions would send go to your own developer topic, not the club.</p>`
+      : `<p>You’re ${esc(myName())} on this phone${admin ? ', and you look after the club' : ''}.</p>
+    <div class="actions" style="margin-top:6px"><button class="btn small" type="button" data-act="switch-me">Not ${esc(myName())}? Change</button></div>`}
+    <h3 id="adminHead">Administrator</h3>${amDev() ? `<p>${who ? `${esc(who)} looks after the club.` : 'Nobody looks after the club yet.'} The developer view stays out of sight, so it can’t be the administrator.</p>` : adminBlock}
     <h3>Notifications</h3>
     <p>Reminders go to the club the day before and on the morning of each meet, around 10:00. Limited-release finds come on Fridays around 9:00, only when there’s something new. New meets and revealed scores are sent from the phone that made them.</p>
     <div class="actions"><button class="btn small${S.connected ? '' : ' primary'}" type="button" data-act="connect">${S.connected ? 'Setup steps' : 'Set up notifications'}</button><button class="btn small" type="button" data-act="test-reminder">Send a test reminder</button></div>
     <p class="small">The test reminder comes from Apps Script by email, so it proves the reminders work. It goes to everyone in the club.</p>
     <p class="result" id="testResult">${esc(last)}</p>
     <h3>The club</h3>
-    <label class="lbl" for="clubName">Club name</label><input class="field" id="clubName" maxlength="40" value="${esc(club.name)}" placeholder="The Whisky Club">
-    <label class="lbl" for="clubChannel">YouTube channel or playlist link</label><input class="field" id="clubChannel" inputmode="url" value="${esc(club.channel)}" placeholder="https://www.youtube.com/@…">
-    <p class="small">The play button at the top opens it. Private videos only play for the Google accounts they’re shared with.</p>
-    <div class="actions"><button class="btn small" type="button" data-act="save-club">Save club details</button></div>
-    <p class="result" id="clubResult"></p>
+    ${admin ? `<label class="lbl" for="clubName">Club name</label><input class="field" id="clubName" maxlength="40" value="${esc(club.name)}" placeholder="The Whisky Club">
+    <div class="actions"><button class="btn small" type="button" data-act="save-club">Save club name</button></div><p class="result" id="clubResult"></p>` : `<p>${esc(clubName())}, ${plural(d.members.length, 'member')}.</p>`}
     <h3>Members</h3>
-    <ul class="rows" id="memberList">${d.members.map((m) => `<li class="row"><span class="row-main"><span class="row-text"><span class="row-title">${esc(m.name)}${m.id === S.me ? ' (you)' : ''}</span></span></span>
-      <button class="icon-btn" type="button" data-rename="${esc(m.id)}" aria-label="Rename ${esc(m.name)}" title="Rename">${ICON.pencil}</button>
-      ${m.id === S.me ? '' : `<button class="icon-btn" type="button" data-remove="${esc(m.id)}" aria-label="Remove ${esc(m.name)} from the club" title="Remove">${ICON.x}</button>`}</li>`).join('')}</ul>
-    <form class="field-row" id="addMemberForm" style="margin-top:10px"><input class="field" id="addMemberName" maxlength="30" placeholder="Add a member" aria-label="New member’s name"><button class="btn" type="submit">Add</button></form>
+    <ul class="rows" id="memberList">${d.members.map((m) => `<li class="row"><span class="row-main"><span class="row-text"><span class="row-title">${esc(m.name)}${m.id === S.me ? (m.hidden ? ' (you, hidden from the club)' : ' (you)') : ''}</span>${d.admin && d.admin.id === m.id ? '<span class="row-sub">Looks after the club</span>' : ''}</span></span>
+      ${admin ? `<button class="icon-btn" type="button" data-rename="${esc(m.id)}" aria-label="Rename ${esc(m.name)}" title="Rename">${ICON.pencil}</button>
+      ${m.id === S.me ? '' : `<button class="icon-btn" type="button" data-remove="${esc(m.id)}" aria-label="Remove ${esc(m.name)} from the club" title="Remove">${ICON.x}</button>`}` : ''}</li>`).join('')}</ul>
+    ${admin ? `<form class="field-row" id="addMemberForm" style="margin-top:10px"><input class="field" id="addMemberName" maxlength="30" placeholder="Add a member" aria-label="New member’s name"><button class="btn" type="submit">Add</button></form>`
+      : `<p class="small" style="margin-top:8px">${who ? `To bring someone in, ask ${esc(who)}.` : 'Only the administrator can add members.'}</p>`}
     <p class="result" id="memberResult"></p>
-    <h3>Colour theme</h3>${themeGridHtml()}
+    ${mediaBlock}
+    <h3>Appearance</h3>${lookHtml()}<p class="small">Dark is the club’s own look. Light is easier to read in daylight.</p>
     <h3>About</h3>
     <p class="small">Apps Script release ${esc(d.build || '?')}${(d.build || 0) >= EXPECT_BUILD ? ', up to date' : `, this app needs ${EXPECT_BUILD}`}. App release ${esc(V.replace('?v=', ''))}.</p>
     <p class="small">Logo: The Whisky Club. Whisky catalogue: Global Spirits Inventory v2026.10 by E. Pace, The Remade Agency, CC BY 4.0. Pictures belong to the sites they come from, or to Open Food Facts, Wikimedia Commons and Wikipedia contributors.</p>
     <div class="actions"><button class="link-btn" type="button" data-act="signout">Sign out of the club on this phone</button></div>`);
+  if (focus) setTimeout(() => { const h = $('#' + focus); if (h) h.scrollIntoView({ block: 'start' }); }, 60);
 }
+
+/* ---------- Media ---------- */
+const fmtTime = (t) => { if (!isFinite(t) || t < 0) return '0:00'; t = Math.floor(t); return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`; };
+function loadMedia(force) {
+  if (S.mediaBusy) return;
+  if (!force && S.media && Date.now() - (S.media.at || 0) < 10 * MIN) return;
+  S.mediaBusy = true;
+  if (S.tab === 'media') renderMain();
+  api('media', force ? { fresh: true } : {}).then((j) => { S.media = j; put('media', j); })
+    .catch((err) => { if (force) toast(friendly(err)); })
+    .finally(() => { S.mediaBusy = false; if (S.tab === 'media' && !S.screen) renderMain(); });
+}
+function mediaHtml() {
+  const tracks = D().tracks || [];
+  const v = S.mediaView || (tracks.length ? 'music' : 'youtube');
+  let html = `<div class="switcher quiet" role="group" aria-label="Media"><button type="button" data-mview="music" aria-pressed="${v === 'music'}">Music</button><button type="button" data-mview="youtube" aria-pressed="${v === 'youtube'}">YouTube</button><button type="button" data-mview="instagram" aria-pressed="${v === 'instagram'}">Instagram</button></div>`;
+  if (v === 'music') html += musicHtml(tracks);
+  else if (v === 'youtube') html += youtubeHtml();
+  else html += instagramHtml();
+  return html;
+}
+const nobodyYet = (what) => amAdmin() ? `Add ${what} in Settings, under Media.` : `${adminName() || 'The administrator'} can add ${what} in Settings.`;
+function waitingHtml(msg) { return `<div style="text-align:center"><img class="loading-mark" src="mark.webp" alt=""><p class="facts">${esc(msg)}</p></div>`; }
+function musicHtml(tracks) {
+  if (!tracks.length) return `<section class="hero" style="text-align:center"><img class="loading-mark" src="mark.webp" alt="" style="animation:none"><h1 class="empty-title">No club music yet</h1><p class="empty-body">${esc(nobodyYet('the club’s songs'))}</p></section>`;
+  const cur = tracks.find((t) => t.id === S.play.id) || tracks[0];
+  const a = $('#audio'), on = !!S.play.id && cur.id === S.play.id, playing = on && !a.paused;
+  const dur = S.play.dur[cur.id];
+  return `<div class="nowplaying${playing ? ' playing' : ''}" id="nowPlaying"><img class="art" src="mark.webp" alt="">
+      <div class="np-title" id="npTitle">${esc(cur.title)}</div><div class="np-artist">${esc(cur.artist || clubName())}</div>
+      <div class="np-bar num"><span id="npAt">${fmtTime(on ? a.currentTime : 0)}</span><input type="range" id="scrub" min="0" max="1000" step="1" value="${on && a.duration ? Math.round(a.currentTime / a.duration * 1000) : 0}" aria-label="Position in the song"${on ? '' : ' disabled'}><span id="npDur">${dur ? fmtTime(dur) : '–:––'}</span></div>
+      <div class="np-controls"><button class="round" type="button" data-act="prev" aria-label="Previous song" title="Previous">${ICON.prev}</button>
+        <button class="round big${playing ? '' : ' accent'}" type="button" data-act="playpause" id="npPlay" aria-label="${playing ? 'Pause' : 'Play'}" title="${playing ? 'Pause' : 'Play'}" data-track="${esc(cur.id)}">${playing ? ICON.pause : ICON.playFill}</button>
+        <button class="round" type="button" data-act="next-track" aria-label="Next song" title="Next">${ICON.next}</button></div></div>
+    <ul class="rows" id="trackList">${tracks.map((t, i) => trackRow(t, i)).join('')}</ul>
+    <p class="foot">Songs keep playing while you look around the app, and from the lock screen.</p>`;
+}
+function trackRow(t, i) {
+  const on = t.id === S.play.id, playing = on && !$('#audio').paused;
+  const sub = S.play.bad[t.id] ? 'Couldn’t play this link' : [t.artist, S.play.dur[t.id] ? fmtTime(S.play.dur[t.id]) : ''].filter(Boolean).join(', ');
+  return `<li class="track${on ? ' on' : ''}" data-tid="${esc(t.id)}"><button class="row-main" type="button" data-track="${esc(t.id)}" aria-label="${on && playing ? 'Pause' : 'Play'} ${esc(t.title)}">
+    <span class="tnum num">${on ? `<span class="eq${playing ? '' : ' still'}" aria-hidden="true"><i></i><i></i><i></i></span>` : i + 1}</span>
+    <span class="row-text"><span class="row-title">${esc(t.title)}</span><span class="row-sub">${esc(sub || clubName())}</span></span></button></li>`;
+}
+function youtubeHtml() {
+  const y = S.media && S.media.youtube;
+  if (!S.media) return waitingHtml(S.mediaBusy ? 'Fetching the club’s channel…' : 'Couldn’t reach the club. Check your connection.');
+  if (!y) return `<section class="hero" style="text-align:center"><img class="loading-mark" src="mark.webp" alt="" style="animation:none"><h1 class="empty-title">No YouTube channel yet</h1><p class="empty-body">${esc(nobodyYet('the club’s channel or playlist'))}</p></section>`;
+  let html = `<div class="media-head"><h2>${esc(y.title || 'YouTube')}</h2>${y.url ? `<a class="btn small" ${extLink(y.url)}>${ICON.play}YouTube</a>` : ''}</div>`;
+  if (y.error) return html + `<p class="result">${esc(y.error)}</p>`;
+  if (y.note) html += `<p class="section-note">${esc(y.note)} ${amAdmin() ? 'Private and unlisted videos show when the channel is under the Google account running Dram’s Apps Script, or from an unlisted playlist.' : ''}</p>`;
+  if (!y.videos.length) return html + `<p class="empty-body">No videos yet.</p>`;
+  return html + `<div class="vgrid">${y.videos.map((x) => `<button class="vcard" type="button" data-video="${esc(x.id)}">
+      <span class="vthumb">${x.thumb ? `<img src="${esc(x.thumb)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ''}${x.privacy === 'private' ? `<span class="lock">Private</span>` : ''}<span class="playg">${ICON.playFill}</span></span>
+      <span class="vtitle">${esc(x.title)}</span><span class="vdate">${esc(x.published ? shortDate(x.published) : '')}</span></button>`).join('')}</div>
+    <div class="actions"><button class="link-btn" type="button" data-act="media-refresh">Refresh</button><span class="small">${S.media.at ? `Checked ${ago(S.media.at)}` : ''}</span></div>`;
+}
+function instagramHtml() {
+  const g = S.media && S.media.instagram;
+  if (!S.media) return waitingHtml(S.mediaBusy ? 'Fetching the club’s posts…' : 'Couldn’t reach the club. Check your connection.');
+  if (!g || !g.user) return `<section class="hero" style="text-align:center"><img class="loading-mark" src="mark.webp" alt="" style="animation:none"><h1 class="empty-title">No Instagram yet</h1><p class="empty-body">${esc(nobodyYet('the club’s Instagram'))}</p></section>`;
+  let html = `<div class="media-head"><h2>@${esc(g.user)}</h2><a class="btn small" ${extLink(g.url)}>${ICON.insta}Instagram</a></div>`;
+  if (g.error) return html + `<p class="result">${esc(g.error)}</p>`;
+  if (!g.connected) return html + `<p class="empty-body">Open the club’s Instagram to see its posts.${amAdmin() ? ' To show them here, connect the account in Settings, under Media.' : ''}</p>`;
+  if (!g.posts.length) return html + `<p class="empty-body">No posts yet.</p>`;
+  return html + `<div class="igrid">${g.posts.map((x) => `<button type="button" data-post="${esc(x.id)}" aria-label="${esc(x.caption ? x.caption.slice(0, 80) : 'Instagram post')}"><img src="${esc(x.image)}" alt="" loading="lazy" referrerpolicy="no-referrer">${x.kind === 'VIDEO' ? `<span class="reel">${ICON.playFill}</span>` : ''}</button>`).join('')}</div>
+    <div class="actions"><button class="link-btn" type="button" data-act="media-refresh">Refresh</button><span class="small">${S.media.at ? `Checked ${ago(S.media.at)}` : ''}</span></div>`;
+}
+function afterMedia() { loadMedia(false); }
+function openVideo(id) {
+  const x = S.media && S.media.youtube && S.media.youtube.videos.find((v) => v.id === id);
+  if (!x) return;
+  const link = `https://www.youtube.com/watch?v=${encodeURIComponent(x.id)}`;
+  if (x.privacy === 'private') {
+    openSheet(`${head(esc(x.title))}<p>This video is private on YouTube, so it only plays for the Google accounts it’s shared with.${amAdmin() ? ' Set it to Unlisted in YouTube Studio and it plays here for every member.' : ''}</p>
+      <div class="actions"><a class="btn primary" ${extLink(link)}>${ICON.play}Open in YouTube</a></div>`);
+    return;
+  }
+  pausePlayer();
+  openSheet(`${head(esc(x.title))}<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(x.id)}?autoplay=1&playsinline=1&rel=0" title="${esc(x.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+    <p class="small" style="margin-top:10px">${esc(x.published ? longDate(x.published) : '')}</p>
+    <div class="actions"><a class="btn small" ${extLink(link)}>${ICON.play}Open in YouTube</a></div>`);
+}
+function openPost(id) {
+  const g = S.media && S.media.instagram, x = g && g.posts.find((p) => p.id === id);
+  if (!x) return;
+  openSheet(`${head('@' + esc(g.user))}<div class="pic" style="max-height:none;aspect-ratio:auto"><img class="on" src="${esc(x.image)}" alt="" referrerpolicy="no-referrer" style="position:static;width:100%;height:auto"></div>
+    ${x.caption ? `<p style="white-space:pre-line;margin-top:12px">${esc(x.caption)}</p>` : ''}<p class="small">${esc(x.at ? longDate(x.at) : '')}</p>
+    <div class="actions"><a class="btn primary" ${extLink(x.link)}>${ICON.insta}Open on Instagram</a></div>`);
+}
+
+/* ---------- The club's music player ---------- */
+const audio = $('#audio');
+const trackById = (id) => (D().tracks || []).find((t) => t.id === id);
+function playTrack(id) {
+  const t = trackById(id);
+  if (!t) return;
+  if (S.play.id !== id) { S.play.id = id; audio.src = t.url; delete S.play.bad[id]; }
+  setSession(t);
+  audio.play().catch((err) => { if (err && err.name !== 'AbortError') failTrack(t); });
+  syncPlayer();
+}
+function pausePlayer() { if (!audio.paused) audio.pause(); }
+function stopPlayer() { if (!audio) return; audio.pause(); audio.removeAttribute('src'); try { audio.load(); } catch {} S.play.id = null; syncPlayer(); }
+function stepTrack(dir) {
+  const ts = D().tracks || [];
+  if (!ts.length) return;
+  if (dir < 0 && audio.currentTime > 3) { audio.currentTime = 0; return; }
+  const i = ts.findIndex((t) => t.id === S.play.id);
+  const j = i < 0 ? 0 : i + dir;
+  if (j < 0) { audio.currentTime = 0; return; }
+  if (j >= ts.length) { stopPlayer(); toast('That was the last song'); return; }
+  playTrack(ts[j].id);
+}
+function failTrack(t) {
+  S.play.bad[t.id] = 1;
+  toast(`Couldn’t play “${t.title}”. Its link must be an audio file anyone can open.`);
+  syncPlayer();
+}
+function setSession(t) {
+  if (!('mediaSession' in navigator)) return;
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({ title: t.title, artist: t.artist || clubName(), album: 'Dram',
+      artwork: [{ src: new URL('icon-512.png', appUrl()).href, sizes: '512x512', type: 'image/png' }, { src: new URL('icon-192.png', appUrl()).href, sizes: '192x192', type: 'image/png' }] });
+    const on = (a, f) => { try { navigator.mediaSession.setActionHandler(a, f); } catch {} };
+    on('play', () => audio.play()); on('pause', () => audio.pause());
+    on('previoustrack', () => stepTrack(-1)); on('nexttrack', () => stepTrack(1));
+    on('seekto', (e) => { if (e.seekTime != null) audio.currentTime = e.seekTime; });
+  } catch {}
+}
+// Update the player in place: never re-render the list while someone is dragging the position
+function syncPlayer() {
+  const playing = !!S.play.id && !audio.paused;
+  if (S.tab === 'media' && (S.mediaView || ((D().tracks || []).length ? 'music' : 'youtube')) === 'music' && $('#nowPlaying')) {
+    if (document.activeElement && document.activeElement.id === 'scrub') { renderMini(); return; }
+    const y = scrollY; renderMain(); scrollTo(0, y);
+  }
+  renderMini();
+  try { if ('mediaSession' in navigator) navigator.mediaSession.playbackState = S.play.id ? (playing ? 'playing' : 'paused') : 'none'; } catch {}
+}
+function renderMini() {
+  const el = $('#mini'), t = S.play.id && trackById(S.play.id);
+  const onMusic = S.tab === 'media' && (S.mediaView || 'music') === 'music';
+  const show = !!t && !onMusic && !S.screen && !!S.me;
+  el.hidden = !show;
+  document.body.classList.toggle('has-mini', show);
+  if (!show) return;
+  const playing = !audio.paused;
+  el.innerHTML = `<div class="mini-in"><img src="mark.webp" alt=""><button class="mini-text" type="button" data-act="open-music"><b>${esc(t.title)}</b><span>${playing ? 'Playing' : 'Paused'}, ${esc(t.artist || clubName())}</span><span class="mini-prog"><i id="miniProg"></i></span></button>
+    <button class="round${playing ? '' : ' accent'}" type="button" data-act="playpause" data-track="${esc(t.id)}" aria-label="${playing ? 'Pause' : 'Play'}" title="${playing ? 'Pause' : 'Play'}">${playing ? ICON.pause : ICON.playFill}</button>
+    <button class="round" type="button" data-act="stop-music" aria-label="Stop the music" title="Stop">${ICON.x}</button></div>`;
+  tick();
+}
+function tick() {
+  const d = audio.duration, at = audio.currentTime;
+  const p = $('#miniProg'); if (p) p.style.width = d ? `${(at / d) * 100}%` : '0';
+  if (document.activeElement && document.activeElement.id === 'scrub') return;
+  const sc = $('#scrub'); if (sc && d) sc.value = Math.round((at / d) * 1000);
+  const a = $('#npAt'); if (a) a.textContent = fmtTime(at);
+}
+audio.addEventListener('timeupdate', tick);
+audio.addEventListener('play', syncPlayer);
+audio.addEventListener('pause', syncPlayer);
+audio.addEventListener('loadedmetadata', () => {
+  if (!S.play.id || !isFinite(audio.duration)) return;
+  S.play.dur[S.play.id] = audio.duration; put('durs', S.play.dur);
+  const dd = $('#npDur'); if (dd) dd.textContent = fmtTime(audio.duration);
+  const sc = $('#scrub'); if (sc) sc.disabled = false;
+});
+audio.addEventListener('ended', () => stepTrack(1));
+audio.addEventListener('error', () => { const t = S.play.id && trackById(S.play.id); if (t && audio.getAttribute('src')) failTrack(t); });
 
 /* ---------- Actions ---------- */
 async function doRsvp(meetId, status, btn) {
@@ -1416,7 +1741,7 @@ document.addEventListener('click', async (e) => {
   const t = e.target.closest('button, a');
   if (!t) return;
   const d = t.dataset;
-  if (d.theme) { setTheme(d.theme); return; }
+  if (d.look) { setLook(d.look); return; }
   if (d.tab) { closeSheet(); S.tab = d.tab; put('tab', S.tab); renderAll(); window.scrollTo(0, 0); if (S.tab !== 'meet') refresh(true); return; }
   if (d.dismiss) { const x = get('dismissed', {}); x[d.dismiss] = 1; put('dismissed', x); renderNotices(); return; }
   if (d.iam) { S.me = d.iam; put('me', S.me); renderAll(); toast(`Welcome, ${myName()}`); return; }
@@ -1424,6 +1749,31 @@ document.addEventListener('click', async (e) => {
   if (d.dram) { const [mid, did] = d.dram.split(':'); openDram(mid, did); return; }
   if (d.type) { S.set.type = d.type; saveSet(); S.deck = []; S.hist = []; S.cur = null; ensureDrift(); renderMain(); return; }
   if (d.cab) { S.cabView = d.cab; renderMain(); return; }
+  if (d.fview) { S.findsView = d.fview; renderMain(); window.scrollTo(0, 0); return; }
+  if (d.pickopen) { openFindPick(d.pickopen); return; }
+  if (d.pickfind || d.votepick) {
+    const all = D().picks || [];
+    const x = d.pickfind ? all.find((y) => y.findId === d.pickfind) : all.find((y) => y.id === d.votepick);
+    const mine = !!x && x.votes.includes(S.me);
+    t.setAttribute('aria-pressed', String(!mine));
+    try {
+      if (mine) { await call('votePick', { id: x.id }); toast('Vote taken back'); }
+      else if (x) { await call('votePick', { id: x.id }); toast('Your vote is in'); }
+      else { await call('pick', { findId: d.pickfind }); toast('Added to Worth a look'); }
+    } catch (err) { toast(friendly(err)); }
+    renderMain(); return;
+  }
+  if (d.unpick) { await withBusy(t, async () => { try { await call('unpick', { id: d.unpick }); closeSheet(); renderMain(); toast('Taken off the list'); } catch (err) { $('#pickResult').textContent = friendly(err); } }); return; }
+  if (d.mview) { S.mediaView = d.mview; renderMain(); renderMini(); return; }
+  if (d.video) { openVideo(d.video); return; }
+  if (d.post) { openPost(d.post); return; }
+  if (d.track && !d.act) { if (d.track === S.play.id && !audio.paused) audio.pause(); else playTrack(d.track); return; }
+  if (d.tmove) { await withBusy(t, async () => { try { await call('moveTrack', { id: d.tmove, by: +d.by }); openSettings('mediaHead'); } catch (err) { $('#trackResult').textContent = friendly(err); } }); return; }
+  if (d.tremove) {
+    if (t.dataset.armed !== '1') { t.dataset.armed = '1'; $('#trackResult').textContent = 'Tap the × again to take that song off the list.'; return; }
+    await withBusy(t, async () => { try { await call('removeTrack', { id: d.tremove }); openSettings('mediaHead'); toast('Song removed'); } catch (err) { $('#trackResult').textContent = friendly(err); } });
+    return;
+  }
   if (d.sort) { S.cabSort = d.sort; renderMain(); return; }
   if (d.show) { const w = S.byId.get(d.show); if (w) { if (S.cur) S.hist.push(S.cur); S.cur = w.id; put('drift', S.cur); closeSheet(); renderMain(); window.scrollTo(0, 0); } return; }
   if (d.pickw || d.pickwish) {
@@ -1471,6 +1821,49 @@ document.addEventListener('click', async (e) => {
 
   switch (d.act) {
     case 'close': closeSheet(); break;
+    case 'playpause': if (S.play.id && S.play.id === d.track && !audio.paused) audio.pause(); else playTrack(d.track || S.play.id); break;
+    case 'prev': stepTrack(-1); break;
+    case 'next-track': if (!S.play.id) { const ts = D().tracks || []; if (ts[0]) playTrack(ts[Math.min(1, ts.length - 1)].id); } else stepTrack(1); break;
+    case 'stop-music': stopPlayer(); break;
+    case 'open-music': S.tab = 'media'; S.mediaView = 'music'; put('tab', S.tab); closeSheet(); renderAll(); window.scrollTo(0, 0); break;
+    case 'media-refresh': loadMedia(true); break;
+    case 'admin-open': openSettings('adminHead'); break;
+    case 'step-down': {
+      if (t.dataset.armed !== '1') { t.dataset.armed = '1'; t.textContent = 'Tap again: you’ll leave the club on every phone'; setTimeout(() => { if (t.isConnected) { t.dataset.armed = ''; t.textContent = 'Step down and leave'; } }, 5000); break; }
+      await withBusy(t, async () => {
+        try { await api('stepDown'); signOut(''); toast('You’ve stepped down and left the club'); }
+        catch (err) { $('#stepResult').textContent = friendly(err); }
+      });
+      break;
+    }
+    case 'invite': {
+      const pin = D().club && D().club.pin;
+      if (!pin) { $('#inviteResult').textContent = 'Only the administrator can share invites.'; break; }
+      const msg = `You’re invited to ${clubName()} on Dram, the club’s app. Open ${appUrl()} on your phone, enter the club PIN ${pin}, then pick your name.`;
+      let done = false;
+      if (navigator.share) { try { await navigator.share({ title: `${clubName()} on Dram`, text: msg }); done = true; } catch (err) { if (err && err.name === 'AbortError') break; } }
+      if (!done) {
+        try { await navigator.clipboard.writeText(msg); $('#inviteResult').textContent = 'Invite copied. Paste it into a message to them.'; toast('Invite copied'); }
+        catch { $('#inviteResult').textContent = msg; }
+      } else $('#inviteResult').textContent = 'Invite shared.';
+      break;
+    }
+    case 'save-media': case 'ig-off': {
+      await withBusy(t, async () => {
+        const res = $('#mediaResult');
+        const data = d.act === 'ig-off' ? { igToken: '' } : { youtube: $('#ytLink').value.trim(), instagram: $('#igUser').value.trim() };
+        const tok = d.act === 'save-media' ? $('#igToken').value.trim() : '';
+        if (tok) data.igToken = tok;
+        try {
+          const j = await call('setMedia', data);
+          S.media = null; del('media'); loadMedia(true);
+          openSettings('mediaHead');
+          const r = (j.mediaResult && j.mediaResult.instagram) || 'Media saved.';
+          $('#mediaResult').textContent = r; toast(r);
+        } catch (err) { res.textContent = friendly(err); }
+      });
+      break;
+    }
     case 'retry': withBusy(t, () => refresh(false)); break;
     case 'install': if (S.installEvt) { S.installEvt.prompt(); S.installEvt = null; renderNotices(); } break;
     case 'connect': openConnect(); break;
@@ -1478,7 +1871,7 @@ document.addEventListener('click', async (e) => {
     case 'copy': try { await navigator.clipboard.writeText(D().club.topic); toast('Code copied'); } catch { toast('Press and hold the code to copy it'); } break;
     case 'hello': {
       await withBusy(t, async () => {
-        const ok = await tellClub(`${myName()} is on Dram`, 'Club messages arrive here: meet reminders, new meets, revealed scores and limited releases.');
+        const ok = await tellClub(amDev() ? 'Dram developer test' : `${myName()} is on Dram`, amDev() ? 'Only your developer topic gets this.' : 'Club messages arrive here: meet reminders, new meets, revealed scores and limited releases.');
         $('#connectResult').textContent = ok ? `Sent at ${time(Date.now())}. It should appear in ntfy in a few seconds.` : 'Couldn’t reach ntfy. Check your connection and try again.';
         toast(ok ? 'Test sent to the club' : 'Couldn’t reach ntfy');
       });
@@ -1526,7 +1919,7 @@ document.addEventListener('click', async (e) => {
     case 'finds-now': {
       await withBusy(t, async () => {
         busyToast('Looking for new limited releases…');
-        try { await call('findsNow'); renderMain(); const i = D().findsInfo; toast(i && i.ok ? (i.added ? `${plural(i.added, 'new find')}` : 'Nothing new since the last look') : (i && i.reason) || 'Couldn’t look just now'); }
+        try { await call('findsNow'); renderMain(); const i = D().findsInfo; toast(i && i.ok ? (i.added ? `${plural(i.added, 'new find')}. Next look on Friday.` : 'Nothing new. Next look on Friday.') : (i && i.reason) || 'Couldn’t look just now'); }
         catch (err) { toast(friendly(err)); }
       });
       break;
@@ -1535,18 +1928,15 @@ document.addEventListener('click', async (e) => {
     case 'signout': signOut(''); break;
     case 'save-club': {
       await withBusy(t, async () => {
-        const name = $('#clubName').value.trim(), channel = $('#clubChannel').value.trim();
-        const res = $('#clubResult');
-        if (channel && !/^https:\/\//i.test(channel)) { res.textContent = 'The channel link must start with https://'; return; }
-        try { await call('setClub', { name, channel }); res.textContent = 'Saved.'; renderAll(); toast('Club details saved'); } catch (err) { res.textContent = friendly(err); }
+        const name = $('#clubName').value.trim(), res = $('#clubResult');
+        try { await call('setClub', { name }); res.textContent = 'Saved.'; renderAll(); toast('Club name saved'); } catch (err) { res.textContent = friendly(err); }
       });
       break;
     }
   }
 });
-$('#themeBtn').addEventListener('click', () => togglePop('themes'));
+$('#themeBtn').addEventListener('click', () => { setLook(isLight() ? 'dark' : 'light'); });
 $('#settingsBtn').addEventListener('click', () => openSettings());
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && popOpen()) { closePops(); $('#themeBtn').focus(); } });
 
 function syncDram(card, keepSaved) {
   const dv = draft[card.dataset.k];
@@ -1566,6 +1956,7 @@ document.addEventListener('input', (e) => {
   const t = e.target;
   if (t.matches('[data-range]')) { const card = t.closest('.dram'); draft[card.dataset.k].score = C.clampScore(t.value); syncDram(card); }
   else if (t.matches('[data-note]')) { const card = t.closest('.dram'); draft[card.dataset.k].note = t.value; syncDram(card); }
+  else if (t.id === 'scrub') { if (audio.duration) audio.currentTime = (t.value / 1000) * audio.duration; }
   else if (t.id === 'pickQ') renderPick();
   else if (t.id === 'searchQ') renderSearch();
 });
@@ -1592,6 +1983,26 @@ document.addEventListener('submit', async (e) => {
         if (f.id === 'newMember') { const m = D().members.find((x) => x.name.toLowerCase() === name.toLowerCase()); if (m) { S.me = m.id; put('me', S.me); } renderAll(); toast(`Welcome, ${name}`); }
         else { openSettings(); toast(`${name} added`); }
       } catch (err) { if (f.id === 'addMemberForm') $('#memberResult').textContent = friendly(err); else toast(friendly(err)); }
+    });
+    return;
+  }
+  if (f.id === 'adminForm') {
+    const code = $('#adminPin').value.trim();
+    if (!code) return;
+    await withBusy(f.querySelector('button'), async () => {
+      const keep = S.admin; S.admin = code;
+      try { const j = await call('adminUnlock'); if (!j.isAdmin) throw new Error('That admin PIN isn’t right.'); put('admin', code); renderAll(); openSettings('adminHead'); toast('You look after the club now'); }
+      catch (err) { S.admin = keep; $('#adminResult').textContent = friendly(err); }
+    });
+    return;
+  }
+  if (f.id === 'trackForm') {
+    const url = $('#trackUrl').value.trim();
+    if (!url) return;
+    await withBusy(f.querySelector('button'), async () => {
+      busyToast('Adding the song…');
+      try { await call('addTrack', { url, title: $('#trackTitle').value.trim(), artist: $('#trackArtist').value.trim() }); openSettings('mediaHead'); toast('Song added'); }
+      catch (err) { $('#trackResult').textContent = friendly(err); toast(friendly(err)); }
     });
     return;
   }
@@ -1715,8 +2126,9 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 window.addEventListener('online', () => { if (S.pin) refresh(true); });
 setInterval(() => { if (S.tab === 'meet' && !S.screen && !sheet.open && S.me && document.visibilityState === 'visible') renderMain(); }, 60000);
 (function start() {
-  $('#themeBtn').innerHTML = ICON.eye; $('#settingsBtn').innerHTML = ICON.sliders; $('#channelBtn').innerHTML = ICON.play;
-  setTheme(S.set.theme);
+  $('#settingsBtn').innerHTML = ICON.sliders;
+  if (S.set.theme) { delete S.set.theme; saveSet(); }   // release 1 had colour themes
+  applyLook();
   renderAll();
   // Signed in with saved data: the app is ready at once. Signed in without it: wait for the club, up to 2.5 s.
   if (S.pin && !S.data) { refresh(true).then(hideSplash); setTimeout(hideSplash, 2500); }
